@@ -9,7 +9,7 @@ function App() {
       {/* Background gradient matching Hyve brand */}
       <div className="absolute inset-0 bg-gradient-hyve opacity-60" />
       
-      <div className="relative z-10 hyve-container hyve-section">
+      <div className="relative z-10 hyve-container hyve-section pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
