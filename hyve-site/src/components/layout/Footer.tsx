@@ -1,7 +1,6 @@
 import { motion } from "framer-motion"
 import { Separator } from "@/components/ui/separator"
 import { Mail, Linkedin, Building, Hash } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 // Logo component for footer
 const FooterLogo = () => (
@@ -56,6 +55,7 @@ const footerSections = [
 export const Footer = () => {
   const currentYear = new Date().getFullYear()
 
+  // 🎨 FOOTER BACKGROUND COLOR: Change 'bg-hyve-header' to modify footer background
   return (
     <footer className="bg-hyve-header text-hyve-background border-t border-hyve-content/20">
       <div className="hyve-container">

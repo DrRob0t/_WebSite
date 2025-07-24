@@ -1,15 +1,23 @@
 // src/App.tsx - Hyve Dynamics with Header and Navigation
 import { Layout } from "@/components/layout/Layout"
 import { Button } from "@/components/ui/button"
+import { VantaBackground, VantaErrorBoundary } from "@/components/ui/VantaBackground"
 import { motion } from "framer-motion"
 
 function App() {
+  // 🎛️ EASY DISABLE: Set to false to disable Vanta background
+  const enableVantaBackground = true
+
   return (
     <Layout>
-      {/* Background gradient matching Hyve brand */}
-      <div className="absolute inset-0 bg-gradient-hyve opacity-60" />
-      
-      <div className="relative z-10 hyve-container hyve-section pb-16">
+      <VantaErrorBoundary fallback={
+        <div className="min-h-screen bg-gradient-hyve opacity-60" />
+      }>
+        <VantaBackground 
+          enabled={enableVantaBackground}
+          className="min-h-screen"
+        >
+          <div className="relative z-10 hyve-container hyve-section pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -114,11 +122,13 @@ function App() {
               <h4 className="font-heading font-bold text-hyve-header mb-2">Smooth Animations</h4>
               <p className="text-sm text-hyve-text">Framer Motion animations with scroll effects</p>
             </div>
-          </motion.div>
-        </motion.div>
-      </div>
-    </Layout>
-  )
-}
+                     </motion.div>
+         </motion.div>
+           </div>
+         </VantaBackground>
+       </VantaErrorBoundary>
+     </Layout>
+   )
+ }
 
 export default App
