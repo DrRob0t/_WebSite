@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 /**
- * 🌊 VANTA BACKGROUND COMPONENT - SAFE IMPLEMENTATION
+ * 🕸️ VANTA NET BACKGROUND COMPONENT - MESH GRID IMPLEMENTATION
  * 
  * ✅ Features:
+ * - Interconnected mesh grid (no globe sphere)
  * - Easy enable/disable switch
  * - Proper cleanup to prevent memory leaks
  * - Error boundaries for graceful fallback
@@ -12,8 +13,8 @@ import React, { useEffect, useRef, useState } from 'react'
  * 
  * 🎛️ CUSTOMIZATION:
  * - enabled: true/false to toggle background
- * - Vanta settings in initVanta() function
- * - Colors: Change 0x102542 to your hex color
+ * - Vanta NET settings in initVanta() function
+ * - Colors: Change 0x7FB3BE for mesh lines, 0x102542 for background
  * 
  * 🚨 TROUBLESHOOTING:
  * - If issues occur, set enabled={false} in App.tsx
@@ -40,39 +41,40 @@ export const VantaBackground = ({
   useEffect(() => {
     if (!enabled || hasError) return
 
-    const initVanta = () => {
-      try {
-        // @ts-expect-error - Vanta types not available
-        if (!window.VANTA || !window.THREE) {
-          console.warn('Vanta.js or Three.js not loaded, skipping animated background')
-          return
-        }
-
-        if (vantaRef.current && !vantaEffect.current) {
+          const initVanta = () => {
+        try {
           // @ts-expect-error - Vanta types not available
-          vantaEffect.current = window.VANTA.WAVES({
-            el: vantaRef.current,
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            // 🎨 HYVE DYNAMICS BRAND COLORS
-            color: 0x102542,      // hyve-header (Oxford Blue)
-            waveHeight: 20.00,
-            waveSpeed: 0.75,
-            zoom: 0.65,
-            // @ts-expect-error - THREE types
-            THREE: window.THREE,
-            points: 8.00,
-            max: 20.00,
-          })
-          
-          setIsLoaded(true)
-          console.log('✅ Vanta WAVES background initialized successfully')
-        }
+          if (!window.VANTA || !window.THREE) {
+            console.warn('Vanta.js or Three.js not loaded, skipping animated background')
+            return
+          }
+
+          if (vantaRef.current && !vantaEffect.current) {
+            // @ts-expect-error - Vanta types not available
+            vantaEffect.current = window.VANTA.NET({
+              el: vantaRef.current,
+              mouseControls: true,
+              touchControls: true,
+              gyroControls: false,
+              minHeight: 200.00,
+              minWidth: 200.00,
+              scale: 1.00,
+              scaleMobile: 1.00,
+              // 🎨 HYVE DYNAMICS BRAND COLORS - MESH GRID
+              color: 0x7FB3BE,           // hyve-accent (Moonstone) for mesh lines
+              backgroundColor: 0x102542,  // hyve-header (Oxford Blue) for background
+              points: 12.00,             // Number of connection points
+              maxDistance: 25.00,        // Maximum connection distance
+              spacing: 16.00,            // Spacing between points
+              showDots: true,            // Show connection dots
+              size: 1.50,               // Size of the dots
+              // @ts-expect-error - THREE types
+              THREE: window.THREE,
+            })
+            
+            setIsLoaded(true)
+            console.log('✅ Vanta NET mesh grid background initialized successfully')
+          }
       } catch (error) {
         console.error('❌ Error initializing Vanta background:', error)
         setHasError(true)

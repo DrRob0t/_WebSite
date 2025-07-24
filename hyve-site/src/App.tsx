@@ -1,22 +1,19 @@
 // src/App.tsx - Hyve Dynamics with Header and Navigation
 import { Layout } from "@/components/layout/Layout"
 import { Button } from "@/components/ui/button"
-import { VantaBackground, VantaErrorBoundary } from "@/components/ui/VantaBackground"
+import { CustomMeshBackground } from "@/components/ui/CustomMeshBackground"
 import { motion } from "framer-motion"
 
 function App() {
-  // 🎛️ EASY DISABLE: Set to false to disable Vanta background
-  const enableVantaBackground = true
+  // 🎛️ EASY DISABLE: Set to false to disable mesh background
+  const enableMeshBackground = true
 
   return (
     <Layout>
-      <VantaErrorBoundary fallback={
-        <div className="min-h-screen bg-gradient-hyve opacity-60" />
-      }>
-        <VantaBackground 
-          enabled={enableVantaBackground}
-          className="min-h-screen"
-        >
+      <CustomMeshBackground 
+        enabled={enableMeshBackground}
+        className="min-h-screen"
+      >
           <div className="relative z-10 hyve-container hyve-section pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -27,15 +24,15 @@ function App() {
           {/* Test the header integration */}
           <div className="hyve-ui-text text-hyve-accent mb-4">WELCOME TO HYVE DYNAMICS</div>
           
-          <h1 className="hyve-hero-text mb-6">
-            Header & Navigation{" "}
-            <span className="hyve-text-gradient">Successfully Integrated</span>
-          </h1>
-          
-          <p className="hyve-body-text mb-8 max-w-2xl mx-auto">
-            Your responsive header with logo and navigation is now ready. 
-            The navigation uses Moto Sans font and includes placeholder sections as requested.
-          </p>
+                     <h1 className="hyve-hero-text mb-6">
+             Custom Mesh Grid{" "}
+             <span className="hyve-text-gradient">Successfully Integrated</span>
+           </h1>
+           
+           <p className="hyve-body-text mb-8 max-w-2xl mx-auto">
+             Beautiful perspective mesh grid with gentle wave motion. 
+             Like a virtual ground extending to the horizon with organized, non-chaotic patterns.
+           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -117,18 +114,17 @@ function App() {
               <p className="text-sm text-hyve-text">Fully integrated with Hyve color palette and typography</p>
             </div>
             
-            <div className="hyve-card text-center">
-              <div className="text-2xl mb-2">⚡</div>
-              <h4 className="font-heading font-bold text-hyve-header mb-2">Smooth Animations</h4>
-              <p className="text-sm text-hyve-text">Framer Motion animations with scroll effects</p>
-            </div>
+                         <div className="hyve-card text-center">
+               <div className="text-2xl mb-2">🌐</div>
+               <h4 className="font-heading font-bold text-hyve-header mb-2">Custom Mesh Grid</h4>
+               <p className="text-sm text-hyve-text">Perspective grid with gentle wave motion extending to horizon</p>
+             </div>
                      </motion.div>
          </motion.div>
-           </div>
-         </VantaBackground>
-       </VantaErrorBoundary>
-     </Layout>
-   )
- }
+                       </div>
+        </CustomMeshBackground>
+      </Layout>
+    )
+  }
 
 export default App
