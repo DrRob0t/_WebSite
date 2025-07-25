@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   width="171.15109"
+   height="148.92084"
+   viewBox="0 0 171.15109 148.92084"
+   xml:space="preserve"
+   id="svg11"
+   sodipodi:docname="Mediamodifier-Design.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+   id="namedview11"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="4.6333333"
+   inkscape:cx="50.503597"
+   inkscape:cy="76.618705"
+   inkscape:window-width="2560"
+   inkscape:window-height="1511"
+   inkscape:window-x="-9"
+   inkscape:window-y="-9"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg11"><inkscape:page
+     x="0"
+     y="0"
+     width="171.15109"
+     height="148.92084"
+     id="page12"
+     margin="0"
+     bleed="0" /></sodipodi:namedview>
+<desc
+   id="desc1">Created with Fabric.js 5.2.4</desc>
+<defs
+   id="defs1">
+</defs>
+
+
+
+
+
+
+
+
+<g
+   transform="translate(116.68346,20.304605)"
+   id="g11"
+   style="display:inline">
+<g
+   id="g12"><polygon
+     style="display:inline;opacity:1;fill:url(#SVGID_linear-gradient_3);fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+     vector-effect="non-scaling-stroke"
+     points="-21.26,-0.01 21.26,73.64 21.26,-73.65 "
+     id="polygon2"
+     transform="translate(-94.78,53.94)" /><g
+     transform="translate(-94.78,53.94)"
+     id="g2"
+     style="display:inline">
+<linearGradient
+   id="SVGID_linear-gradient_3"
+   gradientUnits="userSpaceOnUse"
+   gradientTransform="translate(-28.45,-81.13)"
+   x1="35.18"
+   y1="99.639999"
+   x2="54.689999"
+   y2="46.549999">
+<stop
+   offset="0%"
+   style="stop-color:rgb(97,137,146);stop-opacity: 1"
+   id="stop1" />
+<stop
+   offset="61%"
+   style="stop-color:rgb(129,183,194);stop-opacity: 1"
+   id="stop2" />
+</linearGradient>
+
+</g><polygon
+     style="display:inline;opacity:1;fill:url(#SVGID_linear-gradient-2_4);fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+     vector-effect="non-scaling-stroke"
+     points="-21.26,36.82 63.78,36.82 -63.78,-36.82 "
+     id="polygon4"
+     transform="translate(-52.26,90.76)" /><g
+     transform="translate(-52.26,90.76)"
+     id="g4"
+     style="display:inline">
+<linearGradient
+   id="SVGID_linear-gradient-2_4"
+   gradientUnits="userSpaceOnUse"
+   gradientTransform="translate(-70.97,-117.94)"
+   x1="88.449997"
+   y1="150.89"
+   x2="21.83"
+   y2="82.639999">
+<stop
+   offset="0%"
+   style="stop-color:rgb(97,137,146);stop-opacity: 1"
+   id="stop3" />
+<stop
+   offset="61%"
+   style="stop-color:rgb(129,183,194);stop-opacity: 1"
+   id="stop4" />
+</linearGradient>
+
+</g><polygon
+     style="display:inline;opacity:1;fill:url(#SVGID_linear-gradient-3_5);fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+     vector-effect="non-scaling-stroke"
+     points="21.26,36.82 63.78,-36.83 -63.78,36.82 "
+     id="polygon6"
+     transform="translate(-9.74,90.75)" /><g
+     transform="translate(-9.74,90.75)"
+     id="g6"
+     style="display:inline">
+<linearGradient
+   id="SVGID_linear-gradient-3_5"
+   gradientUnits="userSpaceOnUse"
+   gradientTransform="translate(-113.49,-117.94)"
+   x1="147.69"
+   y1="117.94"
+   x2="72.68"
+   y2="117.94">
+<stop
+   offset="0%"
+   style="stop-color:rgb(97,137,146);stop-opacity: 1"
+   id="stop5" />
+<stop
+   offset="61%"
+   style="stop-color:rgb(129,183,194);stop-opacity: 1"
+   id="stop6" />
+</linearGradient>
+
+</g><polygon
+     style="display:inline;opacity:1;fill:url(#SVGID_linear-gradient-4_6);fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+     vector-effect="non-scaling-stroke"
+     points="21.26,0 -21.26,-73.64 -21.26,73.64 "
+     id="polygon8"
+     transform="translate(32.77,53.94)" /><g
+     transform="translate(32.77,53.94)"
+     id="g8"
+     style="display:inline">
+<linearGradient
+   id="SVGID_linear-gradient-4_6"
+   gradientUnits="userSpaceOnUse"
+   gradientTransform="translate(-156,-81.11)"
+   x1="156"
+   y1="53.700001"
+   x2="156"
+   y2="110.1">
+<stop
+   offset="0%"
+   style="stop-color:rgb(97,137,146);stop-opacity: 1"
+   id="stop7" />
+<stop
+   offset="61%"
+   style="stop-color:rgb(129,183,194);stop-opacity: 1"
+   id="stop8" />
+</linearGradient>
+
+</g><polygon
+     style="display:inline;opacity:1;fill:#3f485b;fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+     vector-effect="non-scaling-stroke"
+     points="21.26,-36.83 -63.78,-36.83 63.78,36.83 "
+     id="polygon9"
+     transform="translate(-9.75,17.11)" /><g
+     transform="translate(-9.75,17.11)"
+     id="g9"
+     style="display:inline">
+
+</g><path
+     style="display:inline;opacity:1;fill:#ffffff;fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+     vector-effect="non-scaling-stroke"
+     transform="translate(-123.24,-27.18)"
+     d="m 130.97,18.25 v 17.86 h -4.35 v -7.35 h -6.77 v 7.35 H 115.5 V 18.25 h 4.35 v 7 h 6.77 v -7 z"
+     stroke-linecap="round"
+     id="path9" /><g
+     id="g10"
+     style="display:inline">
+
+</g><circle
+     style="opacity:1;fill:none;fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+     vector-effect="non-scaling-stroke"
+     cx="0"
+     cy="0"
+     r="19.709999"
+     id="circle10" /></g>
+</g>
+</svg>
