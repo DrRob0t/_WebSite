@@ -179,7 +179,7 @@ export const CustomMeshBackground = ({
 
     // Wave animation state
     let waveTime = 0
-    let waveAnimationId: number | null = null
+    let animationId: number | null = null
     
     // Store original Y positions for wave calculation
     const originalYPositions = new Float32Array(pointsData.length)
@@ -187,14 +187,13 @@ export const CustomMeshBackground = ({
 
     // Animation system for smooth movement
     const animationState = {
-      targetPositions: new Float32Array(pointsData.length), // Target Y positions for each point
+      physicsOffsets: new Float32Array(pointsData.length), // Physics displacement from base position
       velocities: new Float32Array(pointsData.length),      // Current velocity for each point
-      isAnimating: false,
-      animationId: null as number | null
+      hasPhysics: false
     }
     
-    // Initialize all targets to 0 (flat)
-    animationState.targetPositions.fill(0)
+    // Initialize all physics offsets to 0
+    animationState.physicsOffsets.fill(0)
     animationState.velocities.fill(0)
 
     // Visual ripple system
@@ -245,8 +244,6 @@ export const CustomMeshBackground = ({
       })
     }
 
-
-
     // Create a map for fast grid vertex lookups
     const gridVertexMap = new Map<string, number[]>()
     
@@ -268,85 +265,78 @@ export const CustomMeshBackground = ({
     
     buildGridVertexMap()
 
-    // Animation loop for smooth physics-based movement
+    // Helper function to calculate wave height at a point
+    const calculateWaveHeight = (x: number, z: number, time: number): number => {
+      const waveX = Math.sin(x * waveFrequency + time) * waveAmplitude
+      const waveZ = Math.sin(z * waveFrequency + time * 0.7) * waveAmplitude
+      return (waveX + waveZ) * 0.5
+    }
+
+    // Main animation loop that handles both wave and physics
     const animate = () => {
-      if (!animationState.isAnimating) return
+      // Increment wave time
+      waveTime += 0.016 * waveSpeed // Assuming 60fps
       
       const pointPositions = pointGeometry.attributes.position.array as Float32Array
       const gridPositions = gridGeometry.attributes.position.array as Float32Array
-      let hasMovement = false
+      let hasPhysicsMovement = false
       
-      // ==== ANIMATION SPEED CONTROLS ====
-      // Adjust these values to change animation speed:
-      
-      // Spring strength: How quickly points move toward their target
-      // - Higher (0.5+) = Faster, snappier animation
-      // - Lower (0.1-0.2) = Slower, more gentle animation
+      // Physics animation parameters
       const springStrength = 0.035
-      
-      // Damping: How much energy is lost each frame (0-1)
-      // - Higher (0.9-0.95) = Less energy loss, more bounces, slower to settle
-      // - Lower (0.7-0.85) = More energy loss, fewer bounces, faster to settle
       const damping = 0.85
+      const minVelocity = 0.001
+      const minDistance = 0.002
       
-      // Minimum thresholds: When to stop animating
-      // - Higher values = Animation stops sooner (faster overall)
-      // - Lower values = Animation continues longer (slower overall)
-      const minVelocity = 0.001       // Stop when velocity is below this
-      const minDistance = 0.002       // Stop when distance to target is below this
-      
-      // First pass: Update ALL point positions (wave + physics)
+      // Update ALL points with combined wave + physics
       for (let i = 0; i < pointsData.length; i++) {
-        const velocity = animationState.velocities[i]
+        const point = pointsData[i]
         const positionIndex = i * 3 + 1 // Y coordinate
         
-        // Calculate current wave height for this point
-        const pointData = pointsData[i]
-        const waveTimeNow = waveTime
-        const waveXValue = Math.sin(pointData.x * waveFrequency + waveTimeNow) * waveAmplitude
-        const waveZValue = Math.sin(pointData.z * waveFrequency + waveTimeNow * 0.7) * waveAmplitude
-        const currentWaveHeight = (waveXValue + waveZValue) * 0.2
+        // Calculate wave height for this point
+        const waveHeight = calculateWaveHeight(point.x, point.z, waveTime)
         
-        // Check if this point has physics movement
-        if (Math.abs(velocity) >= minVelocity || 
-            Math.abs(animationState.targetPositions[i]) >= minDistance) {
+        // Update physics if active for this point
+        if (Math.abs(animationState.velocities[i]) >= minVelocity || 
+            Math.abs(animationState.physicsOffsets[i]) >= minDistance) {
           
-          // Get current position minus wave effect to isolate physics movement
-          const currentY = pointPositions[positionIndex] - currentWaveHeight
-          const targetY = animationState.targetPositions[i]
-          const distance = targetY - currentY
+          // Physics targets 0 offset (spring back to wave motion)
+          const currentOffset = animationState.physicsOffsets[i]
+          const targetOffset = 0
+          const distance = targetOffset - currentOffset
           
-          // Apply spring force toward target
+          // Apply spring force
           const springForce = distance * springStrength
-          animationState.velocities[i] = (velocity + springForce) * damping
+          animationState.velocities[i] = (animationState.velocities[i] + springForce) * damping
           
-          // Update position with physics velocity, then add back the wave
-          pointPositions[positionIndex] = currentY + animationState.velocities[i] + currentWaveHeight
-          hasMovement = true
+          // Update physics offset
+          animationState.physicsOffsets[i] += animationState.velocities[i]
+          
+          hasPhysicsMovement = true
         } else {
-          // No physics movement, just apply wave
-          pointPositions[positionIndex] = originalYPositions[i] + currentWaveHeight
+          // Reset physics values when settled
+          animationState.physicsOffsets[i] = 0
+          animationState.velocities[i] = 0
         }
+        
+        // Combine wave height and physics offset for final position
+        pointPositions[positionIndex] = originalYPositions[i] + waveHeight + animationState.physicsOffsets[i]
       }
       
-      // Second pass: Update grid vertices efficiently using the map
-      if (hasMovement) {
-        for (let i = 0; i < pointsData.length; i++) {
-          const point = pointsData[i]
-          const newY = pointPositions[i * 3 + 1]
-          const key = `${point.x.toFixed(3)},${point.z.toFixed(3)}`
-          
-          const indices = gridVertexMap.get(key)
-          if (indices) {
-            for (const idx of indices) {
-              gridPositions[idx] = newY
-            }
+      // Update state
+      animationState.hasPhysics = hasPhysicsMovement
+      
+      // Update grid vertices
+      for (let i = 0; i < pointsData.length; i++) {
+        const point = pointsData[i]
+        const newY = pointPositions[i * 3 + 1]
+        const key = `${point.x.toFixed(3)},${point.z.toFixed(3)}`
+        
+        const indices = gridVertexMap.get(key)
+        if (indices) {
+          for (const idx of indices) {
+            gridPositions[idx] = newY
           }
         }
-        
-        // Update geometry
-        pointGeometry.attributes.position.needsUpdate = true
-        gridGeometry.attributes.position.needsUpdate = true
       }
       
       // Update visual ripples
@@ -354,23 +344,22 @@ export const CustomMeshBackground = ({
         const ripple = visualRipples[i]
         
         // Expand the ripple
-        ripple.radius += ripple.speed * 0.016 // Assuming 60fps, adjust as needed
+        ripple.radius += ripple.speed * 0.016
         
-        // Calculate progress (0 to 1) based on radius
+        // Calculate progress (0 to 1)
         const progress = ripple.radius / ripple.maxRadius
         
-        // Fade out more gradually, linked to the expansion progress
-        // Use an exponential curve for smoother fade
+        // Fade out
         ripple.opacity = 0.8 * (1 - progress) * (1 - progress)
         
-        // Update the scale instead of recreating geometry
-        const scale = ripple.radius / 0.1 // Since we start at 0.1
+        // Update scale
+        const scale = ripple.radius / 0.1
         ripple.mesh.scale.set(scale, scale, scale)
         
         // Update opacity
         ripple.material.opacity = ripple.opacity
         
-        // Remove if faded out or too large
+        // Remove if faded out
         if (ripple.opacity <= 0.05 || ripple.radius > ripple.maxRadius) {
           rippleGroup.remove(ripple.mesh)
           ripple.geometry.dispose()
@@ -379,20 +368,15 @@ export const CustomMeshBackground = ({
         }
       }
       
-      // Continue animation if there's movement or active ripples
-      if (hasMovement || visualRipples.length > 0) {
-        renderer.render(scene, camera)
-        animationState.animationId = requestAnimationFrame(animate)
-        
-        if (!hasMovement && visualRipples.length > 0) {
-          // Keep animation running for ripples even if points have settled
-          animationState.isAnimating = true
-        }
-      } else {
-        animationState.isAnimating = false
-        animationState.animationId = null
-        console.log('🛑 Animation stopped - points settled and ripples faded')
-      }
+      // Update geometry
+      pointGeometry.attributes.position.needsUpdate = true
+      gridGeometry.attributes.position.needsUpdate = true
+      
+      // Render
+      renderer.render(scene, camera)
+      
+      // Continue animation
+      animationId = requestAnimationFrame(animate)
     }
 
     // Click detection setup
@@ -435,7 +419,7 @@ export const CustomMeshBackground = ({
           }
         })
         
-                if (closestIndex !== -1) {
+        if (closestIndex !== -1) {
           console.log('✅ Closest point found at index:', closestIndex, 'distance:', closestDistance.toFixed(2))
           
           // Get color array for points
@@ -449,9 +433,6 @@ export const CustomMeshBackground = ({
             colors[colorIndex + 2] = 0.745 // B of #7FB3BE
           }
           
-          // Target positions are always 0 (flat surface) - points will bounce back
-          animationState.targetPositions.fill(0)
-          
           // Get the clicked point coordinates
           const clickedPoint = pointsData[closestIndex]
           const influenceRadius = gridSquareSize * 5 // Affect points within 5 grid squares
@@ -464,15 +445,14 @@ export const CustomMeshBackground = ({
             )
             
             if (distance <= influenceRadius) {
-              // Calculate bell-shaped falloff using Gaussian-like curve
-              const normalizedDistance = distance / influenceRadius // 0 to 1
-              const bellCurve = Math.exp(-(normalizedDistance * normalizedDistance) * 6) // Gaussian bell shape
+              // Calculate bell-shaped falloff
+              const normalizedDistance = distance / influenceRadius
+              const bellCurve = Math.exp(-(normalizedDistance * normalizedDistance) * 6)
               
-              // Apply downward velocity instead of setting target position
-              // Negative velocity will push points down, then spring will pull them back to 0
-              animationState.velocities[index] = -pushDownDistance * bellCurve * 2 // Strong initial push
+              // Apply downward velocity - this gets added to the wave motion
+              animationState.velocities[index] = -pushDownDistance * bellCurve * 2
               
-              // Color the center point differently
+              // Color the center point
               if (index === closestIndex) {
                 const colorIndex = index * 3
                 colors[colorIndex] = 1.0     // R - bright red
@@ -488,14 +468,7 @@ export const CustomMeshBackground = ({
           // Create visual ripple at the clicked point
           createVisualRipple(clickedPoint.x, clickedPoint.z)
           
-          // Start animation if not already running
-          if (!animationState.isAnimating) {
-            animationState.isAnimating = true
-            console.log('🎬 Starting smooth animation with bounce physics and visual ripple')
-            animate()
-          }
-          
-          console.log('🔽 Depression animation started with radius:', influenceRadius.toFixed(2), 'units')
+          console.log('🔽 Depression animation started with continuous wave motion')
         }
       }
     }
@@ -503,64 +476,10 @@ export const CustomMeshBackground = ({
     // Add click event listener
     renderer.domElement.addEventListener('click', handleClick, false)
     
-    console.log('🎯 CustomMeshBackground initialized with smooth depression physics')
+    console.log('🎯 CustomMeshBackground initialized with blended wave and physics animation')
 
-    // Continuous wave animation
-    const animateWave = () => {
-      waveTime += 0.016 * waveSpeed // Assuming 60fps
-      
-      // If physics animation is running, only update time and let physics handle positions
-      if (animationState.isAnimating) {
-        waveAnimationId = requestAnimationFrame(animateWave)
-        return
-      }
-      
-      const pointPositions = pointGeometry.attributes.position.array as Float32Array
-      const gridPositions = gridGeometry.attributes.position.array as Float32Array
-      
-      // Apply sine wave to all points only when physics is not active
-      for (let i = 0; i < pointsData.length; i++) {
-        const point = pointsData[i]
-        const positionIndex = i * 3 + 1 // Y coordinate
-        
-        // Calculate wave based on position and time
-        const waveX = Math.sin(point.x * waveFrequency + waveTime) * waveAmplitude
-        const waveZ = Math.sin(point.z * waveFrequency + waveTime * 0.7) * waveAmplitude
-        
-        // Combine waves for more organic movement
-        const waveHeight = (waveX + waveZ) * 0.5
-        
-        // Set position to wave height
-        pointPositions[positionIndex] = originalYPositions[i] + waveHeight
-      }
-      
-      // Update grid vertices to match
-      for (let i = 0; i < pointsData.length; i++) {
-        const point = pointsData[i]
-        const newY = pointPositions[i * 3 + 1]
-        const key = `${point.x.toFixed(3)},${point.z.toFixed(3)}`
-        
-        const indices = gridVertexMap.get(key)
-        if (indices) {
-          for (const idx of indices) {
-            gridPositions[idx] = newY
-          }
-        }
-      }
-      
-      // Update geometry
-      pointGeometry.attributes.position.needsUpdate = true
-      gridGeometry.attributes.position.needsUpdate = true
-      
-      // Render
-      renderer.render(scene, camera)
-      
-      // Continue animation
-      waveAnimationId = requestAnimationFrame(animateWave)
-    }
-    
-    // Start the continuous wave animation
-    animateWave()
+    // Start the main animation loop
+    animate()
 
     // Initial render
     renderer.render(scene, camera)
@@ -573,7 +492,7 @@ export const CustomMeshBackground = ({
         camera.aspect = newWidth / newHeight
         camera.updateProjectionMatrix()
         renderer.setSize(newWidth, newHeight)
-        renderer.render(scene, camera) // Re-render on resize
+        renderer.render(scene, camera)
       }
     }
     
@@ -595,15 +514,9 @@ export const CustomMeshBackground = ({
       window.removeEventListener('resize', handleResize)
       renderer.domElement.removeEventListener('click', handleClick)
       
-      // Stop any running animation
-      if (animationState.animationId) {
-        cancelAnimationFrame(animationState.animationId)
-        animationState.isAnimating = false
-      }
-      
-      // Stop wave animation
-      if (waveAnimationId) {
-        cancelAnimationFrame(waveAnimationId)
+      // Stop animation
+      if (animationId) {
+        cancelAnimationFrame(animationId)
       }
       
       // Clean up visual ripples
@@ -648,4 +561,4 @@ export const CustomMeshBackground = ({
       </div>
     </div>
   )
-} 
+}
