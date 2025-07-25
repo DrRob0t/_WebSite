@@ -15,11 +15,11 @@ import { cn } from "@/lib/utils"
 
 // Logo component
 const Logo = () => (
-  <div className="flex items-center space-x-2">
+  <div className="flex items-center space-x-">
     <img 
-      src="/src/assets/logo/long_logo.svg" 
+      src="/src/assets/logo/HD-logo-dk.svg" 
       alt="Hyve Dynamics" 
-      className="h-8 w-auto"
+      className="h-10 w-auto"
     />
   </div>
 )
