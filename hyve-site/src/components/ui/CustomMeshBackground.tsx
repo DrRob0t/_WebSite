@@ -5,6 +5,7 @@ interface CustomMeshBackgroundProps {
   className?: string
   children?: React.ReactNode
   vertexPointSize?: number
+  rippleRadiusMultiplier?: number // Controls how many grid squares the ripple covers
 }
 
 interface PointData {
@@ -30,7 +31,8 @@ export const CustomMeshBackground = ({
   enabled = true, 
   className = "",
   children,
-  vertexPointSize = 1.5
+  vertexPointSize = 1.5,
+  rippleRadiusMultiplier = 1.1 // Default: ripple covers 3 grid squares
 }: CustomMeshBackgroundProps) => {
   const mountRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -200,7 +202,7 @@ export const CustomMeshBackground = ({
     
     // Function to create a visual ripple at click position
     const createVisualRipple = (x: number, z: number) => {
-      const geometry = new THREE.RingGeometry(0, 0.5, 32)
+      const geometry = new THREE.CircleGeometry(1, 32) // Start with a small circle
       const material = new THREE.MeshBasicMaterial({
         color: 0xff0000, // Red color
         transparent: true,
@@ -212,16 +214,17 @@ export const CustomMeshBackground = ({
       // Position the ripple at the click point
       mesh.position.set(x, 0.1, z) // Slightly above the grid to avoid z-fighting
       mesh.rotation.x = -Math.PI / 2 // Lay flat
+      mesh.scale.set(0.1, 0.1, 0.1) // Start small
       
       rippleGroup.add(mesh)
       
       visualRipples.push({
         x,
         z,
-        radius: 2.2,
-        maxRadius: gridSquareSize * 6, // Expand to 3 grid squares
+        radius: 0.1, // Start small
+        maxRadius: gridSquareSize * rippleRadiusMultiplier, // Configurable expansion radius
         opacity: 0.8,
-        speed: gridSquareSize * 0.8, // Expansion speed
+        speed: gridSquareSize * 0.5, // Slower expansion to match bounce settling time
         material,
         geometry,
         mesh
@@ -329,23 +332,22 @@ export const CustomMeshBackground = ({
         // Expand the ripple
         ripple.radius += ripple.speed * 0.016 // Assuming 60fps, adjust as needed
         
-        // Fade out
-        ripple.opacity = Math.max(0, ripple.opacity - 0.02)
+        // Calculate progress (0 to 1) based on radius
+        const progress = ripple.radius / ripple.maxRadius
         
-        // Update the ring geometry
-        const innerRadius = Math.max(0, ripple.radius - gridSquareSize * 0.3)
-        const outerRadius = ripple.radius
+        // Fade out more gradually, linked to the expansion progress
+        // Use an exponential curve for smoother fade
+        ripple.opacity = 0.8 * (1 - progress) * (1 - progress)
         
-        // Update ring geometry
-        ripple.geometry.dispose()
-        ripple.geometry = new THREE.RingGeometry(innerRadius, outerRadius, 32)
-        ripple.mesh.geometry = ripple.geometry
+        // Update the scale instead of recreating geometry
+        const scale = ripple.radius / 0.1 // Since we start at 0.1
+        ripple.mesh.scale.set(scale, scale, scale)
         
         // Update opacity
         ripple.material.opacity = ripple.opacity
         
         // Remove if faded out or too large
-        if (ripple.opacity <= 0 || ripple.radius > ripple.maxRadius) {
+        if (ripple.opacity <= 0.05 || ripple.radius > ripple.maxRadius) {
           rippleGroup.remove(ripple.mesh)
           ripple.geometry.dispose()
           ripple.material.dispose()
@@ -539,7 +541,7 @@ export const CustomMeshBackground = ({
       
       sceneRef.current = null
     }
-  }, [enabled, vertexPointSize])
+  }, [enabled, vertexPointSize, rippleRadiusMultiplier])
 
   if (!enabled) {
     return <div className={className}>{children}</div>
