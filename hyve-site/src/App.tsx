@@ -1,130 +1,116 @@
 // src/App.tsx - Hyve Dynamics with Header and Navigation
 import { Layout } from "@/components/layout/Layout"
-import { Button } from "@/components/ui/button"
 import { CustomMeshBackground } from "@/components/ui/CustomMeshBackground"
-import { motion } from "framer-motion"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 function App() {
   // 🎛️ EASY DISABLE: Set to false to disable mesh background
   const enableMeshBackground = true
+  
+  // Debug state to track clicks
+  const [clickDebugInfo, setClickDebugInfo] = useState<{
+    count: number
+    lastClick: { x: number; y: number; time: string } | null
+  }>({
+    count: 0,
+    lastClick: null
+  })
+
+  // Handle background click for debugging
+  const handleBackgroundClick = (e: React.MouseEvent) => {
+    const now = new Date().toLocaleTimeString()
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    
+    setClickDebugInfo(prev => ({
+      count: prev.count + 1,
+      lastClick: { x, y, time: now }
+    }))
+    
+    console.log('Background clicked!', { x, y, time: now })
+  }
+
+  // Handle debug info from CustomMeshBackground
+  const handleCanvasClick = (info: { x: number; y: number; type: string }) => {
+    const now = new Date().toLocaleTimeString()
+    
+    setClickDebugInfo(prev => ({
+      count: prev.count + 1,
+      lastClick: { x: info.x, y: info.y, time: now }
+    }))
+    
+    console.log('🎯 Canvas click from CustomMeshBackground!', info)
+  }
 
   return (
     <Layout>
-      <CustomMeshBackground 
-        enabled={enableMeshBackground}
-        className="min-h-screen"
+      <div 
+        className="min-h-screen relative"
+        onClick={handleBackgroundClick}
       >
-          <div className="relative z-10 hyve-container hyve-section pb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }} // Delay to let header animate first
-          className="max-w-4xl mx-auto text-center"
+        <CustomMeshBackground 
+          enabled={enableMeshBackground}
+          className="min-h-screen"
+          onDebugClick={handleCanvasClick}
         >
-          {/* Test the header integration */}
-          <div className="hyve-ui-text text-hyve-accent mb-4">WELCOME TO HYVE DYNAMICS</div>
-          
-                     <h1 className="hyve-hero-text mb-6">
-             Custom Mesh Grid{" "}
-             <span className="hyve-text-gradient">Successfully Integrated</span>
-           </h1>
-           
-           <p className="hyve-body-text mb-8 max-w-2xl mx-auto">
-             Beautiful perspective mesh grid with gentle wave motion. 
-             Like a virtual ground extending to the horizon with organized, non-chaotic patterns.
-           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button className="hyve-btn-primary">
-                Explore Sections
-              </Button>
+          {/* Debug Dialog */}
+          <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed top-20 right-4 bg-hyve-card border border-hyve-accent/20 rounded-lg p-4 shadow-lg max-w-sm z-50"
+            >
+              <h3 className="text-hyve-header font-bold mb-2">🐛 Debug Info</h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-hyve-text/70">Background Enabled:</span>
+                  <span className={`font-mono ${enableMeshBackground ? 'text-green-400' : 'text-red-400'}`}>
+                    {enableMeshBackground ? 'true' : 'false'}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-hyve-text/70">Total Clicks:</span>
+                  <span className="font-mono text-hyve-accent">{clickDebugInfo.count}</span>
+                </div>
+                {clickDebugInfo.lastClick && (
+                  <>
+                    <div className="border-t border-hyve-accent/10 pt-2 mt-2">
+                      <p className="text-hyve-text/70 mb-1">Last Click:</p>
+                      <div className="space-y-1">
+                        <div className="flex justify-between">
+                          <span className="text-hyve-text/50">Position:</span>
+                          <span className="font-mono text-xs text-hyve-accent">
+                            ({Math.round(clickDebugInfo.lastClick.x)}, {Math.round(clickDebugInfo.lastClick.y)})
+                          </span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-hyve-text/50">Time:</span>
+                          <span className="font-mono text-xs text-hyve-accent">
+                            {clickDebugInfo.lastClick.time}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+                <div className="border-t border-hyve-accent/10 pt-2 mt-2">
+                  <p className="text-xs text-hyve-text/50">
+                    Click anywhere on the background to test ripple effect
+                  </p>
+                </div>
+              </div>
             </motion.div>
-            
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button variant="outline" className="hyve-btn-secondary">
-                View Mobile Menu
-              </Button>
-            </motion.div>
-          </div>
-
-          {/* Test sections for navigation */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
-            <motion.section
-              id="section1"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.6 }}
-              className="hyve-card"
-            >
-              <h3 className="hyve-section-title">Section 1</h3>
-              <p className="hyve-body-text">This is placeholder content for Section 1. Click the navigation link to scroll here.</p>
-            </motion.section>
-
-            <motion.section
-              id="section2"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.7 }}
-              className="hyve-card"
-            >
-              <h3 className="hyve-section-title">Section 2</h3>
-              <p className="hyve-body-text">This is placeholder content for Section 2. Test the responsive navigation across different screen sizes.</p>
-            </motion.section>
-
-            <motion.section
-              id="section3"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.8 }}
-              className="hyve-card"
-            >
-              <h3 className="hyve-section-title">Section 3</h3>
-              <p className="hyve-body-text">This is placeholder content for Section 3. The header uses a sticky design with scroll effects.</p>
-            </motion.section>
-
-            <motion.section
-              id="section4"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.9 }}
-              className="hyve-card"
-            >
-              <h3 className="hyve-section-title">Section 4</h3>
-              <p className="hyve-body-text">This is placeholder content for Section 4. All navigation uses the Moto Sans font as specified.</p>
-            </motion.section>
-          </div>
-
-          {/* Header features showcase */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.0 }}
-            className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6"
-          >
-            <div className="hyve-card text-center">
-              <div className="text-2xl mb-2">📱</div>
-              <h4 className="font-heading font-bold text-hyve-header mb-2">Responsive Design</h4>
-              <p className="text-sm text-hyve-text">Adapts perfectly to all screen sizes with mobile menu</p>
-            </div>
-            
-            <div className="hyve-card text-center">
-              <div className="text-2xl mb-2">🎨</div>
-              <h4 className="font-heading font-bold text-hyve-header mb-2">Hyve Branding</h4>
-              <p className="text-sm text-hyve-text">Fully integrated with Hyve color palette and typography</p>
-            </div>
-            
-                         <div className="hyve-card text-center">
-               <div className="text-2xl mb-2">🌐</div>
-               <h4 className="font-heading font-bold text-hyve-header mb-2">Custom Mesh Grid</h4>
-               <p className="text-sm text-hyve-text">Perspective grid with gentle wave motion extending to horizon</p>
-             </div>
-                     </motion.div>
-         </motion.div>
-                       </div>
+          </AnimatePresence>
+          
+          {/* Empty content area - just header and footer remain */}
+          <div className="min-h-[60vh]" />
         </CustomMeshBackground>
-      </Layout>
-    )
-  }
+      </div>
+    </Layout>
+  )
+}
 
 export default App

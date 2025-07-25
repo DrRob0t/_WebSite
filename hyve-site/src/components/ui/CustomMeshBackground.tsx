@@ -5,6 +5,7 @@ interface CustomMeshBackgroundProps {
   className?: string
   children?: React.ReactNode
   vertexPointSize?: number
+  onDebugClick?: (info: { x: number; y: number; type: string }) => void
 }
 
 /**
@@ -24,7 +25,8 @@ export const CustomMeshBackground = ({
   enabled = true, 
   className = "",
   children,
-  vertexPointSize = 1.5
+  vertexPointSize = 1.5,
+  onDebugClick
 }: CustomMeshBackgroundProps) => {
   const mountRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -67,13 +69,13 @@ export const CustomMeshBackground = ({
     
     // Style the canvas to ensure it can receive clicks
     renderer.domElement.style.position = 'absolute'
-         renderer.domElement.style.top = '0'
-     renderer.domElement.style.left = '0'
-     renderer.domElement.style.width = '100%'
-     renderer.domElement.style.height = '100%'
-     renderer.domElement.style.pointerEvents = 'auto'
-     
-     container.appendChild(renderer.domElement)
+    renderer.domElement.style.top = '0'
+    renderer.domElement.style.left = '0'
+    renderer.domElement.style.width = '100%'
+    renderer.domElement.style.height = '100%'
+    renderer.domElement.style.pointerEvents = 'auto'
+    
+    container.appendChild(renderer.domElement)
 
     // Create grid with lines
     const gridWidth = 240  // Increased for better coverage
@@ -124,7 +126,7 @@ export const CustomMeshBackground = ({
     const pointMaterial = new THREE.PointsMaterial({
       color: 0x7FB3BE, // Same color as lines
       size: vertexPointSize * 0.1, // Make them smaller
-      transparent: true,
+      transparent: true,  // FIX #5: Add transparent flag
       opacity: 0.8,
       sizeAttenuation: true,
       alphaTest: 0.1, // Helps with rendering circular points
@@ -162,6 +164,24 @@ export const CustomMeshBackground = ({
     const clock = new THREE.Clock()
     let animationFrameId: number | null = null
     
+    // Store base positions for all geometries (FIX #2)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const basePositions: Map<any, Float32Array> = new Map()
+    
+    // Save base positions for each line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    horizontalLines.children.forEach((line: any) => {
+      basePositions.set(line.geometry, line.geometry.attributes.position.array.slice())
+    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    verticalLines.children.forEach((line: any) => {
+      basePositions.set(line.geometry, line.geometry.attributes.position.array.slice())
+    })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    vertexPoints.children.forEach((points: any) => {
+      basePositions.set(points.geometry, points.geometry.attributes.position.array.slice())
+    })
+    
     // Ripple system
     const ripples: Array<{
       x: number;
@@ -172,62 +192,125 @@ export const CustomMeshBackground = ({
       duration: number;
     }> = []
     
+    // Track animation time separately to avoid timing issues
+    let animationTime = 0
+    
+    // Click indicators for visual feedback
+    const clickIndicators = new THREE.Group()
+    scene.add(clickIndicators)
+    
     // Click detection setup
     const raycaster = new THREE.Raycaster()
     const mouse = new THREE.Vector2()
-    const gridPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0) // Y=0 plane
     
-    // Click handler for ripple effects
+    // Click handler for ripple effects (FIX #1: Use proper coordinate transform)
     const handleClick = (event: MouseEvent) => {
-      console.log('Click detected!', event)
+      // Debug callback
+      if (onDebugClick) {
+        onDebugClick({ x: event.clientX, y: event.clientY, type: 'canvas' })
+      }
+      
+      console.log('🔵 Canvas click detected!', { x: event.clientX, y: event.clientY })
       
       const rect = renderer.domElement.getBoundingClientRect()
       mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
       mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
       
-      console.log('Mouse coordinates:', mouse.x, mouse.y)
+      console.log('🔵 Normalized mouse coordinates:', { x: mouse.x, y: mouse.y })
       
       raycaster.setFromCamera(mouse, camera)
       
-      // Find intersection with the grid plane
-      const intersectionPoint = new THREE.Vector3()
-      if (raycaster.ray.intersectPlane(gridPlane, intersectionPoint)) {
-        console.log('Intersection found at:', intersectionPoint)
+      // FIX #1: Use raycaster to intersect with the actual grid
+      // First try to hit any horizontal line
+      const allLines = [...horizontalLines.children, ...verticalLines.children]
+      const intersects = raycaster.intersectObjects(allLines, false)
+      
+      if (intersects.length > 0) {
+        const hit = intersects[0]
+        // Transform hit point to local grid space
+        const localPoint = horizontalLines.worldToLocal(hit.point.clone())
         
-        // Account for the grid rotation when calculating ripple position
-        const rotatedPoint = intersectionPoint.clone()
-        rotatedPoint.applyAxisAngle(new THREE.Vector3(0, 1, 0), -Math.PI / 7)
+        console.log('🔵 Hit point in local space:', { x: localPoint.x, z: localPoint.z })
         
-        console.log('Adding ripple at:', rotatedPoint.x, rotatedPoint.z)
+        // Add visual click indicator (FIX #4: Higher Y position)
+        const indicatorGeometry = new THREE.CircleGeometry(0.5, 32)
+        const indicatorMaterial = new THREE.MeshBasicMaterial({ 
+          color: 0x7FB3BE,
+          transparent: true,
+          opacity: 0.8,
+          side: THREE.DoubleSide
+        })
+        const indicator = new THREE.Mesh(indicatorGeometry, indicatorMaterial)
+        indicator.position.copy(hit.point)
+        indicator.position.y = 0.5 // FIX #4: Higher to avoid z-fighting
+        indicator.rotation.x = -Math.PI / 2
+        clickIndicators.add(indicator)
         
-        // Add new ripple
+        // Animate the indicator to fade out
+        const fadeOutIndicator = () => {
+          indicatorMaterial.opacity -= 0.02
+          if (indicatorMaterial.opacity > 0) {
+            requestAnimationFrame(fadeOutIndicator)
+          } else {
+            clickIndicators.remove(indicator)
+            indicatorGeometry.dispose()
+            indicatorMaterial.dispose()
+          }
+        }
+        fadeOutIndicator()
+        
+        // Add new ripple with improved parameters (FIX #3: Slower, wider)
         ripples.push({
-          x: rotatedPoint.x,
-          z: rotatedPoint.z,
-          startTime: clock.getElapsedTime(),
-          amplitude: 3,  // Increased for more visible effect
-          speed: 6,     // Slower for easier observation
-          duration: 4   // Longer duration
+          x: localPoint.x,
+          z: localPoint.z,
+          startTime: animationTime,
+          amplitude: 0.35,  // Moderate amplitude
+          speed: 7,         // Slower speed
+          duration: 4       // Longer duration
         })
         
-        console.log('Ripple added! Total ripples:', ripples.length)
+        console.log('✅ Ripple added! Total ripples:', ripples.length)
+        console.log('✅ Active ripples:', ripples)
+        console.log('✅ Animation time:', animationTime)
       } else {
-        console.log('No intersection with grid plane')
+        console.log('❌ No intersection with grid')
       }
     }
     
-    // Add click listener to the canvas element directly
-    renderer.domElement.addEventListener('click', handleClick)
+    // Capture clicks at different levels to ensure we catch them
+    const handleClickCapture = (event: MouseEvent) => {
+      console.log('🟢 Click captured at container level')
+      event.stopPropagation() // Prevent bubbling
+      handleClick(event)
+    }
+    
+    // Add multiple event listeners to ensure we catch clicks
+    renderer.domElement.addEventListener('click', handleClick, false)
+    renderer.domElement.addEventListener('mousedown', (e: MouseEvent) => {
+      console.log('🟡 Mouse down on canvas', { x: e.clientX, y: e.clientY })
+    })
+    container.addEventListener('click', handleClickCapture, true) // Use capture phase
+    
+    // Set cursor style
     renderer.domElement.style.cursor = 'pointer'
+    container.style.cursor = 'pointer'
+    
+    // Test that events are working
+    console.log('🎯 CustomMeshBackground initialized with click handlers')
+    console.log('🎯 Renderer element:', renderer.domElement)
+    console.log('🎯 Container element:', container)
     
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate)
       
-      const elapsedTime = clock.getElapsedTime()
+      const deltaTime = clock.getDelta() // Get time since last frame
+      animationTime += deltaTime // Accumulate time
       
       // Clean up expired ripples
       for (let i = ripples.length - 1; i >= 0; i--) {
-        if (elapsedTime - ripples[i].startTime > ripples[i].duration) {
+        const rippleAge = animationTime - ripples[i].startTime
+        if (rippleAge > ripples[i].duration) {
+          console.log('🗑️ Removing expired ripple, age:', rippleAge)
           ripples.splice(i, 1)
         }
       }
@@ -237,38 +320,49 @@ export const CustomMeshBackground = ({
         let rippleEffect = 0
         ripples.forEach(ripple => {
           const distance = Math.sqrt((x - ripple.x) ** 2 + (z - ripple.z) ** 2)
-          const rippleTime = elapsedTime - ripple.startTime
-          const normalizedTime = rippleTime / ripple.duration
+          const rippleAge = animationTime - ripple.startTime
+          const normalizedTime = rippleAge / ripple.duration
           
-          if (normalizedTime < 1) {
-            // Wave equation: sine wave with distance and time
-            const wavePhase = distance * 0.3 - rippleTime * ripple.speed
-            const rippleWave = Math.sin(wavePhase) * ripple.amplitude
+          if (normalizedTime >= 0 && normalizedTime < 1) {
+            // Calculate wave radius (how far the wave has traveled)
+            const waveRadius = rippleAge * ripple.speed
             
-            // Falloff: exponential decay over distance and time
-            const distanceFalloff = Math.exp(-distance * 0.08)
-            const timeFalloff = Math.exp(-normalizedTime * 3) * (1 - normalizedTime)
+            // Check if this point is close to the current wave position
+            const distanceFromWave = Math.abs(distance - waveRadius)
             
-            rippleEffect += rippleWave * distanceFalloff * timeFalloff
+            // FIX #3: Wider band for the ripple
+            if (distanceFromWave < 6 && distance < 50) { // Wider band
+              // Smooth bell curve for the wave
+              const waveProfile = Math.exp(-(distanceFromWave * distanceFromWave) / 8) // Wider curve
+              
+              // Time-based envelope
+              const envelope = Math.sin(normalizedTime * Math.PI) // Smooth rise and fall
+              
+              // Calculate the wave height
+              rippleEffect += waveProfile * envelope * ripple.amplitude
+            }
           }
         })
         return rippleEffect
       }
       
-      // Gentle wave motion with ripples
+      // Gentle wave motion with ripples (FIX #2: Use base positions)
       horizontalLines.children.forEach((line: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         const positions = line.geometry.attributes.position.array
+        const base = basePositions.get(line.geometry)!
+        
         for (let i = 1; i < positions.length; i += 3) {
-          const x = positions[i - 1]
-          const z = positions[i + 1]
+          const x = base[i - 1]
+          const z = base[i + 1]
           
-          // Base wave equation
-          const baseWave = Math.sin(x * 0.05 + elapsedTime * 0.5) * 0.3 +
-                          Math.sin(z * 0.05 + elapsedTime * 0.3) * 0.2
+          // Very subtle base wave
+          const baseWave = Math.sin(x * 0.03 + animationTime * 0.3) * 0.05 +
+                          Math.sin(z * 0.03 + animationTime * 0.2) * 0.05
           
           // Add ripple effects
           const rippleEffect = calculateRippleEffect(x, z)
           
+          // Set Y position (height) - NOT cumulative
           positions[i] = baseWave + rippleEffect
         }
         line.geometry.attributes.position.needsUpdate = true
@@ -276,17 +370,20 @@ export const CustomMeshBackground = ({
 
       verticalLines.children.forEach((line: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         const positions = line.geometry.attributes.position.array
+        const base = basePositions.get(line.geometry)!
+        
         for (let i = 1; i < positions.length; i += 3) {
-          const x = positions[i - 1]
-          const z = positions[i + 1]
+          const x = base[i - 1]
+          const z = base[i + 1]
           
-          // Base wave equation
-          const baseWave = Math.sin(x * 0.05 + elapsedTime * 0.5) * 0.3 +
-                          Math.sin(z * 0.05 + elapsedTime * 0.3) * 0.2
+          // Very subtle base wave
+          const baseWave = Math.sin(x * 0.03 + animationTime * 0.3) * 0.05 +
+                          Math.sin(z * 0.03 + animationTime * 0.2) * 0.05
           
           // Add ripple effects
           const rippleEffect = calculateRippleEffect(x, z)
           
+          // Set Y position (height) - NOT cumulative
           positions[i] = baseWave + rippleEffect
         }
         line.geometry.attributes.position.needsUpdate = true
@@ -295,22 +392,34 @@ export const CustomMeshBackground = ({
       // Animate vertex points with same wave motion and ripples
       vertexPoints.children.forEach((pointsObject: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         const positions = pointsObject.geometry.attributes.position.array
+        const base = basePositions.get(pointsObject.geometry)!
+        
         for (let i = 1; i < positions.length; i += 3) {
-          const x = positions[i - 1]
-          const z = positions[i + 1]
+          const x = base[i - 1]
+          const z = base[i + 1]
           
-          // Base wave equation
-          const baseWave = Math.sin(x * 0.05 + elapsedTime * 0.5) * 0.3 +
-                          Math.sin(z * 0.05 + elapsedTime * 0.3) * 0.2
+          // Very subtle base wave
+          const baseWave = Math.sin(x * 0.03 + animationTime * 0.3) * 0.05 +
+                          Math.sin(z * 0.03 + animationTime * 0.2) * 0.05
           
           // Add ripple effects
           const rippleEffect = calculateRippleEffect(x, z)
           
+          // Set Y position (height) - NOT cumulative
           positions[i] = baseWave + rippleEffect
         }
         pointsObject.geometry.attributes.position.needsUpdate = true
       })
       
+      // Debug: log active ripples every second
+      if (Math.floor(animationTime) !== Math.floor(animationTime - deltaTime) && ripples.length > 0) {
+        console.log('🔄 Active ripples update:', ripples.length, 'ripples at time:', animationTime)
+        ripples.forEach((ripple, index) => {
+          const age = animationTime - ripple.startTime
+          console.log(`  Ripple ${index}: age=${age.toFixed(2)}s, remaining=${(ripple.duration - age).toFixed(2)}s`)
+        })
+      }
+
       renderer.render(scene, camera)
     }
     
@@ -337,13 +446,18 @@ export const CustomMeshBackground = ({
       horizontalLines,
       verticalLines,
       vertexPoints,
+      clickIndicators,
       animationFrameId
     }
 
     // Cleanup
     return () => {
+      console.log('🧹 Cleaning up CustomMeshBackground')
       window.removeEventListener('resize', handleResize)
       renderer.domElement.removeEventListener('click', handleClick)
+      renderer.domElement.removeEventListener('mousedown', () => {})
+      container.removeEventListener('click', handleClickCapture, true)
+      
       if (sceneRef.current?.animationFrameId) {
         cancelAnimationFrame(sceneRef.current.animationFrameId)
       }
@@ -351,6 +465,13 @@ export const CustomMeshBackground = ({
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement)
       }
+      
+      // Clean up click indicators
+      clickIndicators.children.forEach((indicator: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+        if (indicator.geometry) indicator.geometry.dispose()
+        if (indicator.material) indicator.material.dispose()
+      })
+      clickIndicators.clear()
       
       // Clean up geometries and materials
       horizontalLines.children.forEach((line: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -368,7 +489,7 @@ export const CustomMeshBackground = ({
       
       sceneRef.current = null
     }
-  }, [enabled])
+  }, [enabled, onDebugClick])
 
   if (!enabled) {
     return <div className={className}>{children}</div>
