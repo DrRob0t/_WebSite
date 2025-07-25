@@ -82,43 +82,41 @@ export const CustomMeshBackground = ({
     const gridDepth = 240  // Increased for better coverage
     const gridDivisions = 150  // More divisions for finer grid
 
-    // Create horizontal lines
-    const horizontalLines = new THREE.Group()
+    // Create ONE big buffer for the grid (PERFORMANCE FIX)
+    const positions: number[] = []
+    
+    // Add horizontal line segments
+    for (let i = 0; i <= gridDivisions; i++) {
+      const z = (i / gridDivisions) * gridDepth - gridDepth / 2
+      for (let j = 0; j < gridDivisions; j++) {
+        const x0 = (j / gridDivisions) * gridWidth - gridWidth / 2
+        const x1 = ((j + 1) / gridDivisions) * gridWidth - gridWidth / 2
+        positions.push(x0, 0, z, x1, 0, z)
+      }
+    }
+    
+    // Add vertical line segments
+    for (let j = 0; j <= gridDivisions; j++) {
+      const x = (j / gridDivisions) * gridWidth - gridWidth / 2
+      for (let i = 0; i < gridDivisions; i++) {
+        const z0 = (i / gridDivisions) * gridDepth - gridDepth / 2
+        const z1 = ((i + 1) / gridDivisions) * gridDepth - gridDepth / 2
+        positions.push(x, 0, z0, x, 0, z1)
+      }
+    }
+    
+    const gridGeometry = new THREE.BufferGeometry()
+    gridGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+    
     const lineMaterial = new THREE.LineBasicMaterial({ 
       color: 0x7FB3BE, // Hyve accent color
       opacity: 0.4,
       transparent: true
     })
-
-    for (let i = 0; i <= gridDivisions; i++) {
-      const points = []
-      const z = (i / gridDivisions) * gridDepth - gridDepth / 2
-      
-      for (let j = 0; j <= gridDivisions; j++) {
-        const x = (j / gridDivisions) * gridWidth - gridWidth / 2
-        points.push(new THREE.Vector3(x, 0, z))
-      }
-      
-      const geometry = new THREE.BufferGeometry().setFromPoints(points)
-      const line = new THREE.Line(geometry, lineMaterial)
-      horizontalLines.add(line)
-    }
-
-    // Create vertical lines
-    const verticalLines = new THREE.Group()
-    for (let i = 0; i <= gridDivisions; i++) {
-      const points = []
-      const x = (i / gridDivisions) * gridWidth - gridWidth / 2
-      
-      for (let j = 0; j <= gridDivisions; j++) {
-        const z = (j / gridDivisions) * gridDepth - gridDepth / 2
-        points.push(new THREE.Vector3(x, 0, z))
-      }
-      
-      const geometry = new THREE.BufferGeometry().setFromPoints(points)
-      const line = new THREE.Line(geometry, lineMaterial)
-      verticalLines.add(line)
-    }
+    
+    const grid = new THREE.LineSegments(gridGeometry, lineMaterial)
+    grid.rotation.y = Math.PI / 7 // 30 degrees in radians
+    scene.add(grid)
 
     // Create vertex points
     const vertexPoints = new THREE.Group()
@@ -146,14 +144,8 @@ export const CustomMeshBackground = ({
     pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(pointsArray, 3))
     const points = new THREE.Points(pointGeometry, pointMaterial)
     vertexPoints.add(points)
-
-    // Rotate the grid 30 degrees
-    horizontalLines.rotation.y = Math.PI / 7 // 30 degrees in radians
-    verticalLines.rotation.y = Math.PI / 7   // 30 degrees in radians
     vertexPoints.rotation.y = Math.PI / 7    // Rotate points with the grid
 
-    scene.add(horizontalLines)
-    scene.add(verticalLines)
     scene.add(vertexPoints)
 
     // Position camera for perspective view
@@ -164,23 +156,9 @@ export const CustomMeshBackground = ({
     const clock = new THREE.Clock()
     let animationFrameId: number | null = null
     
-    // Store base positions for all geometries (FIX #2)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const basePositions: Map<any, Float32Array> = new Map()
-    
-    // Save base positions for each line
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    horizontalLines.children.forEach((line: any) => {
-      basePositions.set(line.geometry, line.geometry.attributes.position.array.slice())
-    })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    verticalLines.children.forEach((line: any) => {
-      basePositions.set(line.geometry, line.geometry.attributes.position.array.slice())
-    })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    vertexPoints.children.forEach((points: any) => {
-      basePositions.set(points.geometry, points.geometry.attributes.position.array.slice())
-    })
+    // Store base positions for geometries
+    const baseGridPositions = new Float32Array(gridGeometry.attributes.position.array)
+    const basePointPositions = new Float32Array(pointGeometry.attributes.position.array)
     
     // Ripple system
     const ripples: Array<{
@@ -203,7 +181,7 @@ export const CustomMeshBackground = ({
     const raycaster = new THREE.Raycaster()
     const mouse = new THREE.Vector2()
     
-    // Click handler for ripple effects (FIX #1: Use proper coordinate transform)
+    // Click handler for ripple effects
     const handleClick = (event: MouseEvent) => {
       // Debug callback
       if (onDebugClick) {
@@ -220,19 +198,17 @@ export const CustomMeshBackground = ({
       
       raycaster.setFromCamera(mouse, camera)
       
-      // FIX #1: Use raycaster to intersect with the actual grid
-      // First try to hit any horizontal line
-      const allLines = [...horizontalLines.children, ...verticalLines.children]
-      const intersects = raycaster.intersectObjects(allLines, false)
+      // Create a plane at y=0 for intersection
+      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)
+      const intersectPoint = new THREE.Vector3()
       
-      if (intersects.length > 0) {
-        const hit = intersects[0]
+      if (raycaster.ray.intersectPlane(plane, intersectPoint)) {
         // Transform hit point to local grid space
-        const localPoint = horizontalLines.worldToLocal(hit.point.clone())
+        const localPoint = grid.worldToLocal(intersectPoint.clone())
         
         console.log('🔵 Hit point in local space:', { x: localPoint.x, z: localPoint.z })
         
-        // Add visual click indicator (FIX #4: Higher Y position)
+        // Add visual click indicator
         const indicatorGeometry = new THREE.CircleGeometry(0.5, 32)
         const indicatorMaterial = new THREE.MeshBasicMaterial({ 
           color: 0x7FB3BE,
@@ -241,8 +217,8 @@ export const CustomMeshBackground = ({
           side: THREE.DoubleSide
         })
         const indicator = new THREE.Mesh(indicatorGeometry, indicatorMaterial)
-        indicator.position.copy(hit.point)
-        indicator.position.y = 0.5 // FIX #4: Higher to avoid z-fighting
+        indicator.position.copy(intersectPoint)
+        indicator.position.y = 0.5 // Higher to avoid z-fighting
         indicator.rotation.x = -Math.PI / 2
         clickIndicators.add(indicator)
         
@@ -259,7 +235,7 @@ export const CustomMeshBackground = ({
         }
         fadeOutIndicator()
         
-        // Add new ripple with improved parameters (FIX #3: Slower, wider)
+        // Add new ripple with improved parameters
         ripples.push({
           x: localPoint.x,
           z: localPoint.z,
@@ -270,10 +246,6 @@ export const CustomMeshBackground = ({
         })
         
         console.log('✅ Ripple added! Total ripples:', ripples.length)
-        console.log('✅ Active ripples:', ripples)
-        console.log('✅ Animation time:', animationTime)
-      } else {
-        console.log('❌ No intersection with grid')
       }
     }
     
@@ -306,11 +278,15 @@ export const CustomMeshBackground = ({
       const deltaTime = clock.getDelta() // Get time since last frame
       animationTime += deltaTime // Accumulate time
       
+      // Debug: Check if animation is running (remove after testing)
+      if (Math.floor(animationTime) % 5 === 0 && Math.floor(animationTime) !== Math.floor(animationTime - deltaTime)) {
+        console.log('🎬 Animation running, time:', animationTime.toFixed(1))
+      }
+      
       // Clean up expired ripples
       for (let i = ripples.length - 1; i >= 0; i--) {
         const rippleAge = animationTime - ripples[i].startTime
         if (rippleAge > ripples[i].duration) {
-          console.log('🗑️ Removing expired ripple, age:', rippleAge)
           ripples.splice(i, 1)
         }
       }
@@ -330,95 +306,62 @@ export const CustomMeshBackground = ({
             // Check if this point is close to the current wave position
             const distanceFromWave = Math.abs(distance - waveRadius)
             
-            // FIX #3: Wider band for the ripple
-            if (distanceFromWave < 6 && distance < 50) { // Wider band
+            // FIX: Narrower band and smaller radius
+            if (distanceFromWave < 1.2 && distance < 25) {
               // Smooth bell curve for the wave
-              const waveProfile = Math.exp(-(distanceFromWave * distanceFromWave) / 8) // Wider curve
+              const waveProfile = Math.exp(-(distanceFromWave * distanceFromWave) / 8)
               
               // Time-based envelope
               const envelope = Math.sin(normalizedTime * Math.PI) // Smooth rise and fall
               
-              // Calculate the wave height
-              rippleEffect += waveProfile * envelope * ripple.amplitude
+              // Calculate the wave height with distance-based amplitude taper
+              rippleEffect += waveProfile * envelope * ripple.amplitude * (1 - distance / 25)
             }
           }
         })
         return rippleEffect
       }
       
-      // Gentle wave motion with ripples (FIX #2: Use base positions)
-      horizontalLines.children.forEach((line: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-        const positions = line.geometry.attributes.position.array
-        const base = basePositions.get(line.geometry)!
-        
-        for (let i = 1; i < positions.length; i += 3) {
-          const x = base[i - 1]
-          const z = base[i + 1]
-          
-          // Very subtle base wave
-          const baseWave = Math.sin(x * 0.03 + animationTime * 0.3) * 0.05 +
-                          Math.sin(z * 0.03 + animationTime * 0.2) * 0.05
-          
-          // Add ripple effects
-          const rippleEffect = calculateRippleEffect(x, z)
-          
-          // Set Y position (height) - NOT cumulative
-          positions[i] = baseWave + rippleEffect
-        }
-        line.geometry.attributes.position.needsUpdate = true
-      })
-
-      verticalLines.children.forEach((line: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-        const positions = line.geometry.attributes.position.array
-        const base = basePositions.get(line.geometry)!
-        
-        for (let i = 1; i < positions.length; i += 3) {
-          const x = base[i - 1]
-          const z = base[i + 1]
-          
-          // Very subtle base wave
-          const baseWave = Math.sin(x * 0.03 + animationTime * 0.3) * 0.05 +
-                          Math.sin(z * 0.03 + animationTime * 0.2) * 0.05
-          
-          // Add ripple effects
-          const rippleEffect = calculateRippleEffect(x, z)
-          
-          // Set Y position (height) - NOT cumulative
-          positions[i] = baseWave + rippleEffect
-        }
-        line.geometry.attributes.position.needsUpdate = true
-      })
-
-      // Animate vertex points with same wave motion and ripples
-      vertexPoints.children.forEach((pointsObject: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-        const positions = pointsObject.geometry.attributes.position.array
-        const base = basePositions.get(pointsObject.geometry)!
-        
-        for (let i = 1; i < positions.length; i += 3) {
-          const x = base[i - 1]
-          const z = base[i + 1]
-          
-          // Very subtle base wave
-          const baseWave = Math.sin(x * 0.03 + animationTime * 0.3) * 0.05 +
-                          Math.sin(z * 0.03 + animationTime * 0.2) * 0.05
-          
-          // Add ripple effects
-          const rippleEffect = calculateRippleEffect(x, z)
-          
-          // Set Y position (height) - NOT cumulative
-          positions[i] = baseWave + rippleEffect
-        }
-        pointsObject.geometry.attributes.position.needsUpdate = true
-      })
+      // Animate grid lines with optimized single buffer update
+      const gridPositions = gridGeometry.attributes.position.array as Float32Array
       
-      // Debug: log active ripples every second
-      if (Math.floor(animationTime) !== Math.floor(animationTime - deltaTime) && ripples.length > 0) {
-        console.log('🔄 Active ripples update:', ripples.length, 'ripples at time:', animationTime)
-        ripples.forEach((ripple, index) => {
-          const age = animationTime - ripple.startTime
-          console.log(`  Ripple ${index}: age=${age.toFixed(2)}s, remaining=${(ripple.duration - age).toFixed(2)}s`)
-        })
+      for (let i = 0; i < gridPositions.length; i += 6) {   // Each segment has two vertices
+        for (let k = 0; k < 2; k++) {                      // v0 and v1
+          const idx = i + k * 3 + 1  // +1 to get Y position
+          const x = baseGridPositions[idx - 1]
+          const z = baseGridPositions[idx + 1]
+          
+          // Very subtle base wave
+          const baseWave = Math.sin(x * 0.03 + animationTime * 0.3) * 0.05 +
+                          Math.sin(z * 0.03 + animationTime * 0.2) * 0.05
+          
+          // Add ripple effects
+          const rippleEffect = calculateRippleEffect(x, z)
+          
+          // Set Y position (height)
+          gridPositions[idx] = baseWave + rippleEffect
+        }
       }
+      gridGeometry.attributes.position.needsUpdate = true
+
+      // Animate vertex points
+      const pointPositions = pointGeometry.attributes.position.array as Float32Array
+      
+      for (let i = 0; i < pointPositions.length; i += 3) {
+        const x = basePointPositions[i]      // x coordinate
+        const z = basePointPositions[i + 2]  // z coordinate
+        
+        // Very subtle base wave
+        const baseWave = Math.sin(x * 0.03 + animationTime * 0.3) * 0.05 +
+                        Math.sin(z * 0.03 + animationTime * 0.2) * 0.05
+        
+        // Add ripple effects
+        const rippleEffect = calculateRippleEffect(x, z)
+        
+        // Set Y position (height)
+        pointPositions[i + 1] = baseWave + rippleEffect
+      }
+      pointGeometry.attributes.position.needsUpdate = true
 
       renderer.render(scene, camera)
     }
@@ -443,8 +386,7 @@ export const CustomMeshBackground = ({
       scene,
       camera,
       renderer,
-      horizontalLines,
-      verticalLines,
+      grid,
       vertexPoints,
       clickIndicators,
       animationFrameId
@@ -474,16 +416,9 @@ export const CustomMeshBackground = ({
       clickIndicators.clear()
       
       // Clean up geometries and materials
-      horizontalLines.children.forEach((line: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-        line.geometry.dispose()
-      })
-      verticalLines.children.forEach((line: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-        line.geometry.dispose()
-      })
-      vertexPoints.children.forEach((pointsObject: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-        pointsObject.geometry.dispose()
-        pointsObject.material.dispose()
-      })
+      gridGeometry.dispose()
+      pointGeometry.dispose()
+      pointMaterial.dispose()
       lineMaterial.dispose()
       renderer.dispose()
       
