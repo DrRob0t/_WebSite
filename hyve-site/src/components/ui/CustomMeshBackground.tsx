@@ -87,7 +87,7 @@ export const CustomMeshBackground = ({
     // Create grid with lines
     const gridWidth = 120   
     const gridDepth = 120
-    const gridDivisions = 60  // Reduced from 150 for better performance
+    const gridDivisions = 80  // Reduced from 150 for better performance
 
     // Create ONE big buffer for the grid
     const positions: number[] = []
