@@ -71,7 +71,7 @@ export const Hero = () => {
               variants={itemVariants}
               className="hyve-body-text mb-8 max-w-3xl mx-auto text-balance"
             >
-              Hyve Dynamics turns passive systems into intelligent ones—embedding ultra-thin, high-resolution sensor arrays into the fabric of machines, vehicles, and infrastructure. Our sensory skin captures multidimensional, real-time data from pressure, strain, and temperature—directly from the unpredictable, stochastic environments where performance truly matters.
+              Hyve Dynamics turns machines and structures into intelligent systems. Our Haptic Matrix captures real-time pressure, strain, and temperature data—directly from complex, unpredictable environments.
             </motion.p>
 
             {/* Vision-Driven Message */}
@@ -80,7 +80,8 @@ export const Hero = () => {
               className="mb-10 max-w-3xl mx-auto"
             >
               <p className="text-lg text-hyve-text leading-relaxed font-body text-balance">
-                We're not just replacing assumptions—we're unlocking insight that traditional tools like CFD, FEA, and wind tunnels can't reach. Hyve enables engineers to sense the unsensed, adapt to ever-changing conditions, and build smarter, safer, more responsive systems that evolve with the world around them.
+              It’s not the strongest systems that thrive—but the ones that adapt.
+              Hyve’s Haptic Matrix unlocks real-world, high-density data where it matters most—fueling insight, driving innovation, and enabling intelligent evolution across machines, vehicles, and structures.
               </p>
             </motion.div>
 
