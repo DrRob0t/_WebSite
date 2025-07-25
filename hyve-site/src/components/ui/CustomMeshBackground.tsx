@@ -83,9 +83,9 @@ export const CustomMeshBackground = ({
     container.appendChild(renderer.domElement)
 
     // Create grid with lines
-    const gridWidth = 240
-    const gridDepth = 240
-    const gridDivisions = 150
+    const gridWidth = 120   
+    const gridDepth = 120
+    const gridDivisions = 60  // Reduced from 150 for better performance
 
     // Create ONE big buffer for the grid
     const positions: number[] = []
@@ -141,7 +141,7 @@ export const CustomMeshBackground = ({
     
     // Calculate grid square size for positioning
     const gridSquareSize = gridWidth / gridDivisions // ~1.6 units
-    const pushDownDistance = gridSquareSize * 1.1 // 2 times the square size
+    const pushDownDistance = gridSquareSize * 1 // 2 times the square size
     
     for (let i = 0; i <= gridDivisions; i++) {
       for (let j = 0; j <= gridDivisions; j++) {
@@ -169,23 +169,120 @@ export const CustomMeshBackground = ({
     camera.position.set(0, 12, 35)  // Higher and further back for better coverage
     camera.lookAt(0, -3, -15)       // Look further down and deeper
 
-    // Helper function to update grid line vertices that correspond to a specific point
-    const updateGridVerticesForPoint = (
-      pointX: number, 
-      pointZ: number, 
-      newY: number, 
-      gridPositions: Float32Array
-    ) => {
-      // Find all grid line vertices that match this point's X,Z coordinates
+    // Animation system for smooth movement
+    const animationState = {
+      targetPositions: new Float32Array(pointsData.length), // Target Y positions for each point
+      velocities: new Float32Array(pointsData.length),      // Current velocity for each point
+      isAnimating: false,
+      animationId: null as number | null
+    }
+    
+    // Initialize all targets to 0 (flat)
+    animationState.targetPositions.fill(0)
+    animationState.velocities.fill(0)
+
+
+
+    // Create a map for fast grid vertex lookups
+    const gridVertexMap = new Map<string, number[]>()
+    
+    // Build the lookup map once
+    const buildGridVertexMap = () => {
+      const gridPositions = gridGeometry.attributes.position.array as Float32Array
+      
       for (let i = 0; i < gridPositions.length; i += 3) {
-        const vertexX = gridPositions[i]
-        const vertexZ = gridPositions[i + 2]
+        const x = gridPositions[i]
+        const z = gridPositions[i + 2]
+        const key = `${x.toFixed(3)},${z.toFixed(3)}`
         
-        // Check if this vertex matches our point (with small tolerance for floating point)
-        const tolerance = 0.001
-        if (Math.abs(vertexX - pointX) < tolerance && Math.abs(vertexZ - pointZ) < tolerance) {
-          gridPositions[i + 1] = newY // Update Y coordinate
+        if (!gridVertexMap.has(key)) {
+          gridVertexMap.set(key, [])
         }
+        gridVertexMap.get(key)!.push(i + 1) // Store Y coordinate indices
+      }
+    }
+    
+    buildGridVertexMap()
+
+    // Animation loop for smooth physics-based movement
+    const animate = () => {
+      if (!animationState.isAnimating) return
+      
+      const pointPositions = pointGeometry.attributes.position.array as Float32Array
+      const gridPositions = gridGeometry.attributes.position.array as Float32Array
+      let hasMovement = false
+      
+      // ==== ANIMATION SPEED CONTROLS ====
+      // Adjust these values to change animation speed:
+      
+      // Spring strength: How quickly points move toward their target
+      // - Higher (0.5+) = Faster, snappier animation
+      // - Lower (0.1-0.2) = Slower, more gentle animation
+      const springStrength = 0.05
+      
+      // Damping: How much energy is lost each frame (0-1)
+      // - Higher (0.9-0.95) = Less energy loss, more bounces, slower to settle
+      // - Lower (0.7-0.85) = More energy loss, fewer bounces, faster to settle
+      const damping = 0.85
+      
+      // Minimum thresholds: When to stop animating
+      // - Higher values = Animation stops sooner (faster overall)
+      // - Lower values = Animation continues longer (slower overall)
+      const minVelocity = 0.001       // Stop when velocity is below this
+      const minDistance = 0.002       // Stop when distance to target is below this
+      
+      // First pass: Update point positions only
+      for (let i = 0; i < pointsData.length; i++) {
+        const velocity = animationState.velocities[i]
+        
+        // Skip if this point isn't moving
+        if (Math.abs(velocity) < minVelocity && 
+            Math.abs(animationState.targetPositions[i] - pointPositions[i * 3 + 1]) < minDistance) {
+          continue
+        }
+        
+        const positionIndex = i * 3 + 1 // Y coordinate
+        const currentY = pointPositions[positionIndex]
+        const targetY = animationState.targetPositions[i]
+        const distance = targetY - currentY
+        
+        // Apply spring force toward target
+        const springForce = distance * springStrength
+        animationState.velocities[i] = (velocity + springForce) * damping
+        
+        // Update position
+        pointPositions[positionIndex] = currentY + animationState.velocities[i]
+        hasMovement = true
+      }
+      
+      // Second pass: Update grid vertices efficiently using the map
+      if (hasMovement) {
+        for (let i = 0; i < pointsData.length; i++) {
+          const point = pointsData[i]
+          const newY = pointPositions[i * 3 + 1]
+          const key = `${point.x.toFixed(3)},${point.z.toFixed(3)}`
+          
+          const indices = gridVertexMap.get(key)
+          if (indices) {
+            for (const idx of indices) {
+              gridPositions[idx] = newY
+            }
+          }
+        }
+        
+        // Update geometry
+        pointGeometry.attributes.position.needsUpdate = true
+        gridGeometry.attributes.position.needsUpdate = true
+        
+        // Render
+        renderer.render(scene, camera)
+        
+        // Continue animation
+        animationState.animationId = requestAnimationFrame(animate)
+      } else {
+        animationState.isAnimating = false
+        animationState.animationId = null
+        console.log('🛑 Animation stopped - points settled')
       }
     }
 
@@ -229,40 +326,28 @@ export const CustomMeshBackground = ({
           }
         })
         
-        if (closestIndex !== -1) {
+                if (closestIndex !== -1) {
           console.log('✅ Closest point found at index:', closestIndex, 'distance:', closestDistance.toFixed(2))
           
-          // Get position and color arrays for points
-          const pointPositions = pointGeometry.attributes.position.array as Float32Array
+          // Get color array for points
           const colors = pointGeometry.attributes.color.array as Float32Array
           
-          // Get position array for grid lines
-          const gridPositions = gridGeometry.attributes.position.array as Float32Array
-          
-          // Reset all points to default state first
+          // Reset all colors to default
           for (let i = 0; i < pointsData.length; i++) {
             const colorIndex = i * 3
-            const positionIndex = i * 3 + 1 // Y coordinate
-            
-            // Reset color to default
             colors[colorIndex] = 0.498     // R of #7FB3BE
             colors[colorIndex + 1] = 0.702 // G of #7FB3BE
             colors[colorIndex + 2] = 0.745 // B of #7FB3BE
-            
-            // Reset Y position to 0
-            pointPositions[positionIndex] = 0
           }
           
-          // Reset all grid line vertices to Y = 0
-          for (let i = 1; i < gridPositions.length; i += 3) {
-            gridPositions[i] = 0 // Y coordinate
-          }
+          // Target positions are always 0 (flat surface) - points will bounce back
+          animationState.targetPositions.fill(0)
           
           // Get the clicked point coordinates
           const clickedPoint = pointsData[closestIndex]
-          const influenceRadius = gridSquareSize * 5 // Affect points within 4 grid squares
+          const influenceRadius = gridSquareSize * 5 // Affect points within 5 grid squares
           
-          // Apply depression effect to points within influence radius
+          // Apply initial downward velocity for depression effect
           pointsData.forEach((point, index) => {
             const distance = Math.sqrt(
               (point.x - clickedPoint.x) ** 2 + 
@@ -273,11 +358,10 @@ export const CustomMeshBackground = ({
               // Calculate bell-shaped falloff using Gaussian-like curve
               const normalizedDistance = distance / influenceRadius // 0 to 1
               const bellCurve = Math.exp(-(normalizedDistance * normalizedDistance) * 6) // Gaussian bell shape
-              const depression = -pushDownDistance * bellCurve
               
-              // Update point position
-              const positionIndex = index * 3 + 1 // Y coordinate
-              pointPositions[positionIndex] = depression
+              // Apply downward velocity instead of setting target position
+              // Negative velocity will push points down, then spring will pull them back to 0
+              animationState.velocities[index] = -pushDownDistance * bellCurve * 2 // Strong initial push
               
               // Color the center point differently
               if (index === closestIndex) {
@@ -286,22 +370,20 @@ export const CustomMeshBackground = ({
                 colors[colorIndex + 1] = 0.3 // G - some green
                 colors[colorIndex + 2] = 0.0 // B - no blue
               }
-              
-                             // Update corresponding grid line vertices
-               // Each point corresponds to multiple line vertices, so we need to find and update them
-               updateGridVerticesForPoint(point.x, point.z, depression, gridPositions)
             }
           })
           
-          // Update all attributes
+          // Update color attribute
           pointGeometry.attributes.color.needsUpdate = true
-          pointGeometry.attributes.position.needsUpdate = true
-          gridGeometry.attributes.position.needsUpdate = true
           
-          console.log('🔽 Depression created with radius:', influenceRadius.toFixed(2), 'units')
+          // Start animation if not already running
+          if (!animationState.isAnimating) {
+            animationState.isAnimating = true
+            console.log('🎬 Starting smooth animation with bounce physics')
+            animate()
+          }
           
-          // Re-render
-          renderer.render(scene, camera)
+          console.log('🔽 Depression animation started with radius:', influenceRadius.toFixed(2), 'units')
         }
       }
     }
@@ -309,9 +391,9 @@ export const CustomMeshBackground = ({
     // Add click event listener
     renderer.domElement.addEventListener('click', handleClick, false)
     
-    console.log('🎯 CustomMeshBackground initialized with point highlighting')
+    console.log('🎯 CustomMeshBackground initialized with smooth depression physics')
 
-    // Single render - no animation needed
+    // Initial render
     renderer.render(scene, camera)
 
     // Handle resize
@@ -334,7 +416,8 @@ export const CustomMeshBackground = ({
       camera,
       renderer,
       grid,
-      points
+      points,
+      animationState
     }
 
     // Cleanup
@@ -342,6 +425,12 @@ export const CustomMeshBackground = ({
       console.log('🧹 Cleaning up CustomMeshBackground')
       window.removeEventListener('resize', handleResize)
       renderer.domElement.removeEventListener('click', handleClick)
+      
+      // Stop any running animation
+      if (animationState.animationId) {
+        cancelAnimationFrame(animationState.animationId)
+        animationState.isAnimating = false
+      }
       
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement)
