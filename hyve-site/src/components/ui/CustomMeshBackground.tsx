@@ -67,9 +67,9 @@ export const CustomMeshBackground = ({
     container.appendChild(renderer.domElement)
 
     // Create grid with lines
-    const gridWidth = 120  // Increased for better coverage
-    const gridDepth = 120  // Increased for better coverage
-    const gridDivisions = 50  // More divisions for finer grid
+    const gridWidth = 240  // Increased for better coverage
+    const gridDepth = 240  // Increased for better coverage
+    const gridDivisions = 150  // More divisions for finer grid
 
     // Create horizontal lines
     const horizontalLines = new THREE.Group()
