@@ -4,6 +4,7 @@ interface CustomMeshBackgroundProps {
   enabled?: boolean
   className?: string
   children?: React.ReactNode
+  vertexPointSize?: number
 }
 
 /**
@@ -22,7 +23,8 @@ interface CustomMeshBackgroundProps {
 export const CustomMeshBackground = ({ 
   enabled = true, 
   className = "",
-  children 
+  children,
+  vertexPointSize = 1.5
 }: CustomMeshBackgroundProps) => {
   const mountRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -43,9 +45,14 @@ export const CustomMeshBackground = ({
     const scene = new THREE.Scene()
     scene.fog = new THREE.Fog(0x102542, 10, 50) // Add fog for depth
     
+    // Get the actual container dimensions
+    const container = mountRef.current
+    const containerWidth = container.clientWidth
+    const containerHeight = container.clientHeight
+    
     const camera = new THREE.PerspectiveCamera(
       60,
-      window.innerWidth / window.innerHeight,
+      containerWidth / containerHeight,
       0.1,
       100
     )
@@ -54,14 +61,15 @@ export const CustomMeshBackground = ({
       alpha: true, 
       antialias: true 
     })
-    renderer.setSize(window.innerWidth, window.innerHeight)
+    
+    renderer.setSize(containerWidth, containerHeight)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-    mountRef.current.appendChild(renderer.domElement)
+    container.appendChild(renderer.domElement)
 
     // Create grid with lines
-    const gridWidth = 80
-    const gridDepth = 80
-    const gridDivisions = 40
+    const gridWidth = 120  // Increased for better coverage
+    const gridDepth = 120  // Increased for better coverage
+    const gridDivisions = 50  // More divisions for finer grid
 
     // Create horizontal lines
     const horizontalLines = new THREE.Group()
@@ -101,12 +109,45 @@ export const CustomMeshBackground = ({
       verticalLines.add(line)
     }
 
+    // Create vertex points
+    const vertexPoints = new THREE.Group()
+    const pointGeometry = new THREE.BufferGeometry()
+    const pointMaterial = new THREE.PointsMaterial({
+      color: 0x7FB3BE, // Same color as lines
+      size: vertexPointSize * 0.1, // Make them smaller
+      transparent: true,
+      opacity: 0.8,
+      sizeAttenuation: true,
+      alphaTest: 0.1, // Helps with rendering circular points
+      vertexColors: false
+    })
+
+    // Create points at every grid intersection
+    const pointsArray = []
+    for (let i = 0; i <= gridDivisions; i++) {
+      for (let j = 0; j <= gridDivisions; j++) {
+        const x = (j / gridDivisions) * gridWidth - gridWidth / 2
+        const z = (i / gridDivisions) * gridDepth - gridDepth / 2
+        pointsArray.push(x, 0, z) // Y = 0 initially, will be animated
+      }
+    }
+
+    pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(pointsArray, 3))
+    const points = new THREE.Points(pointGeometry, pointMaterial)
+    vertexPoints.add(points)
+
+    // Rotate the grid 30 degrees
+    horizontalLines.rotation.y = Math.PI / 7 // 30 degrees in radians
+    verticalLines.rotation.y = Math.PI / 7   // 30 degrees in radians
+    vertexPoints.rotation.y = Math.PI / 7    // Rotate points with the grid
+
     scene.add(horizontalLines)
     scene.add(verticalLines)
+    scene.add(vertexPoints)
 
     // Position camera for perspective view
-    camera.position.set(0, 8, 30)
-    camera.lookAt(0, -2, -10)
+    camera.position.set(0, 12, 35)  // Higher and further back for better coverage
+    camera.lookAt(0, -3, -15)       // Look further down and deeper
 
     // Animation variables
     const clock = new THREE.Clock()
@@ -141,6 +182,19 @@ export const CustomMeshBackground = ({
         }
         line.geometry.attributes.position.needsUpdate = true
       })
+
+      // Animate vertex points with same wave motion
+      vertexPoints.children.forEach((pointsObject: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+        const positions = pointsObject.geometry.attributes.position.array
+        for (let i = 1; i < positions.length; i += 3) {
+          const x = positions[i - 1]
+          const z = positions[i + 1]
+          // Same wave equation as lines
+          positions[i] = Math.sin(x * 0.05 + elapsedTime * 0.5) * 0.3 +
+                        Math.sin(z * 0.05 + elapsedTime * 0.3) * 0.2
+        }
+        pointsObject.geometry.attributes.position.needsUpdate = true
+      })
       
       renderer.render(scene, camera)
     }
@@ -149,9 +203,13 @@ export const CustomMeshBackground = ({
 
     // Handle resize
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight
-      camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
+      if (mountRef.current) {
+        const newWidth = mountRef.current.clientWidth
+        const newHeight = mountRef.current.clientHeight
+        camera.aspect = newWidth / newHeight
+        camera.updateProjectionMatrix()
+        renderer.setSize(newWidth, newHeight)
+      }
     }
     
     window.addEventListener('resize', handleResize)
@@ -163,6 +221,7 @@ export const CustomMeshBackground = ({
       renderer,
       horizontalLines,
       verticalLines,
+      vertexPoints,
       animationFrameId
     }
 
@@ -183,6 +242,10 @@ export const CustomMeshBackground = ({
       })
       verticalLines.children.forEach((line: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         line.geometry.dispose()
+      })
+      vertexPoints.children.forEach((pointsObject: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+        pointsObject.geometry.dispose()
+        pointsObject.material.dispose()
       })
       lineMaterial.dispose()
       renderer.dispose()
