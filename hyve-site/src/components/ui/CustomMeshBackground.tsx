@@ -64,7 +64,16 @@ export const CustomMeshBackground = ({
     
     renderer.setSize(containerWidth, containerHeight)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-    container.appendChild(renderer.domElement)
+    
+    // Style the canvas to ensure it can receive clicks
+    renderer.domElement.style.position = 'absolute'
+         renderer.domElement.style.top = '0'
+     renderer.domElement.style.left = '0'
+     renderer.domElement.style.width = '100%'
+     renderer.domElement.style.height = '100%'
+     renderer.domElement.style.pointerEvents = 'auto'
+     
+     container.appendChild(renderer.domElement)
 
     // Create grid with lines
     const gridWidth = 240  // Increased for better coverage
@@ -153,20 +162,114 @@ export const CustomMeshBackground = ({
     const clock = new THREE.Clock()
     let animationFrameId: number | null = null
     
+    // Ripple system
+    const ripples: Array<{
+      x: number;
+      z: number;
+      startTime: number;
+      amplitude: number;
+      speed: number;
+      duration: number;
+    }> = []
+    
+    // Click detection setup
+    const raycaster = new THREE.Raycaster()
+    const mouse = new THREE.Vector2()
+    const gridPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0) // Y=0 plane
+    
+    // Click handler for ripple effects
+    const handleClick = (event: MouseEvent) => {
+      console.log('Click detected!', event)
+      
+      const rect = renderer.domElement.getBoundingClientRect()
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+      
+      console.log('Mouse coordinates:', mouse.x, mouse.y)
+      
+      raycaster.setFromCamera(mouse, camera)
+      
+      // Find intersection with the grid plane
+      const intersectionPoint = new THREE.Vector3()
+      if (raycaster.ray.intersectPlane(gridPlane, intersectionPoint)) {
+        console.log('Intersection found at:', intersectionPoint)
+        
+        // Account for the grid rotation when calculating ripple position
+        const rotatedPoint = intersectionPoint.clone()
+        rotatedPoint.applyAxisAngle(new THREE.Vector3(0, 1, 0), -Math.PI / 7)
+        
+        console.log('Adding ripple at:', rotatedPoint.x, rotatedPoint.z)
+        
+        // Add new ripple
+        ripples.push({
+          x: rotatedPoint.x,
+          z: rotatedPoint.z,
+          startTime: clock.getElapsedTime(),
+          amplitude: 3,  // Increased for more visible effect
+          speed: 6,     // Slower for easier observation
+          duration: 4   // Longer duration
+        })
+        
+        console.log('Ripple added! Total ripples:', ripples.length)
+      } else {
+        console.log('No intersection with grid plane')
+      }
+    }
+    
+    // Add click listener to the canvas element directly
+    renderer.domElement.addEventListener('click', handleClick)
+    renderer.domElement.style.cursor = 'pointer'
+    
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate)
       
       const elapsedTime = clock.getElapsedTime()
       
-      // Gentle wave motion
+      // Clean up expired ripples
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        if (elapsedTime - ripples[i].startTime > ripples[i].duration) {
+          ripples.splice(i, 1)
+        }
+      }
+      
+      // Calculate ripple effect for a given point
+      const calculateRippleEffect = (x: number, z: number): number => {
+        let rippleEffect = 0
+        ripples.forEach(ripple => {
+          const distance = Math.sqrt((x - ripple.x) ** 2 + (z - ripple.z) ** 2)
+          const rippleTime = elapsedTime - ripple.startTime
+          const normalizedTime = rippleTime / ripple.duration
+          
+          if (normalizedTime < 1) {
+            // Wave equation: sine wave with distance and time
+            const wavePhase = distance * 0.3 - rippleTime * ripple.speed
+            const rippleWave = Math.sin(wavePhase) * ripple.amplitude
+            
+            // Falloff: exponential decay over distance and time
+            const distanceFalloff = Math.exp(-distance * 0.08)
+            const timeFalloff = Math.exp(-normalizedTime * 3) * (1 - normalizedTime)
+            
+            rippleEffect += rippleWave * distanceFalloff * timeFalloff
+          }
+        })
+        return rippleEffect
+      }
+      
+      // Gentle wave motion with ripples
       horizontalLines.children.forEach((line: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         const positions = line.geometry.attributes.position.array
         for (let i = 1; i < positions.length; i += 3) {
           const x = positions[i - 1]
           const z = positions[i + 1]
-          // Wave equation
-          positions[i] = Math.sin(x * 0.05 + elapsedTime * 0.5) * 0.3 +
-                        Math.sin(z * 0.05 + elapsedTime * 0.3) * 0.2
+          
+          // Base wave equation
+          const baseWave = Math.sin(x * 0.05 + elapsedTime * 0.5) * 0.3 +
+                          Math.sin(z * 0.05 + elapsedTime * 0.3) * 0.2
+          
+          // Add ripple effects
+          const rippleEffect = calculateRippleEffect(x, z)
+          
+          positions[i] = baseWave + rippleEffect
         }
         line.geometry.attributes.position.needsUpdate = true
       })
@@ -176,22 +279,34 @@ export const CustomMeshBackground = ({
         for (let i = 1; i < positions.length; i += 3) {
           const x = positions[i - 1]
           const z = positions[i + 1]
-          // Same wave equation for consistency
-          positions[i] = Math.sin(x * 0.05 + elapsedTime * 0.5) * 0.3 +
-                        Math.sin(z * 0.05 + elapsedTime * 0.3) * 0.2
+          
+          // Base wave equation
+          const baseWave = Math.sin(x * 0.05 + elapsedTime * 0.5) * 0.3 +
+                          Math.sin(z * 0.05 + elapsedTime * 0.3) * 0.2
+          
+          // Add ripple effects
+          const rippleEffect = calculateRippleEffect(x, z)
+          
+          positions[i] = baseWave + rippleEffect
         }
         line.geometry.attributes.position.needsUpdate = true
       })
 
-      // Animate vertex points with same wave motion
+      // Animate vertex points with same wave motion and ripples
       vertexPoints.children.forEach((pointsObject: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
         const positions = pointsObject.geometry.attributes.position.array
         for (let i = 1; i < positions.length; i += 3) {
           const x = positions[i - 1]
           const z = positions[i + 1]
-          // Same wave equation as lines
-          positions[i] = Math.sin(x * 0.05 + elapsedTime * 0.5) * 0.3 +
-                        Math.sin(z * 0.05 + elapsedTime * 0.3) * 0.2
+          
+          // Base wave equation
+          const baseWave = Math.sin(x * 0.05 + elapsedTime * 0.5) * 0.3 +
+                          Math.sin(z * 0.05 + elapsedTime * 0.3) * 0.2
+          
+          // Add ripple effects
+          const rippleEffect = calculateRippleEffect(x, z)
+          
+          positions[i] = baseWave + rippleEffect
         }
         pointsObject.geometry.attributes.position.needsUpdate = true
       })
@@ -228,6 +343,7 @@ export const CustomMeshBackground = ({
     // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize)
+      renderer.domElement.removeEventListener('click', handleClick)
       if (sceneRef.current?.animationFrameId) {
         cancelAnimationFrame(sceneRef.current.animationFrameId)
       }
@@ -265,10 +381,13 @@ export const CustomMeshBackground = ({
         className="absolute inset-0" 
         style={{ 
           zIndex: 0,
-          background: 'linear-gradient(to bottom, #102542 0%, #0a1628 100%)' // Hyve gradient
+          background: 'linear-gradient(to bottom, #102542 0%, #0a1628 100%)', // Hyve gradient
+          pointerEvents: 'auto'
         }} 
       />
-      <div className="relative z-10">{children}</div>
+      <div className="relative z-10 pointer-events-none">
+        <div className="pointer-events-auto">{children}</div>
+      </div>
     </div>
   )
 } 
