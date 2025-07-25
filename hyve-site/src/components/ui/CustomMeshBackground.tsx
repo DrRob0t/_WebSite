@@ -57,7 +57,7 @@ export const CustomMeshBackground = ({
 
     // Scene setup
     const scene = new THREE.Scene()
-    scene.fog = new THREE.Fog(0x102542, 10, 50) // Add fog for depth
+    scene.fog = new THREE.Fog(0x102542, 5, 50) // Add fog for depth
     
     // Get the actual container dimensions
     const container = mountRef.current
