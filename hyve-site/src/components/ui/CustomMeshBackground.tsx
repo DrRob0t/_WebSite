@@ -6,6 +6,9 @@ interface CustomMeshBackgroundProps {
   children?: React.ReactNode
   vertexPointSize?: number
   rippleRadiusMultiplier?: number // Controls how many grid squares the ripple covers
+  waveAmplitude?: number // Height of the wave effect
+  waveFrequency?: number // How many waves across the grid
+  waveSpeed?: number // Speed of wave animation
 }
 
 interface PointData {
@@ -32,7 +35,10 @@ export const CustomMeshBackground = ({
   className = "",
   children,
   vertexPointSize = 1.5,
-  rippleRadiusMultiplier = 1.1 // Default: ripple covers 3 grid squares
+  rippleRadiusMultiplier = 1.1, // Default: ripple covers 3 grid squares
+  waveAmplitude = 0.3, // Gentle wave height
+  waveFrequency = 0.05, // Frequency of waves across the grid
+  waveSpeed = 0.5 // Speed of wave animation
 }: CustomMeshBackgroundProps) => {
   const mountRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -171,6 +177,14 @@ export const CustomMeshBackground = ({
     camera.position.set(0, 12, 35)  // Higher and further back for better coverage
     camera.lookAt(0, -3, -15)       // Look further down and deeper
 
+    // Wave animation state
+    let waveTime = 0
+    let waveAnimationId: number | null = null
+    
+    // Store original Y positions for wave calculation
+    const originalYPositions = new Float32Array(pointsData.length)
+    originalYPositions.fill(0) // All points start at Y=0
+
     // Animation system for smooth movement
     const animationState = {
       targetPositions: new Float32Array(pointsData.length), // Target Y positions for each point
@@ -292,7 +306,16 @@ export const CustomMeshBackground = ({
         }
         
         const positionIndex = i * 3 + 1 // Y coordinate
-        const currentY = pointPositions[positionIndex]
+        
+        // Calculate current wave height for this point
+        const pointData = pointsData[i]
+        const waveTimeNow = waveTime
+        const waveXValue = Math.sin(pointData.x * waveFrequency + waveTimeNow) * waveAmplitude
+        const waveZValue = Math.sin(pointData.z * waveFrequency + waveTimeNow * 0.7) * waveAmplitude
+        const currentWaveHeight = (waveXValue + waveZValue) * 0.8
+        
+        // Get current position minus wave effect to isolate physics movement
+        const currentY = pointPositions[positionIndex] - currentWaveHeight
         const targetY = animationState.targetPositions[i]
         const distance = targetY - currentY
         
@@ -300,8 +323,8 @@ export const CustomMeshBackground = ({
         const springForce = distance * springStrength
         animationState.velocities[i] = (velocity + springForce) * damping
         
-        // Update position
-        pointPositions[positionIndex] = currentY + animationState.velocities[i]
+        // Update position with physics velocity, then add back the wave
+        pointPositions[positionIndex] = currentY + animationState.velocities[i] + currentWaveHeight
         hasMovement = true
       }
       
@@ -481,6 +504,64 @@ export const CustomMeshBackground = ({
     
     console.log('🎯 CustomMeshBackground initialized with smooth depression physics')
 
+    // Continuous wave animation
+    const animateWave = () => {
+      waveTime += 0.016 * waveSpeed // Assuming 60fps
+      
+      const pointPositions = pointGeometry.attributes.position.array as Float32Array
+      const gridPositions = gridGeometry.attributes.position.array as Float32Array
+      
+      // Apply sine wave to all points
+      for (let i = 0; i < pointsData.length; i++) {
+        const point = pointsData[i]
+        const positionIndex = i * 3 + 1 // Y coordinate
+        
+        // Calculate wave based on position and time
+        const waveX = Math.sin(point.x * waveFrequency + waveTime) * waveAmplitude
+        const waveZ = Math.sin(point.z * waveFrequency + waveTime * 0.7) * waveAmplitude
+        
+        // Combine waves for more organic movement
+        const waveHeight = (waveX + waveZ) * 0.5
+        
+        // Get the current actual Y position (which may include physics offset)
+        const currentPhysicsY = pointPositions[positionIndex]
+        
+        // Calculate the physics offset by comparing to where the point would be with just waves
+        const baseWaveY = originalYPositions[i] + waveHeight
+        const physicsOffset = animationState.isAnimating ? (currentPhysicsY - baseWaveY) : 0
+        
+        // Set position to wave height, preserving any physics offset
+        pointPositions[positionIndex] = baseWaveY + physicsOffset
+      }
+      
+      // Update grid vertices to match
+      for (let i = 0; i < pointsData.length; i++) {
+        const point = pointsData[i]
+        const newY = pointPositions[i * 3 + 1]
+        const key = `${point.x.toFixed(3)},${point.z.toFixed(3)}`
+        
+        const indices = gridVertexMap.get(key)
+        if (indices) {
+          for (const idx of indices) {
+            gridPositions[idx] = newY
+          }
+        }
+      }
+      
+      // Update geometry
+      pointGeometry.attributes.position.needsUpdate = true
+      gridGeometry.attributes.position.needsUpdate = true
+      
+      // Render
+      renderer.render(scene, camera)
+      
+      // Continue animation
+      waveAnimationId = requestAnimationFrame(animateWave)
+    }
+    
+    // Start the continuous wave animation
+    animateWave()
+
     // Initial render
     renderer.render(scene, camera)
 
@@ -520,6 +601,11 @@ export const CustomMeshBackground = ({
         animationState.isAnimating = false
       }
       
+      // Stop wave animation
+      if (waveAnimationId) {
+        cancelAnimationFrame(waveAnimationId)
+      }
+      
       // Clean up visual ripples
       visualRipples.forEach(ripple => {
         rippleGroup.remove(ripple.mesh)
@@ -541,7 +627,7 @@ export const CustomMeshBackground = ({
       
       sceneRef.current = null
     }
-  }, [enabled, vertexPointSize, rippleRadiusMultiplier])
+  }, [enabled, vertexPointSize, rippleRadiusMultiplier, waveAmplitude, waveFrequency, waveSpeed])
 
   if (!enabled) {
     return <div className={className}>{children}</div>
