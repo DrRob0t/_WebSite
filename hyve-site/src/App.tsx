@@ -2,6 +2,7 @@
 import { Layout } from "@/components/layout/Layout"
 import { CustomMeshBackground } from "@/components/ui/CustomMeshBackground"
 import { Hero } from "@/components/sections/Hero"
+import { Vision } from "@/components/sections/Vision"
 
 function App() {
   // 🎛️ EASY DISABLE: Set to false to disable mesh background
@@ -16,8 +17,11 @@ function App() {
         >
           {/* Hero section with proper pointer-events handling */}
           <Hero />
-          <div className="min-h-[60vh]" />
           
+          {/* Vision section */}
+          <Vision />
+          
+          <div className="min-h-[60vh]" />
         </CustomMeshBackground>
       </div>
     </Layout>
