@@ -87,6 +87,7 @@ export const CustomMeshBackground = ({
     renderer.domElement.style.height = '100%'
     renderer.domElement.style.pointerEvents = 'auto'
     renderer.domElement.style.cursor = 'pointer'
+    renderer.domElement.style.zIndex = '1' // Ensure canvas is above background but below content
     
     container.appendChild(renderer.domElement)
 
@@ -402,8 +403,6 @@ export const CustomMeshBackground = ({
         // Transform hit point to local grid space
         const localPoint = grid.worldToLocal(intersectPoint.clone())
         
-        console.log('🔵 Hit point in local space:', { x: localPoint.x, z: localPoint.z })
-        
         // Find the closest grid point
         let closestDistance = Infinity
         let closestIndex = -1
@@ -421,8 +420,6 @@ export const CustomMeshBackground = ({
         })
         
         if (closestIndex !== -1) {
-          console.log('✅ Closest point found at index:', closestIndex, 'distance:', closestDistance.toFixed(2))
-          
           // Get color array for points
           const colors = pointGeometry.attributes.color.array as Float32Array
           
@@ -468,8 +465,6 @@ export const CustomMeshBackground = ({
           
           // Create visual ripple at the clicked point
           createVisualRipple(clickedPoint.x, clickedPoint.z)
-          
-          console.log('🔽 Depression animation started with continuous wave motion')
         }
       }
     }
@@ -553,11 +548,11 @@ export const CustomMeshBackground = ({
         ref={mountRef} 
         className="absolute inset-0" 
         style={{ 
-          zIndex: 0,
+          zIndex: 1, // Match canvas z-index
           background: 'linear-gradient(to bottom, #F4F2F3 0%, #CDE2E7 100%)', // Hyve light gradient
         }} 
       />
-      <div className="relative z-10">
+      <div className="relative z-10 pointer-events-none">
         {children}
       </div>
     </div>

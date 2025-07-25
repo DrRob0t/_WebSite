@@ -1,7 +1,7 @@
 import React from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Download, Mail } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 // Animation variants
 const containerVariants = {
@@ -44,17 +44,19 @@ const buttonVariants = {
 
 export const Hero = () => {
   return (
-    <section className="relative h-screen flex items-start justify-center overflow-hidden pt-8">
+    <section 
+      className="relative h-screen flex items-start justify-center overflow-hidden pt-8 pointer-events-none"
+    >
       {/* Content Container */}
       <div className="hyve-container relative z-10 mt-16 px-4">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="max-w-4xl mx-auto text-center pointer-events-none"
+          className="max-w-4xl mx-auto text-center"
         >
           {/* Semi-opaque background container */}
-          <div className="bg-hyve-background/60 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-hyve-lg border border-hyve-content/30 pointer-events-none">
+          <div className="bg-hyve-background/60 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-hyve-lg border border-hyve-content/30">
             {/* Main Headline */}
             <motion.h1 
               variants={itemVariants}
@@ -138,27 +140,27 @@ export const Hero = () => {
           </div>
 
         </motion.div>
+      </div>
 
-        {/* Scroll Indicator */}
+      {/* Scroll Indicator - moved outside content container */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.6 }}
+        className="fixed bottom-8 left-1/2 transform -translate-x-1/2 pointer-events-none z-20"
+      >
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 0.6 }}
-          className="fixed bottom-8 left-1/2 transform -translate-x-1/2 pointer-events-auto z-20"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-6 h-10 border-2 border-hyve-accent rounded-full flex justify-center"
         >
           <motion.div
-            animate={{ y: [0, 8, 0] }}
+            animate={{ y: [0, 12, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-6 h-10 border-2 border-hyve-accent rounded-full flex justify-center"
-          >
-            <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="w-1 h-3 bg-hyve-accent rounded-full mt-2"
-            />
-          </motion.div>
+            className="w-1 h-3 bg-hyve-accent rounded-full mt-2"
+          />
         </motion.div>
-      </div>
+      </motion.div>
 
              {/* Decorative Elements - Removed to avoid blocking background clicks */}
     </section>
