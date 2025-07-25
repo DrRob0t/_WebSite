@@ -57,7 +57,7 @@ export const CustomMeshBackground = ({
 
     // Scene setup
     const scene = new THREE.Scene()
-    scene.fog = new THREE.Fog(0x102542, 5, 50) // Add fog for depth
+    scene.fog = new THREE.Fog(0xCDE2E7, 5, 50) // Add fog for depth with light content color
     
     // Get the actual container dimensions
     const container = mountRef.current
@@ -99,12 +99,13 @@ export const CustomMeshBackground = ({
     const positions: number[] = []
     
     // Add horizontal line segments
+    const gridYOffset = 5 // Lift the grid up by 2 units
     for (let i = 0; i <= gridDivisions; i++) {
       const z = (i / gridDivisions) * gridDepth - gridDepth / 2
       for (let j = 0; j < gridDivisions; j++) {
         const x0 = (j / gridDivisions) * gridWidth - gridWidth / 2
         const x1 = ((j + 1) / gridDivisions) * gridWidth - gridWidth / 2
-        positions.push(x0, 0, z, x1, 0, z)
+        positions.push(x0, gridYOffset, z, x1, gridYOffset, z)
       }
     }
     
@@ -114,7 +115,7 @@ export const CustomMeshBackground = ({
       for (let i = 0; i < gridDivisions; i++) {
         const z0 = (i / gridDivisions) * gridDepth - gridDepth / 2
         const z1 = ((i + 1) / gridDivisions) * gridDepth - gridDepth / 2
-        positions.push(x, 0, z0, x, 0, z1)
+        positions.push(x, gridYOffset, z0, x, gridYOffset, z1)
       }
     }
     
@@ -122,8 +123,8 @@ export const CustomMeshBackground = ({
     gridGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
     
     const lineMaterial = new THREE.LineBasicMaterial({ 
-      color: 0x7FB3BE, // Hyve accent color
-      opacity: 0.4,
+      color: 0x166088, // Hyve text color for better contrast
+      opacity: 0.6,
       transparent: true
     })
     
@@ -155,10 +156,10 @@ export const CustomMeshBackground = ({
       for (let j = 0; j <= gridDivisions; j++) {
         const x = (j / gridDivisions) * gridWidth - gridWidth / 2
         const z = (i / gridDivisions) * gridDepth - gridDepth / 2
-        pointsArray.push(x, 0, z) // Y starts at 0
+        pointsArray.push(x, gridYOffset, z) // Y starts at gridYOffset
         
-        // Default color (Hyve accent color)
-        colorsArray.push(0.498, 0.702, 0.745) // RGB of #7FB3BE
+        // Default color (Hyve text color for consistency)
+        colorsArray.push(0.086, 0.376, 0.533) // RGB of #166088
         
         // Store point data for distance calculations
         pointsData.push({ x, z, index: pointsData.length })
@@ -183,7 +184,7 @@ export const CustomMeshBackground = ({
     
     // Store original Y positions for wave calculation
     const originalYPositions = new Float32Array(pointsData.length)
-    originalYPositions.fill(0) // All points start at Y=0
+    originalYPositions.fill(gridYOffset) // All points start at Y=gridYOffset
 
     // Animation system for smooth movement
     const animationState = {
@@ -217,7 +218,7 @@ export const CustomMeshBackground = ({
     const createVisualRipple = (x: number, z: number) => {
       const geometry = new THREE.CircleGeometry(1, 32) // Start with a small circle
       const material = new THREE.MeshBasicMaterial({
-        color: 0xff0000, // Red color
+        color: 0x166088, // Hyve text/interactive color (Lapis Lazuli)
         transparent: true,
         opacity: 0.8,
         side: THREE.DoubleSide
@@ -225,7 +226,7 @@ export const CustomMeshBackground = ({
       const mesh = new THREE.Mesh(geometry, material)
       
       // Position the ripple at the click point
-      mesh.position.set(x, 0.1, z) // Slightly above the grid to avoid z-fighting
+      mesh.position.set(x, gridYOffset + 0.1, z) // Slightly above the grid to avoid z-fighting
       mesh.rotation.x = -Math.PI / 2 // Lay flat
       mesh.scale.set(0.1, 0.1, 0.1) // Start small
       
@@ -393,8 +394,8 @@ export const CustomMeshBackground = ({
       
       raycaster.setFromCamera(mouse, camera)
       
-      // Create a plane at y=0 for intersection
-      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)
+      // Create a plane at y=gridYOffset for intersection
+      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -gridYOffset)
       const intersectPoint = new THREE.Vector3()
       
       if (raycaster.ray.intersectPlane(plane, intersectPoint)) {
@@ -428,9 +429,9 @@ export const CustomMeshBackground = ({
           // Reset all colors to default
           for (let i = 0; i < pointsData.length; i++) {
             const colorIndex = i * 3
-            colors[colorIndex] = 0.498     // R of #7FB3BE
-            colors[colorIndex + 1] = 0.702 // G of #7FB3BE
-            colors[colorIndex + 2] = 0.745 // B of #7FB3BE
+            colors[colorIndex] = 0.086     // R of #166088
+            colors[colorIndex + 1] = 0.376 // G of #166088
+            colors[colorIndex + 2] = 0.533 // B of #166088
           }
           
           // Get the clicked point coordinates
@@ -452,13 +453,13 @@ export const CustomMeshBackground = ({
               // Apply downward velocity - this gets added to the wave motion
               animationState.velocities[index] = -pushDownDistance * bellCurve * 2
               
-              // Color the center point
-              if (index === closestIndex) {
-                const colorIndex = index * 3
-                colors[colorIndex] = 1.0     // R - bright red
-                colors[colorIndex + 1] = 0.3 // G - some green
-                colors[colorIndex + 2] = 0.0 // B - no blue
-              }
+              // Color the center point - removed for cleaner look
+              // if (index === closestIndex) {
+              //   const colorIndex = index * 3
+              //   colors[colorIndex] = 1.0     // R - bright red
+              //   colors[colorIndex + 1] = 0.3 // G - some green
+              //   colors[colorIndex + 2] = 0.0 // B - no blue
+              // }
             }
           })
           
@@ -553,7 +554,7 @@ export const CustomMeshBackground = ({
         className="absolute inset-0" 
         style={{ 
           zIndex: 0,
-          background: 'linear-gradient(to bottom, #102542 0%, #0a1628 100%)', // Hyve gradient
+          background: 'linear-gradient(to bottom, #F4F2F3 0%, #CDE2E7 100%)', // Hyve light gradient
         }} 
       />
       <div className="relative z-10">
