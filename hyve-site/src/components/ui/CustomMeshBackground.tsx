@@ -181,6 +181,53 @@ export const CustomMeshBackground = ({
     animationState.targetPositions.fill(0)
     animationState.velocities.fill(0)
 
+    // Visual ripple system
+    const visualRipples: Array<{
+      x: number
+      z: number
+      radius: number
+      maxRadius: number
+      opacity: number
+      speed: number
+      material: any // eslint-disable-line @typescript-eslint/no-explicit-any
+      geometry: any // eslint-disable-line @typescript-eslint/no-explicit-any
+      mesh: any // eslint-disable-line @typescript-eslint/no-explicit-any
+    }> = []
+    
+    const rippleGroup = new THREE.Group()
+    rippleGroup.rotation.y = Math.PI / 7 // Match grid rotation
+    scene.add(rippleGroup)
+    
+    // Function to create a visual ripple at click position
+    const createVisualRipple = (x: number, z: number) => {
+      const geometry = new THREE.RingGeometry(0, 0.5, 32)
+      const material = new THREE.MeshBasicMaterial({
+        color: 0xff0000, // Red color
+        transparent: true,
+        opacity: 0.8,
+        side: THREE.DoubleSide
+      })
+      const mesh = new THREE.Mesh(geometry, material)
+      
+      // Position the ripple at the click point
+      mesh.position.set(x, 0.1, z) // Slightly above the grid to avoid z-fighting
+      mesh.rotation.x = -Math.PI / 2 // Lay flat
+      
+      rippleGroup.add(mesh)
+      
+      visualRipples.push({
+        x,
+        z,
+        radius: 2.2,
+        maxRadius: gridSquareSize * 6, // Expand to 3 grid squares
+        opacity: 0.8,
+        speed: gridSquareSize * 0.8, // Expansion speed
+        material,
+        geometry,
+        mesh
+      })
+    }
+
 
 
     // Create a map for fast grid vertex lookups
@@ -218,7 +265,7 @@ export const CustomMeshBackground = ({
       // Spring strength: How quickly points move toward their target
       // - Higher (0.5+) = Faster, snappier animation
       // - Lower (0.1-0.2) = Slower, more gentle animation
-      const springStrength = 0.05
+      const springStrength = 0.035
       
       // Damping: How much energy is lost each frame (0-1)
       // - Higher (0.9-0.95) = Less energy loss, more bounces, slower to settle
@@ -273,16 +320,52 @@ export const CustomMeshBackground = ({
         // Update geometry
         pointGeometry.attributes.position.needsUpdate = true
         gridGeometry.attributes.position.needsUpdate = true
+      }
+      
+      // Update visual ripples
+      for (let i = visualRipples.length - 1; i >= 0; i--) {
+        const ripple = visualRipples[i]
         
-        // Render
+        // Expand the ripple
+        ripple.radius += ripple.speed * 0.016 // Assuming 60fps, adjust as needed
+        
+        // Fade out
+        ripple.opacity = Math.max(0, ripple.opacity - 0.02)
+        
+        // Update the ring geometry
+        const innerRadius = Math.max(0, ripple.radius - gridSquareSize * 0.3)
+        const outerRadius = ripple.radius
+        
+        // Update ring geometry
+        ripple.geometry.dispose()
+        ripple.geometry = new THREE.RingGeometry(innerRadius, outerRadius, 32)
+        ripple.mesh.geometry = ripple.geometry
+        
+        // Update opacity
+        ripple.material.opacity = ripple.opacity
+        
+        // Remove if faded out or too large
+        if (ripple.opacity <= 0 || ripple.radius > ripple.maxRadius) {
+          rippleGroup.remove(ripple.mesh)
+          ripple.geometry.dispose()
+          ripple.material.dispose()
+          visualRipples.splice(i, 1)
+        }
+      }
+      
+      // Continue animation if there's movement or active ripples
+      if (hasMovement || visualRipples.length > 0) {
         renderer.render(scene, camera)
-        
-        // Continue animation
         animationState.animationId = requestAnimationFrame(animate)
+        
+        if (!hasMovement && visualRipples.length > 0) {
+          // Keep animation running for ripples even if points have settled
+          animationState.isAnimating = true
+        }
       } else {
         animationState.isAnimating = false
         animationState.animationId = null
-        console.log('🛑 Animation stopped - points settled')
+        console.log('🛑 Animation stopped - points settled and ripples faded')
       }
     }
 
@@ -376,10 +459,13 @@ export const CustomMeshBackground = ({
           // Update color attribute
           pointGeometry.attributes.color.needsUpdate = true
           
+          // Create visual ripple at the clicked point
+          createVisualRipple(clickedPoint.x, clickedPoint.z)
+          
           // Start animation if not already running
           if (!animationState.isAnimating) {
             animationState.isAnimating = true
-            console.log('🎬 Starting smooth animation with bounce physics')
+            console.log('🎬 Starting smooth animation with bounce physics and visual ripple')
             animate()
           }
           
@@ -431,6 +517,14 @@ export const CustomMeshBackground = ({
         cancelAnimationFrame(animationState.animationId)
         animationState.isAnimating = false
       }
+      
+      // Clean up visual ripples
+      visualRipples.forEach(ripple => {
+        rippleGroup.remove(ripple.mesh)
+        ripple.geometry.dispose()
+        ripple.material.dispose()
+      })
+      visualRipples.length = 0
       
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement)
