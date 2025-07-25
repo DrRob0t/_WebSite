@@ -34,7 +34,7 @@ export const CustomMeshBackground = ({
   enabled = true, 
   className = "",
   children,
-  vertexPointSize = 1.5,
+  vertexPointSize = 0.8,
   rippleRadiusMultiplier = 1.1, // Default: ripple covers 3 grid squares
   waveAmplitude = 0.3, // Gentle wave height
   waveFrequency = 0.3, // Frequency of waves across the grid
@@ -151,7 +151,7 @@ export const CustomMeshBackground = ({
     
     // Calculate grid square size for positioning
     const gridSquareSize = gridWidth / gridDivisions // ~1.6 units
-    const pushDownDistance = gridSquareSize * 1 // 2 times the square size
+    const pushDownDistance = gridSquareSize * 0.5 // 2 times the square size
     
     for (let i = 0; i <= gridDivisions; i++) {
       for (let j = 0; j <= gridDivisions; j++) {
