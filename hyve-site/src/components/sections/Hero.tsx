@@ -1,7 +1,7 @@
 import React from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, ChevronDown } from "lucide-react"
 
 // Animation variants
 const containerVariants = {
@@ -9,8 +9,8 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.3,
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
     },
   },
 }
@@ -18,151 +18,156 @@ const containerVariants = {
 const itemVariants = {
   hidden: { 
     opacity: 0, 
-    y: 30,
-    scale: 0.95 
+    x: -30,
   },
   visible: { 
     opacity: 1, 
-    y: 0,
-    scale: 1,
+    x: 0,
     transition: {
-      duration: 0.6,
-      ease: "easeOut",
+      duration: 1,
+      ease: [0.25, 0.1, 0.25, 1],
     },
   },
 }
 
-const buttonVariants = {
-  hover: { 
-    scale: 1.05,
-    transition: { duration: 0.2 } 
-  },
-  tap: { 
-    scale: 0.98 
-  },
+const fadeInVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: {
+      duration: 1.2,
+      ease: "easeOut"
+    }
+  }
 }
 
 export const Hero = () => {
   return (
     <section 
-      className="relative h-screen flex items-start justify-center overflow-hidden pt-8 pointer-events-none"
+      className="relative h-screen flex items-center overflow-hidden pointer-events-none"
     >
-      {/* Content Container */}
-      <div className="hyve-container relative z-10 mt-16 px-4">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="max-w-4xl mx-auto text-center"
-        >
-          {/* Semi-opaque background container */}
-          <div className="bg-hyve-background/60 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-hyve-lg border border-hyve-content/30">
-            {/* Main Headline */}
-            <motion.h1 
-              variants={itemVariants}
-              className="hyve-hero-text mb-6 text-balance"
-            >
-              Bringing Structures to Life with{" "}
-              <span className="hyve-text-gradient">
-                Real-World Intelligence
-              </span>
-            </motion.h1>
+      {/* Asymmetric Layout Container */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="text-left relative"
+          >
+            {/* Subtle background for text contrast */}
+            <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl" />
+            
+            <div className="relative z-10">
+              {/* Subtle accent line */}
+              <motion.div 
+                variants={itemVariants}
+                className="w-12 h-[2px] bg-hyve-accent mb-8"
+              />
 
-            {/* Subheadline */}
-            <motion.p 
-              variants={itemVariants}
-              className="hyve-body-text mb-8 max-w-3xl mx-auto text-balance"
-            >
-              Hyve Dynamics turns machines and structures into intelligent systems. Our Haptic Matrix captures real-time pressure, strain, and temperature data—directly from complex, unpredictable environments.
-            </motion.p>
+              {/* Main Headline */}
+              <motion.h1 
+                variants={itemVariants}
+                className="text-4xl md:text-6xl lg:text-7xl font-extralight leading-[1.1] mb-6"
+              >
+                <span className="block text-hyve-text">Adaptation Through Insight. </span>
+                <span className="block text-hyve-text mt-1">Evolution Through Data.</span>
+                <span className="block mt-1">
+                  <span className="relative font-normal italic">
+                    
+                    {/* Main gradient text */}
+                    <span className="relative bg-gradient-to-r from-[#0095E5] via-[#00A7D1] to-[#0095E5] bg-clip-text text-transparent">
+                    <br></br>  
+                    </span>
+                  </span>
+                </span>
+              </motion.h1>
 
-            {/* Vision-Driven Message */}
-            <motion.div 
-              variants={itemVariants}
-              className="mb-10 max-w-3xl mx-auto"
-            >
-              <p className="text-lg text-hyve-text leading-relaxed font-body text-balance">
-              It’s not the strongest systems that thrive—but the ones that adapt.
-              Hyve’s Haptic Matrix unlocks real-world, high-density data where it matters most—fueling insight, driving innovation, and enabling intelligent evolution across machines, vehicles, and structures.
-              </p>
-            </motion.div>
+              {/* Refined Subheadline */}
+              <motion.p 
+                variants={itemVariants}
+                className="text-base md:text-lg text-hyve-text/70 max-w-md mb-10 font-light leading-relaxed"
+              >
+                Hyve’s Haptic Matrix unlocks real-world, high-density data where it matters most—fueling insight, driving 
+                innovation, and enabling intelligent evolution across machines, vehicles, and structures.
+              </motion.p>
 
-            {/* Call-to-Action Buttons */}
-            <motion.div 
-              variants={itemVariants}
-              className="flex flex-col lg:flex-row gap-4 justify-center items-center pointer-events-auto"
-            >
-              <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
+              {/* Elegant CTA Group */}
+              <motion.div 
+                variants={itemVariants}
+                className="flex flex-col sm:flex-row gap-4 pointer-events-auto"
+              >
                 <Button 
                   size="lg"
-                  className="hyve-btn-primary group min-w-[200px]"
+                  className="group bg-transparent border border-hyve-text text-hyve-text hover:bg-hyve-text hover:text-white px-8 py-5 transition-all duration-300"
                   onClick={() => {
-                    // Scroll to technology section when implemented
                     document.getElementById('technology')?.scrollIntoView({ 
                       behavior: 'smooth' 
                     })
                   }}
                 >
-                  Discover the Technology
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <span className="flex items-center gap-2 text-sm font-light tracking-wide">
+                    Explore Technology
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </span>
                 </Button>
-              </motion.div>
-              
-              <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  className="bg-white/10 backdrop-blur-sm border-hyve-accent text-hyve-text hover:bg-hyve-accent hover:text-white transition-all duration-300 min-w-[200px]"
-                  onClick={() => {
-                    // Scroll to use cases section when implemented
-                    document.getElementById('use-cases')?.scrollIntoView({ 
-                      behavior: 'smooth' 
-                    })
-                  }}
+                
+                <button 
+                  className="text-sm text-hyve-text/60 hover:text-hyve-accent transition-colors duration-300 text-left pointer-events-auto"
+                  onClick={() => window.open('mailto:info@hyvedynamics.com', '_blank')}
                 >
-                  Explore Real-World Use Cases
-                </Button>
+                  Get in Touch →
+                </button>
               </motion.div>
+            </div>
+          </motion.div>
 
-              <motion.div variants={buttonVariants} whileHover="hover" whileTap="tap">
-                <Button 
-                  variant="secondary"
-                  size="lg"
-                  className="bg-hyve-content/20 backdrop-blur-sm border-hyve-text text-hyve-text hover:bg-hyve-text hover:text-white transition-all duration-300 min-w-[200px]"
-                  onClick={() => {
-                    window.open('mailto:info@hyvedynamics.com?subject=Join the Next-Gen Sensing Revolution', '_blank')
-                  }}
-                >
-                  Join the Revolution
-                </Button>
+          {/* Right Side - Visual Space */}
+          <motion.div
+            variants={fadeInVariants}
+            initial="hidden"
+            animate="visible"
+            className="hidden lg:block relative"
+          >
+            {/* Abstract visual element */}
+            <div className="relative h-96">
+              <motion.div
+                animate={{
+                  y: [0, -20, 0],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+              >
+                <div className="w-px h-32 bg-gradient-to-b from-transparent via-hyve-accent/30 to-transparent" />
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-px bg-gradient-to-r from-transparent via-hyve-accent/30 to-transparent" />
               </motion.div>
-            </motion.div>
-          </div>
-
-        </motion.div>
+            </div>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Scroll Indicator - moved outside content container */}
+      {/* Minimal scroll indicator - bottom center */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 0.6 }}
-        className="fixed bottom-8 left-1/2 transform -translate-x-1/2 pointer-events-none z-20"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
       >
         <motion.div
-          animate={{ y: [0, 8, 0] }}
+          animate={{ y: [0, 5, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-6 h-10 border-2 border-hyve-accent rounded-full flex justify-center"
         >
-          <motion.div
-            animate={{ y: [0, 12, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-1 h-3 bg-hyve-accent rounded-full mt-2"
-          />
+          <ChevronDown className="w-6 h-6 text-hyve-text/30" />
         </motion.div>
       </motion.div>
 
-             {/* Decorative Elements - Removed to avoid blocking background clicks */}
+      {/* Very subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-hyve-background/5 via-transparent to-transparent" />
     </section>
   )
 } 
