@@ -295,16 +295,9 @@ export const CustomMeshBackground = ({
       const minVelocity = 0.001       // Stop when velocity is below this
       const minDistance = 0.002       // Stop when distance to target is below this
       
-      // First pass: Update point positions only
+      // First pass: Update ALL point positions (wave + physics)
       for (let i = 0; i < pointsData.length; i++) {
         const velocity = animationState.velocities[i]
-        
-        // Skip if this point isn't moving
-        if (Math.abs(velocity) < minVelocity && 
-            Math.abs(animationState.targetPositions[i] - pointPositions[i * 3 + 1]) < minDistance) {
-          continue
-        }
-        
         const positionIndex = i * 3 + 1 // Y coordinate
         
         // Calculate current wave height for this point
@@ -312,20 +305,28 @@ export const CustomMeshBackground = ({
         const waveTimeNow = waveTime
         const waveXValue = Math.sin(pointData.x * waveFrequency + waveTimeNow) * waveAmplitude
         const waveZValue = Math.sin(pointData.z * waveFrequency + waveTimeNow * 0.7) * waveAmplitude
-        const currentWaveHeight = (waveXValue + waveZValue) * 0.8
+        const currentWaveHeight = (waveXValue + waveZValue) * 0.2
         
-        // Get current position minus wave effect to isolate physics movement
-        const currentY = pointPositions[positionIndex] - currentWaveHeight
-        const targetY = animationState.targetPositions[i]
-        const distance = targetY - currentY
-        
-        // Apply spring force toward target
-        const springForce = distance * springStrength
-        animationState.velocities[i] = (velocity + springForce) * damping
-        
-        // Update position with physics velocity, then add back the wave
-        pointPositions[positionIndex] = currentY + animationState.velocities[i] + currentWaveHeight
-        hasMovement = true
+        // Check if this point has physics movement
+        if (Math.abs(velocity) >= minVelocity || 
+            Math.abs(animationState.targetPositions[i]) >= minDistance) {
+          
+          // Get current position minus wave effect to isolate physics movement
+          const currentY = pointPositions[positionIndex] - currentWaveHeight
+          const targetY = animationState.targetPositions[i]
+          const distance = targetY - currentY
+          
+          // Apply spring force toward target
+          const springForce = distance * springStrength
+          animationState.velocities[i] = (velocity + springForce) * damping
+          
+          // Update position with physics velocity, then add back the wave
+          pointPositions[positionIndex] = currentY + animationState.velocities[i] + currentWaveHeight
+          hasMovement = true
+        } else {
+          // No physics movement, just apply wave
+          pointPositions[positionIndex] = originalYPositions[i] + currentWaveHeight
+        }
       }
       
       // Second pass: Update grid vertices efficiently using the map
@@ -508,10 +509,16 @@ export const CustomMeshBackground = ({
     const animateWave = () => {
       waveTime += 0.016 * waveSpeed // Assuming 60fps
       
+      // If physics animation is running, only update time and let physics handle positions
+      if (animationState.isAnimating) {
+        waveAnimationId = requestAnimationFrame(animateWave)
+        return
+      }
+      
       const pointPositions = pointGeometry.attributes.position.array as Float32Array
       const gridPositions = gridGeometry.attributes.position.array as Float32Array
       
-      // Apply sine wave to all points
+      // Apply sine wave to all points only when physics is not active
       for (let i = 0; i < pointsData.length; i++) {
         const point = pointsData[i]
         const positionIndex = i * 3 + 1 // Y coordinate
@@ -523,15 +530,8 @@ export const CustomMeshBackground = ({
         // Combine waves for more organic movement
         const waveHeight = (waveX + waveZ) * 0.5
         
-        // Get the current actual Y position (which may include physics offset)
-        const currentPhysicsY = pointPositions[positionIndex]
-        
-        // Calculate the physics offset by comparing to where the point would be with just waves
-        const baseWaveY = originalYPositions[i] + waveHeight
-        const physicsOffset = animationState.isAnimating ? (currentPhysicsY - baseWaveY) : 0
-        
-        // Set position to wave height, preserving any physics offset
-        pointPositions[positionIndex] = baseWaveY + physicsOffset
+        // Set position to wave height
+        pointPositions[positionIndex] = originalYPositions[i] + waveHeight
       }
       
       // Update grid vertices to match
