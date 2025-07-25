@@ -270,9 +270,10 @@ export const CustomMeshBackground = ({
             )
             
             if (distance <= influenceRadius) {
-              // Calculate falloff: closer points move down more
-              const falloff = Math.max(0, 1 - (distance / influenceRadius))
-              const depression = -pushDownDistance * falloff
+              // Calculate bell-shaped falloff using Gaussian-like curve
+              const normalizedDistance = distance / influenceRadius // 0 to 1
+              const bellCurve = Math.exp(-(normalizedDistance * normalizedDistance) * 6) // Gaussian bell shape
+              const depression = -pushDownDistance * bellCurve
               
               // Update point position
               const positionIndex = index * 3 + 1 // Y coordinate
