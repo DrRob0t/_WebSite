@@ -34,12 +34,18 @@ export const CustomMeshBackground = ({
   enabled = true, 
   className = "",
   children,
-  vertexPointSize = 0.8,
+  vertexPointSize = 1.5,
   rippleRadiusMultiplier = 1.1, // Default: ripple covers 3 grid squares
   waveAmplitude = 0.3, // Gentle wave height
   waveFrequency = 0.3, // Frequency of waves across the grid
   waveSpeed = 0.65 // Speed of wave animation
 }: CustomMeshBackgroundProps) => {
+  // IMPORTANT: When updating Tailwind colors, update these RGB values:
+  // hyve.text (#166088) = RGB(0.086, 0.376, 0.533)
+  // hyve.background (#F4F2F3) = #F4F2F3
+  // hyve.content (#CDE2E7) = #CDE2E7
+  const HYVE_TEXT_RGB = { r: 0.086, g: 0.376, b: 0.533 } // #166088
+  
   const mountRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -160,7 +166,7 @@ export const CustomMeshBackground = ({
         pointsArray.push(x, gridYOffset, z) // Y starts at gridYOffset
         
         // Default color (Hyve text color for consistency)
-        colorsArray.push(0.086, 0.376, 0.533) // RGB of #166088
+        colorsArray.push(HYVE_TEXT_RGB.r, HYVE_TEXT_RGB.g, HYVE_TEXT_RGB.b) // Using constant
         
         // Store point data for distance calculations
         pointsData.push({ x, z, index: pointsData.length })
@@ -426,9 +432,9 @@ export const CustomMeshBackground = ({
           // Reset all colors to default
           for (let i = 0; i < pointsData.length; i++) {
             const colorIndex = i * 3
-            colors[colorIndex] = 0.086     // R of #166088
-            colors[colorIndex + 1] = 0.376 // G of #166088
-            colors[colorIndex + 2] = 0.533 // B of #166088
+            colors[colorIndex] = HYVE_TEXT_RGB.r     // R of #166088
+            colors[colorIndex + 1] = HYVE_TEXT_RGB.g // G of #166088
+            colors[colorIndex + 2] = HYVE_TEXT_RGB.b // B of #166088
           }
           
           // Get the clicked point coordinates

@@ -1,6 +1,14 @@
 import React from "react"
 import { motion } from "framer-motion"
 
+// Helper to use Tailwind colors in SVG (update these when changing colors in tailwind.config.js)
+const HYVE_COLORS = {
+  interactive: "rgb(0 149 229)",      // #0095E5
+  interactiveLight: "rgb(0 167 209)", // #00A7D1
+  accent: "rgb(127 179 190)",         // #7FB3BE
+  text: "rgb(22 96 136)",             // #166088
+}
+
 // Animation variants matching Hero section
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -83,7 +91,7 @@ export const Vision = () => {
                 <span className="block mt-2">
                   Through{" "}
                   <span className="relative font-normal">
-                    <span className="relative bg-gradient-to-r from-[#0095E5] via-[#00A7D1] to-[#0095E5] bg-clip-text text-transparent">
+                    <span className="relative hyve-text-gradient">
                       Real-World Intelligence
                     </span>
                   </span>
@@ -188,14 +196,14 @@ export const Vision = () => {
                 />
                 <defs>
                   <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#0095E5" stopOpacity="0" />
-                    <stop offset="50%" stopColor="#00A7D1" stopOpacity="0.5" />
-                    <stop offset="100%" stopColor="#0095E5" stopOpacity="0" />
+                    <stop offset="0%" stopColor={HYVE_COLORS.interactive} stopOpacity="0" />
+                    <stop offset="50%" stopColor={HYVE_COLORS.interactiveLight} stopOpacity="0.5" />
+                    <stop offset="100%" stopColor={HYVE_COLORS.interactive} stopOpacity="0" />
                   </linearGradient>
                   <linearGradient id="gradient2" x1="100%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#00A7D1" stopOpacity="0" />
-                    <stop offset="50%" stopColor="#0095E5" stopOpacity="0.5" />
-                    <stop offset="100%" stopColor="#00A7D1" stopOpacity="0" />
+                    <stop offset="0%" stopColor={HYVE_COLORS.interactiveLight} stopOpacity="0" />
+                    <stop offset="50%" stopColor={HYVE_COLORS.interactive} stopOpacity="0.5" />
+                    <stop offset="100%" stopColor={HYVE_COLORS.interactiveLight} stopOpacity="0" />
                   </linearGradient>
                 </defs>
               </svg>

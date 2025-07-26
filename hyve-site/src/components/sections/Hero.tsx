@@ -77,7 +77,7 @@ export const Hero = () => {
                   <span className="relative font-normal italic">
                     
                     {/* Main gradient text */}
-                    <span className="relative bg-gradient-to-r from-[#0095E5] via-[#00A7D1] to-[#0095E5] bg-clip-text text-transparent">
+                    <span className="relative hyve-text-gradient">
                     <br></br>  
                     </span>
                   </span>

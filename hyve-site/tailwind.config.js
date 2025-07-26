@@ -35,6 +35,11 @@ export default {
           "accent-dark": "#6A9AA4",
           "accent-light": "#94C7CE",
           
+          // Interactive (Ocean Blue) - Gradient accents, interactive elements
+          interactive: "#65a3b2", // #65a3b2
+          "interactive-dark": "#028396", // #028396
+          "interactive-light": "#02c1de", // #02c1de
+          
           // Text/Interactive (Lapis Lazuli) - Body text, links, buttons
           text: "#166088",
           "text-dark": "#0F4A6B",
