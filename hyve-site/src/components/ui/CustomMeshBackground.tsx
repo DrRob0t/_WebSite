@@ -106,7 +106,7 @@ export const CustomMeshBackground = ({
     const positions: number[] = []
     
     // Add horizontal line segments
-    const gridYOffset = 5 // Lift the grid up by 2 units
+    const gridYOffset = 7 // Lift the grid up by 2 units
     for (let i = 0; i <= gridDivisions; i++) {
       const z = (i / gridDivisions) * gridDepth - gridDepth / 2
       for (let j = 0; j < gridDivisions; j++) {
@@ -141,13 +141,27 @@ export const CustomMeshBackground = ({
 
     // Create vertex points with colors
     const pointGeometry = new THREE.BufferGeometry()
+    // Create a canvas-based circular texture
+    const circleSize = 64
+    const canvas = document.createElement('canvas')
+    canvas.width = circleSize
+    canvas.height = circleSize
+    const ctx = canvas.getContext('2d')!
+    ctx.beginPath()
+    ctx.arc(circleSize / 2, circleSize / 2, circleSize / 2, 0, Math.PI * 2)
+    ctx.fillStyle = '#ffffff'
+    ctx.fill()
+
+    const texture = new THREE.CanvasTexture(canvas)
+
     const pointMaterial = new THREE.PointsMaterial({
       size: vertexPointSize * 0.1,
+      map: texture,
       transparent: true,
       opacity: 0.8,
       sizeAttenuation: true,
-      alphaTest: 0.1,
-      vertexColors: true // Enable vertex colors
+      alphaTest: 0.5,
+      vertexColors: true
     })
 
     // Create points at every grid intersection
