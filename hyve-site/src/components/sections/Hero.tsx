@@ -31,17 +31,6 @@ const itemVariants = {
   },
 }
 
-const fadeInVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 1.2,
-      ease: 'easeOut',
-    },
-  },
-}
-
 export const Hero = () => {
   return (
     <section className="relative h-screen flex items-center overflow-hidden pointer-events-none">
@@ -119,30 +108,16 @@ export const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Right Side - Visual Space */}
+          {/* Right Side - Similar Container */}
           <motion.div
-            variants={fadeInVariants}
+            variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="hidden lg:block relative"
+            className="text-left relative w-[400px] h-[500px] justify-self-end"
           >
-            {/* Abstract visual element */}
-            <div className="relative h-96">
-              <motion.div
-                animate={{
-                  y: [0, -20, 0],
-                }}
-                transition={{
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-              >
-                <div className="w-px h-32 bg-gradient-to-b from-transparent via-hyve-accent/30 to-transparent" />
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-px bg-gradient-to-r from-transparent via-hyve-accent/30 to-transparent" />
-              </motion.div>
-            </div>
+            <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl border border-gray-800" />
+
+            <div className="relative z-10">{/* Content will go here - empty for now */}</div>
           </motion.div>
         </div>
       </div>
