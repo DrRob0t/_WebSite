@@ -10,7 +10,11 @@ import {
 } from "@/components/ui/navigation-menu"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Menu, ChevronRight, Plane, Car, Wind, Shield, Bot, FileText, Calendar, Mail, Newspaper } from "lucide-react"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { Menu, ChevronRight, Plane, Car, Wind, Shield, Bot, FileText, Calendar, Mail, Newspaper, Send } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 // Logo component
@@ -23,6 +27,144 @@ const Logo = () => (
     />
   </div>
 )
+
+// Contact Form Component
+const ContactForm = () => {
+  const [open, setOpen] = useState(false)
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    
+    // Simulate form submission
+    // In production, you'd send this to your backend
+    console.log('Form submitted:', formData)
+    
+    // For now, we'll just open the email client
+    const mailtoLink = `mailto:info@hyvedynamics.com?subject=Contact from ${formData.name}&body=${encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+    )}`
+    window.open(mailtoLink)
+    
+    setTimeout(() => {
+      setIsSubmitting(false)
+      setOpen(false)
+      // Reset form
+      setFormData({ name: '', email: '', message: '' })
+    }, 1000)
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button 
+          size="sm"
+          className="bg-hyve-text hover:bg-hyve-text-dark text-white font-body flex items-center gap-2"
+          data-contact-trigger
+        >
+          <Send className="h-4 w-4" />
+          <span className="hidden sm:inline">Contact Us</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] bg-hyve-background">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-body font-light text-hyve-header">Get in Touch</DialogTitle>
+          <DialogDescription className="text-hyve-text/70 font-body">
+            Send us a message and we'll get back to you as soon as possible.
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+          <div className="space-y-2">
+            <Label htmlFor="name" className="text-sm font-body font-medium text-hyve-text">
+              Name
+            </Label>
+            <Input
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Your name"
+              required
+              className="font-body border-hyve-content focus:border-hyve-accent"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-sm font-body font-medium text-hyve-text">
+              Email
+            </Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="your@email.com"
+              required
+              className="font-body border-hyve-content focus:border-hyve-accent"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="message" className="text-sm font-body font-medium text-hyve-text">
+              Message
+            </Label>
+            <Textarea
+              id="message"
+              name="message"
+              value={formData.message}
+              onChange={handleChange}
+              placeholder="Tell us about your project or inquiry..."
+              required
+              rows={4}
+              className="font-body border-hyve-content focus:border-hyve-accent resize-none"
+            />
+          </div>
+          
+          <div className="flex gap-3 pt-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+              className="flex-1 font-body border-hyve-content text-hyve-text hover:bg-hyve-content"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 bg-hyve-text hover:bg-hyve-text-dark text-white font-body"
+            >
+              {isSubmitting ? (
+                <>
+                  <span className="animate-pulse">Sending...</span>
+                </>
+              ) : (
+                <>
+                  <Send className="h-4 w-4 mr-2" />
+                  Send Message
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
 
 // Navigation structure
 const industriesItems = [
@@ -349,6 +491,22 @@ const MobileNavigation = () => {
               )}
             </div>
           </nav>
+          
+          {/* Contact Button - Mobile */}
+          <div className="mt-8 px-4">
+            <Button 
+              onClick={() => {
+                setIsOpen(false)
+                // Open contact form
+                const contactButton = document.querySelector('[data-contact-trigger]') as HTMLButtonElement
+                if (contactButton) contactButton.click()
+              }}
+              className="w-full bg-hyve-text hover:bg-hyve-text-dark text-white font-body flex items-center justify-center gap-2"
+            >
+              <Send className="h-4 w-4" />
+              Contact Us
+            </Button>
+          </div>
         </SheetContent>
       </Sheet>
     </div>
@@ -394,10 +552,16 @@ export const Header = () => {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <DesktopNavigation />
+          <div className="hidden lg:flex items-center gap-4">
+            <DesktopNavigation />
+            <ContactForm />
+          </div>
 
-          {/* Mobile Navigation */}
-          <MobileNavigation />
+          {/* Mobile Navigation and Contact */}
+          <div className="flex lg:hidden items-center gap-2">
+            <ContactForm />
+            <MobileNavigation />
+          </div>
         </div>
       </div>
     </motion.header>
