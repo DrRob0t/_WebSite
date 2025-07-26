@@ -17,6 +17,12 @@ interface PointData {
   index: number
 }
 
+// IMPORTANT: When updating Tailwind colors, update these RGB values:
+// hyve.text (#166088) = RGB(0.086, 0.376, 0.533)
+// hyve.background (#F4F2F3) = #F4F2F3
+// hyve.content (#CDE2E7) = #CDE2E7
+const HYVE_TEXT_RGB = { r: 0.086, g: 0.376, b: 0.533 } // #166088
+
 /**
  * 🌐 CUSTOM MESH GRID BACKGROUND
  *
@@ -40,17 +46,14 @@ export const CustomMeshBackground = ({
   waveFrequency = 0.3, // Frequency of waves across the grid
   waveSpeed = 0.65, // Speed of wave animation
 }: CustomMeshBackgroundProps) => {
-  // IMPORTANT: When updating Tailwind colors, update these RGB values:
-  // hyve.text (#166088) = RGB(0.086, 0.376, 0.533)
-  // hyve.background (#F4F2F3) = #F4F2F3
-  // hyve.content (#CDE2E7) = #CDE2E7
-  const HYVE_TEXT_RGB = { r: 0.086, g: 0.376, b: 0.533 } // #166088
-
   const mountRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
 
   useEffect(() => {
     if (!enabled || !mountRef.current) return
+
+    // Capture the current ref value for cleanup
+    const currentMount = mountRef.current
 
     // @ts-expect-error - Three.js global
     if (!window.THREE) {
@@ -404,8 +407,6 @@ export const CustomMeshBackground = ({
 
     // Click handler to create depression effect
     const handleClick = (event: MouseEvent) => {
-      console.log('🔵 Canvas click detected!', { x: event.clientX, y: event.clientY })
-
       const rect = renderer.domElement.getBoundingClientRect()
       mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
       mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
@@ -485,8 +486,6 @@ export const CustomMeshBackground = ({
     // Add click event listener
     renderer.domElement.addEventListener('click', handleClick, false)
 
-    console.log('🎯 CustomMeshBackground initialized with blended wave and physics animation')
-
     // Start the main animation loop
     animate()
 
@@ -519,7 +518,6 @@ export const CustomMeshBackground = ({
 
     // Cleanup
     return () => {
-      console.log('🧹 Cleaning up CustomMeshBackground')
       window.removeEventListener('resize', handleResize)
       renderer.domElement.removeEventListener('click', handleClick)
 
@@ -536,8 +534,8 @@ export const CustomMeshBackground = ({
       })
       visualRipples.length = 0
 
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement)
+      if (currentMount && renderer.domElement) {
+        currentMount.removeChild(renderer.domElement)
       }
 
       // Clean up geometries and materials

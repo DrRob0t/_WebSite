@@ -61,7 +61,6 @@ const ContactForm = () => {
 
     // Simulate form submission
     // In production, you'd send this to your backend
-    console.log('Form submitted:', formData)
 
     // For now, we'll just open the email client
     const mailtoLink = `mailto:info@hyvedynamics.com?subject=Contact from ${formData.name}&body=${encodeURIComponent(
@@ -102,7 +101,7 @@ const ContactForm = () => {
             Get in Touch
           </DialogTitle>
           <DialogDescription className="text-hyve-text/70 font-body">
-            Send us a message and we'll get back to you as soon as possible.
+            Send us a message and we&apos;ll get back to you as soon as possible.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
