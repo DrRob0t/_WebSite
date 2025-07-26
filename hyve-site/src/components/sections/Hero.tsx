@@ -1,7 +1,8 @@
-import React from "react"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { ArrowRight, ChevronDown } from "lucide-react"
+import { motion } from 'framer-motion'
+import { ArrowRight, ChevronDown } from 'lucide-react'
+import React from 'react'
+
+import { Button } from '@/components/ui/button'
 
 // Animation variants
 const containerVariants = {
@@ -16,12 +17,12 @@ const containerVariants = {
 }
 
 const itemVariants = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     x: -30,
   },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     x: 0,
     transition: {
       duration: 1,
@@ -32,20 +33,18 @@ const itemVariants = {
 
 const fadeInVariants = {
   hidden: { opacity: 0 },
-  visible: { 
+  visible: {
     opacity: 1,
     transition: {
       duration: 1.2,
-      ease: "easeOut"
-    }
-  }
+      ease: 'easeOut',
+    },
+  },
 }
 
 export const Hero = () => {
   return (
-    <section 
-      className="relative h-screen flex items-center overflow-hidden pointer-events-none"
-    >
+    <section className="relative h-screen flex items-center overflow-hidden pointer-events-none">
       {/* Asymmetric Layout Container */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -58,16 +57,13 @@ export const Hero = () => {
           >
             {/* Subtle background for text contrast */}
             <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl" />
-            
+
             <div className="relative z-10">
               {/* Subtle accent line */}
-              <motion.div 
-                variants={itemVariants}
-                className="w-12 h-[2px] bg-hyve-accent mb-8"
-              />
+              <motion.div variants={itemVariants} className="w-12 h-[2px] bg-hyve-accent mb-8" />
 
               {/* Main Headline */}
-              <motion.h1 
+              <motion.h1
                 variants={itemVariants}
                 className="text-4xl md:text-6xl lg:text-7xl font-extralight leading-[1.1] mb-6"
               >
@@ -75,35 +71,35 @@ export const Hero = () => {
                 <span className="block text-hyve-text mt-1">Evolution Through Data.</span>
                 <span className="block mt-1">
                   <span className="relative font-normal italic">
-                    
                     {/* Main gradient text */}
                     <span className="relative hyve-text-gradient">
-                    <br></br>  
+                      <br></br>
                     </span>
                   </span>
                 </span>
               </motion.h1>
 
               {/* Refined Subheadline */}
-              <motion.p 
+              <motion.p
                 variants={itemVariants}
                 className="text-base md:text-lg text-hyve-text/70 max-w-md mb-10 font-light leading-relaxed"
               >
-                Hyve’s Haptic Matrix unlocks real-world, high-density data where it matters most—fueling insight, driving 
-                innovation, and enabling intelligent evolution across machines, vehicles, and structures.
+                Hyve’s Haptic Matrix unlocks real-world, high-density data where it matters
+                most—fueling insight, driving innovation, and enabling intelligent evolution across
+                machines, vehicles, and structures.
               </motion.p>
 
               {/* Elegant CTA Group */}
-              <motion.div 
+              <motion.div
                 variants={itemVariants}
                 className="flex flex-col sm:flex-row gap-4 pointer-events-auto"
               >
-                <Button 
+                <Button
                   size="lg"
                   className="group bg-transparent border border-hyve-text text-hyve-text hover:bg-hyve-text hover:text-white px-8 py-5 transition-all duration-300"
                   onClick={() => {
-                    document.getElementById('technology')?.scrollIntoView({ 
-                      behavior: 'smooth' 
+                    document.getElementById('technology')?.scrollIntoView({
+                      behavior: 'smooth',
                     })
                   }}
                 >
@@ -112,8 +108,8 @@ export const Hero = () => {
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </Button>
-                
-                <button 
+
+                <button
                   className="text-sm text-hyve-text/60 hover:text-hyve-accent transition-colors duration-300 text-left pointer-events-auto"
                   onClick={() => window.open('mailto:info@hyvedynamics.com', '_blank')}
                 >
@@ -139,7 +135,7 @@ export const Hero = () => {
                 transition={{
                   duration: 6,
                   repeat: Infinity,
-                  ease: "easeInOut"
+                  ease: 'easeInOut',
                 }}
                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
               >
@@ -160,7 +156,7 @@ export const Hero = () => {
       >
         <motion.div
           animate={{ y: [0, 5, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
           <ChevronDown className="w-6 h-6 text-hyve-text/30" />
         </motion.div>
@@ -170,4 +166,4 @@ export const Hero = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-hyve-background/5 via-transparent to-transparent" />
     </section>
   )
-} 
+}

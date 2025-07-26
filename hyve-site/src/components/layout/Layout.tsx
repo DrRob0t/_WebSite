@@ -1,5 +1,5 @@
-import { Header } from "./Header"
-import { Footer } from "./Footer"
+import { Footer } from './Footer'
+import { Header } from './Header'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -9,10 +9,8 @@ export const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="min-h-screen bg-hyve-background flex flex-col">
       <Header />
-      <main className="relative flex-1">
-        {children}
-      </main>
+      <main className="relative flex-1">{children}</main>
       <Footer />
     </div>
   )
-} 
+}

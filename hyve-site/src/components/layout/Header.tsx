@@ -1,5 +1,31 @@
-import React, { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import { motion } from 'framer-motion'
+import {
+  Menu,
+  ChevronRight,
+  Plane,
+  Car,
+  Wind,
+  Shield,
+  Bot,
+  FileText,
+  Calendar,
+  Mail,
+  Newspaper,
+  Send,
+} from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -7,24 +33,15 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Menu, ChevronRight, Plane, Car, Wind, Shield, Bot, FileText, Calendar, Mail, Newspaper, Send } from "lucide-react"
-import { cn } from "@/lib/utils"
+} from '@/components/ui/navigation-menu'
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet'
+import { Textarea } from '@/components/ui/textarea'
+import { cn } from '@/lib/utils'
 
 // Logo component
 const Logo = () => (
   <div className="flex items-center space-x-">
-    <img 
-      src="/src/assets/logo/HD-logo-dk.svg" 
-      alt="Hyve Dynamics" 
-      className="h-10 w-auto"
-    />
+    <img src="/src/assets/logo/HD-logo-dk.svg" alt="Hyve Dynamics" className="h-10 w-auto" />
   </div>
 )
 
@@ -34,24 +51,24 @@ const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
+
     // Simulate form submission
     // In production, you'd send this to your backend
     console.log('Form submitted:', formData)
-    
+
     // For now, we'll just open the email client
     const mailtoLink = `mailto:info@hyvedynamics.com?subject=Contact from ${formData.name}&body=${encodeURIComponent(
       `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
     )}`
     window.open(mailtoLink)
-    
+
     setTimeout(() => {
       setIsSubmitting(false)
       setOpen(false)
@@ -63,14 +80,14 @@ const ContactForm = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }))
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button 
+        <Button
           size="sm"
           className="bg-hyve-text hover:bg-hyve-text-dark text-white font-body flex items-center gap-2"
           data-contact-trigger
@@ -81,7 +98,9 @@ const ContactForm = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] bg-hyve-background">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-body font-light text-hyve-header">Get in Touch</DialogTitle>
+          <DialogTitle className="text-2xl font-body font-light text-hyve-header">
+            Get in Touch
+          </DialogTitle>
           <DialogDescription className="text-hyve-text/70 font-body">
             Send us a message and we'll get back to you as soon as possible.
           </DialogDescription>
@@ -101,7 +120,7 @@ const ContactForm = () => {
               className="font-body border-hyve-content focus:border-hyve-accent"
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="email" className="text-sm font-body font-medium text-hyve-text">
               Email
@@ -117,7 +136,7 @@ const ContactForm = () => {
               className="font-body border-hyve-content focus:border-hyve-accent"
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="message" className="text-sm font-body font-medium text-hyve-text">
               Message
@@ -133,7 +152,7 @@ const ContactForm = () => {
               className="font-body border-hyve-content focus:border-hyve-accent resize-none"
             />
           </div>
-          
+
           <div className="flex gap-3 pt-4">
             <Button
               type="button"
@@ -168,62 +187,62 @@ const ContactForm = () => {
 
 // Navigation structure
 const industriesItems = [
-  { 
-    name: "Aerospace", 
-    href: "/industries/aerospace",
+  {
+    name: 'Aerospace',
+    href: '/industries/aerospace',
     icon: Plane,
-    description: "Advanced sensing for aviation and space applications"
+    description: 'Advanced sensing for aviation and space applications',
   },
-  { 
-    name: "Motorsports", 
-    href: "/industries/motorsports",
+  {
+    name: 'Motorsports',
+    href: '/industries/motorsports',
     icon: Car,
-    description: "Real-time aerodynamic data for racing performance"
+    description: 'Real-time aerodynamic data for racing performance',
   },
-  { 
-    name: "Energy", 
-    href: "/industries/energy",
+  {
+    name: 'Energy',
+    href: '/industries/energy',
     icon: Wind,
-    description: "Optimizing renewable energy systems"
+    description: 'Optimizing renewable energy systems',
   },
-  { 
-    name: "Structural Health Monitoring", 
-    href: "/industries/structural-health",
+  {
+    name: 'Structural Health Monitoring',
+    href: '/industries/structural-health',
     icon: Shield,
-    description: "Predictive maintenance for critical infrastructure"
+    description: 'Predictive maintenance for critical infrastructure',
   },
-  { 
-    name: "Robotics", 
-    href: "/industries/robotics",
+  {
+    name: 'Robotics',
+    href: '/industries/robotics',
     icon: Bot,
-    description: "Intelligent tactile sensing for autonomous systems"
+    description: 'Intelligent tactile sensing for autonomous systems',
   },
 ]
 
 const insightsItems = [
-  { 
-    name: "Blog", 
-    href: "/insights/blog",
+  {
+    name: 'Blog',
+    href: '/insights/blog',
     icon: Newspaper,
-    description: "Latest news and technology updates"
+    description: 'Latest news and technology updates',
   },
-  { 
-    name: "White Papers", 
-    href: "/insights/white-papers",
+  {
+    name: 'White Papers',
+    href: '/insights/white-papers',
     icon: FileText,
-    description: "Technical deep dives and research"
+    description: 'Technical deep dives and research',
   },
-  { 
-    name: "Events", 
-    href: "/insights/events",
+  {
+    name: 'Events',
+    href: '/insights/events',
     icon: Calendar,
-    description: "Conferences, webinars, and demos"
+    description: 'Conferences, webinars, and demos',
   },
-  { 
-    name: "Newsletter", 
-    href: "/insights/newsletter",
+  {
+    name: 'Newsletter',
+    href: '/insights/newsletter',
     icon: Mail,
-    description: "Subscribe to our monthly updates"
+    description: 'Subscribe to our monthly updates',
   },
 ]
 
@@ -236,9 +255,9 @@ const DesktopNavigation = () => (
         <NavigationMenuLink
           href="/"
           className={cn(
-            "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors",
-            "hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none",
-            "font-body text-hyve-text"
+            'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+            'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
+            'font-body text-hyve-text'
           )}
         >
           Home
@@ -250,9 +269,9 @@ const DesktopNavigation = () => (
         <NavigationMenuLink
           href="/haptic-matrix"
           className={cn(
-            "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors",
-            "hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none",
-            "font-body text-hyve-text"
+            'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+            'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
+            'font-body text-hyve-text'
           )}
         >
           Haptic Matrix
@@ -264,9 +283,9 @@ const DesktopNavigation = () => (
         <NavigationMenuLink
           href="#vision"
           className={cn(
-            "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors",
-            "hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none",
-            "font-body text-hyve-text"
+            'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+            'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
+            'font-body text-hyve-text'
           )}
         >
           Vision
@@ -280,16 +299,16 @@ const DesktopNavigation = () => (
         </NavigationMenuTrigger>
         <NavigationMenuContent>
           <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-hyve-background">
-            {industriesItems.map((item) => {
+            {industriesItems.map(item => {
               const Icon = item.icon
               return (
                 <li key={item.name}>
                   <NavigationMenuLink asChild>
                     <a
                       className={cn(
-                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-200",
-                        "hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark",
-                        "group hover:scale-[1.02]"
+                        'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-200',
+                        'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark',
+                        'group hover:scale-[1.02]'
                       )}
                       href={item.href}
                     >
@@ -318,16 +337,16 @@ const DesktopNavigation = () => (
         </NavigationMenuTrigger>
         <NavigationMenuContent>
           <ul className="grid w-[400px] gap-3 p-4 bg-hyve-background">
-            {insightsItems.map((item) => {
+            {insightsItems.map(item => {
               const Icon = item.icon
               return (
                 <li key={item.name}>
                   <NavigationMenuLink asChild>
                     <a
                       className={cn(
-                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-200",
-                        "hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark",
-                        "group hover:scale-[1.02]"
+                        'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-200',
+                        'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark',
+                        'group hover:scale-[1.02]'
                       )}
                       href={item.href}
                     >
@@ -362,11 +381,7 @@ const MobileNavigation = () => {
     <div className="lg:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button 
-            variant="ghost" 
-            size="icon"
-            className="hover:bg-hyve-content"
-          >
+          <Button variant="ghost" size="icon" className="hover:bg-hyve-content">
             <Menu className="h-5 w-5 text-hyve-text" />
             <span className="sr-only">Toggle menu</span>
           </Button>
@@ -383,9 +398,9 @@ const MobileNavigation = () => {
               href="/"
               onClick={() => setIsOpen(false)}
               className={cn(
-                "text-lg font-medium py-2 px-4 rounded-md transition-colors",
-                "hover:bg-hyve-content hover:text-hyve-text-dark",
-                "font-body text-hyve-text"
+                'text-lg font-medium py-2 px-4 rounded-md transition-colors',
+                'hover:bg-hyve-content hover:text-hyve-text-dark',
+                'font-body text-hyve-text'
               )}
             >
               Home
@@ -396,9 +411,9 @@ const MobileNavigation = () => {
               href="/haptic-matrix"
               onClick={() => setIsOpen(false)}
               className={cn(
-                "text-lg font-medium py-2 px-4 rounded-md transition-colors",
-                "hover:bg-hyve-content hover:text-hyve-text-dark",
-                "font-body text-hyve-text"
+                'text-lg font-medium py-2 px-4 rounded-md transition-colors',
+                'hover:bg-hyve-content hover:text-hyve-text-dark',
+                'font-body text-hyve-text'
               )}
             >
               Haptic Matrix
@@ -409,9 +424,9 @@ const MobileNavigation = () => {
               href="#vision"
               onClick={() => setIsOpen(false)}
               className={cn(
-                "text-lg font-medium py-2 px-4 rounded-md transition-colors",
-                "hover:bg-hyve-content hover:text-hyve-text-dark",
-                "font-body text-hyve-text"
+                'text-lg font-medium py-2 px-4 rounded-md transition-colors',
+                'hover:bg-hyve-content hover:text-hyve-text-dark',
+                'font-body text-hyve-text'
               )}
             >
               Vision
@@ -422,17 +437,19 @@ const MobileNavigation = () => {
               <button
                 onClick={() => setIndustriesOpen(!industriesOpen)}
                 className={cn(
-                  "w-full text-lg font-medium py-2 px-4 rounded-md transition-colors flex items-center justify-between",
-                  "hover:bg-hyve-content hover:text-hyve-text-dark",
-                  "font-body text-hyve-text"
+                  'w-full text-lg font-medium py-2 px-4 rounded-md transition-colors flex items-center justify-between',
+                  'hover:bg-hyve-content hover:text-hyve-text-dark',
+                  'font-body text-hyve-text'
                 )}
               >
                 Industries
-                <ChevronRight className={cn("h-4 w-4 transition-transform", industriesOpen && "rotate-90")} />
+                <ChevronRight
+                  className={cn('h-4 w-4 transition-transform', industriesOpen && 'rotate-90')}
+                />
               </button>
               {industriesOpen && (
                 <div className="mt-2 space-y-1 pl-4">
-                  {industriesItems.map((item) => {
+                  {industriesItems.map(item => {
                     const Icon = item.icon
                     return (
                       <a
@@ -440,9 +457,9 @@ const MobileNavigation = () => {
                         href={item.href}
                         onClick={() => setIsOpen(false)}
                         className={cn(
-                          "flex items-center gap-2 text-sm py-2 px-4 rounded-md transition-colors",
-                          "hover:bg-hyve-content hover:text-hyve-text-dark",
-                          "font-body text-hyve-text/80"
+                          'flex items-center gap-2 text-sm py-2 px-4 rounded-md transition-colors',
+                          'hover:bg-hyve-content hover:text-hyve-text-dark',
+                          'font-body text-hyve-text/80'
                         )}
                       >
                         <Icon className="h-4 w-4" />
@@ -459,17 +476,19 @@ const MobileNavigation = () => {
               <button
                 onClick={() => setInsightsOpen(!insightsOpen)}
                 className={cn(
-                  "w-full text-lg font-medium py-2 px-4 rounded-md transition-colors flex items-center justify-between",
-                  "hover:bg-hyve-content hover:text-hyve-text-dark",
-                  "font-body text-hyve-text"
+                  'w-full text-lg font-medium py-2 px-4 rounded-md transition-colors flex items-center justify-between',
+                  'hover:bg-hyve-content hover:text-hyve-text-dark',
+                  'font-body text-hyve-text'
                 )}
               >
                 Insights
-                <ChevronRight className={cn("h-4 w-4 transition-transform", insightsOpen && "rotate-90")} />
+                <ChevronRight
+                  className={cn('h-4 w-4 transition-transform', insightsOpen && 'rotate-90')}
+                />
               </button>
               {insightsOpen && (
                 <div className="mt-2 space-y-1 pl-4">
-                  {insightsItems.map((item) => {
+                  {insightsItems.map(item => {
                     const Icon = item.icon
                     return (
                       <a
@@ -477,9 +496,9 @@ const MobileNavigation = () => {
                         href={item.href}
                         onClick={() => setIsOpen(false)}
                         className={cn(
-                          "flex items-center gap-2 text-sm py-2 px-4 rounded-md transition-colors",
-                          "hover:bg-hyve-content hover:text-hyve-text-dark",
-                          "font-body text-hyve-text/80"
+                          'flex items-center gap-2 text-sm py-2 px-4 rounded-md transition-colors',
+                          'hover:bg-hyve-content hover:text-hyve-text-dark',
+                          'font-body text-hyve-text/80'
                         )}
                       >
                         <Icon className="h-4 w-4" />
@@ -491,14 +510,16 @@ const MobileNavigation = () => {
               )}
             </div>
           </nav>
-          
+
           {/* Contact Button - Mobile */}
           <div className="mt-8 px-4">
-            <Button 
+            <Button
               onClick={() => {
                 setIsOpen(false)
                 // Open contact form
-                const contactButton = document.querySelector('[data-contact-trigger]') as HTMLButtonElement
+                const contactButton = document.querySelector(
+                  '[data-contact-trigger]'
+                ) as HTMLButtonElement
                 if (contactButton) contactButton.click()
               }}
               className="w-full bg-hyve-text hover:bg-hyve-text-dark text-white font-body flex items-center justify-center gap-2"
@@ -522,30 +543,27 @@ export const Header = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
     }
-    
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   return (
     <motion.header
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
-        isScrolled 
-          ? "bg-hyve-background/95 backdrop-blur-md shadow-hyve border-b border-hyve-content" 
-          : "bg-hyve-background/80 backdrop-blur-sm"
+        'sticky top-0 z-50 w-full transition-all duration-300',
+        isScrolled
+          ? 'bg-hyve-background/95 backdrop-blur-md shadow-hyve border-b border-hyve-content'
+          : 'bg-hyve-background/80 backdrop-blur-sm'
       )}
     >
       <div className="hyve-container">
         <div className="flex h-16 items-center justify-between">
           {/* Logo Section */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.2 }}
-          >
+          <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
             <a href="/" className="flex items-center space-x-2">
               <Logo />
             </a>
@@ -566,4 +584,4 @@ export const Header = () => {
       </div>
     </motion.header>
   )
-} 
+}

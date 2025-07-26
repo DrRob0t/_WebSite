@@ -1,13 +1,14 @@
-import { motion } from "framer-motion"
-import { Separator } from "@/components/ui/separator"
-import { Mail, Linkedin, Building, Hash } from "lucide-react"
+import { motion } from 'framer-motion'
+import { Mail, Linkedin, Building, Hash } from 'lucide-react'
+
+import { Separator } from '@/components/ui/separator'
 
 // Logo component for footer
 const FooterLogo = () => (
   <div className="flex items-center space-x-2">
-    <img 
-      src="/src/assets/logo/logo_white.svg" 
-      alt="Hyve Dynamics Holdings" 
+    <img
+      src="/src/assets/logo/logo_white.svg"
+      alt="Hyve Dynamics Holdings"
       className="h-8 w-auto opacity-90 hover:opacity-100 transition-opacity"
     />
   </div>
@@ -15,41 +16,41 @@ const FooterLogo = () => (
 
 // Company information
 const companyInfo = {
-  name: "Hyve Dynamics Holdings",
-  email: "info@hyvedynamics.com",
-  companyNumber: "12258323",
-  linkedin: "https://uk.linkedin.com/company/hyve-dynamics"
+  name: 'Hyve Dynamics Holdings',
+  email: 'info@hyvedynamics.com',
+  companyNumber: '12258323',
+  linkedin: 'https://uk.linkedin.com/company/hyve-dynamics',
 }
 
 // Footer navigation sections
 const footerSections = [
   {
-    title: "Company",
+    title: 'Company',
     links: [
-      { name: "About Us", href: "#about" },
-      { name: "Our Technology", href: "#technology" },
-      { name: "Industries", href: "#industries" },
-      { name: "Careers", href: "#careers" }
-    ]
+      { name: 'About Us', href: '#about' },
+      { name: 'Our Technology', href: '#technology' },
+      { name: 'Industries', href: '#industries' },
+      { name: 'Careers', href: '#careers' },
+    ],
   },
   {
-    title: "Solutions",
+    title: 'Solutions',
     links: [
-      { name: "Aerospace", href: "#aerospace" },
-      { name: "Motorsport", href: "#motorsport" },
-      { name: "Energy", href: "#energy" },
-      { name: "Defense", href: "#defense" }
-    ]
+      { name: 'Aerospace', href: '#aerospace' },
+      { name: 'Motorsport', href: '#motorsport' },
+      { name: 'Energy', href: '#energy' },
+      { name: 'Defense', href: '#defense' },
+    ],
   },
   {
-    title: "Resources",
+    title: 'Resources',
     links: [
-      { name: "Case Studies", href: "#case-studies" },
-      { name: "White Papers", href: "#white-papers" },
-      { name: "News", href: "#news" },
-      { name: "Contact", href: "#contact" }
-    ]
-  }
+      { name: 'Case Studies', href: '#case-studies' },
+      { name: 'White Papers', href: '#white-papers' },
+      { name: 'News', href: '#news' },
+      { name: 'Contact', href: '#contact' },
+    ],
+  },
 ]
 
 export const Footer = () => {
@@ -63,7 +64,7 @@ export const Footer = () => {
         <div className="py-12 lg:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             {/* Company Information - Left Column */}
-            <motion.div 
+            <motion.div
               className="lg:col-span-4 space-y-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -71,33 +72,33 @@ export const Footer = () => {
               viewport={{ once: true }}
             >
               <FooterLogo />
-              
+
               <div className="space-y-4">
                 <p className="font-body text-hyve-background/80 leading-relaxed">
-                  Transforming industries through real-world intelligence. 
-                  We envision a future where data replaces assumptions, enabling 
-                  smarter and more efficient technological advancements.
+                  Transforming industries through real-world intelligence. We envision a future
+                  where data replaces assumptions, enabling smarter and more efficient technological
+                  advancements.
                 </p>
-                
+
                 {/* Contact Information */}
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3 group">
                     <Mail className="h-4 w-4 text-hyve-accent" />
-                    <a 
+                    <a
                       href={`mailto:${companyInfo.email}`}
                       className="font-sans text-sm text-hyve-background/80 hover:text-hyve-accent transition-colors"
                     >
                       {companyInfo.email}
                     </a>
                   </div>
-                  
+
                   <div className="flex items-center space-x-3">
                     <Building className="h-4 w-4 text-hyve-accent" />
                     <span className="font-sans text-sm text-hyve-background/80">
                       {companyInfo.name}
                     </span>
                   </div>
-                  
+
                   <div className="flex items-center space-x-3">
                     <Hash className="h-4 w-4 text-hyve-accent" />
                     <span className="font-sans text-sm text-hyve-background/80">
@@ -125,7 +126,7 @@ export const Footer = () => {
             <div className="lg:col-span-8">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
                 {footerSections.map((section, index) => (
-                  <motion.div 
+                  <motion.div
                     key={section.title}
                     className="space-y-4"
                     initial={{ opacity: 0, y: 20 }}
@@ -137,7 +138,7 @@ export const Footer = () => {
                       {section.title}
                     </h3>
                     <ul className="space-y-3">
-                      {section.links.map((link) => (
+                      {section.links.map(link => (
                         <li key={link.name}>
                           <a
                             href={link.href}
@@ -158,7 +159,7 @@ export const Footer = () => {
         <Separator className="bg-hyve-background/20" />
 
         {/* Bottom Footer */}
-        <motion.div 
+        <motion.div
           className="py-6 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -184,7 +185,7 @@ export const Footer = () => {
               </a>
             </div>
           </div>
-          
+
           <div className="font-sans text-sm text-hyve-background/60">
             Registered in England & Wales
           </div>
@@ -192,4 +193,4 @@ export const Footer = () => {
       </div>
     </footer>
   )
-} 
+}

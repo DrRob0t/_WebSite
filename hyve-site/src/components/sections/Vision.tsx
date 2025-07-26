@@ -1,12 +1,12 @@
-import React from "react"
-import { motion } from "framer-motion"
+import { motion } from 'framer-motion'
+import React from 'react'
 
 // Helper to use Tailwind colors in SVG (update these when changing colors in tailwind.config.js)
 const HYVE_COLORS = {
-  interactive: "rgb(0 149 229)",      // #0095E5
-  interactiveLight: "rgb(0 167 209)", // #00A7D1
-  accent: "rgb(127 179 190)",         // #7FB3BE
-  text: "rgb(22 96 136)",             // #166088
+  interactive: 'rgb(0 149 229)', // #0095E5
+  interactiveLight: 'rgb(0 167 209)', // #00A7D1
+  accent: 'rgb(127 179 190)', // #7FB3BE
+  text: 'rgb(22 96 136)', // #166088
 }
 
 // Animation variants matching Hero section
@@ -22,12 +22,12 @@ const containerVariants = {
 }
 
 const itemVariants = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     x: -30,
   },
-  visible: { 
-    opacity: 1, 
+  visible: {
+    opacity: 1,
     x: 0,
     transition: {
       duration: 1,
@@ -38,19 +38,19 @@ const itemVariants = {
 
 const fadeInVariants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { 
+  visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 1.2,
-      ease: "easeOut"
-    }
-  }
+      ease: 'easeOut',
+    },
+  },
 }
 
 export const Vision = () => {
   return (
-    <section 
+    <section
       className="relative min-h-screen flex items-center overflow-hidden py-20 lg:py-32 pointer-events-none"
       id="vision"
     >
@@ -62,18 +62,15 @@ export const Vision = () => {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: '-100px' }}
             className="text-left relative"
           >
             {/* Subtle background for text contrast */}
             <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl" />
-            
+
             <div className="relative z-10">
               {/* Section Label */}
-              <motion.div 
-                variants={itemVariants}
-                className="mb-8"
-              >
+              <motion.div variants={itemVariants} className="mb-8">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-12 h-[2px] bg-hyve-accent" />
                   <span className="text-sm font-medium tracking-widest text-hyve-text/70 uppercase">
@@ -83,41 +80,44 @@ export const Vision = () => {
               </motion.div>
 
               {/* Main Headline */}
-              <motion.h2 
+              <motion.h2
                 variants={itemVariants}
                 className="text-3xl md:text-5xl lg:text-6xl font-extralight leading-[1.1] mb-8"
               >
                 <span className="block text-hyve-text">Transforming Industries</span>
                 <span className="block mt-2">
-                  Through{" "}
+                  Through{' '}
                   <span className="relative font-normal">
-                    <span className="relative hyve-text-gradient">
-                      Real-World Intelligence
-                    </span>
+                    <span className="relative hyve-text-gradient">Real-World Intelligence</span>
                   </span>
                 </span>
               </motion.h2>
 
               {/* Vision Statement */}
               <motion.div className="space-y-6">
-                <motion.p 
+                <motion.p
                   variants={itemVariants}
                   className="text-base md:text-lg text-hyve-text/80 font-light leading-relaxed"
                 >
-                  <span className="font-semibold text-hyve-text">Hyve Dynamics</span> envisions a future where <span className="font-semibold text-hyve-text">real-world data replaces assumptions</span>, 
-                  enabling smarter, more sustainable, and more efficient technological advancements. 
-                  By seamlessly integrating high-density sensory solutions into complex surfaces, 
-                  we empower industries to optimize performance, safety, and sustainability in 
-                  ways never before possible.
+                  <span className="font-semibold text-hyve-text">Hyve Dynamics</span> envisions a
+                  future where{' '}
+                  <span className="font-semibold text-hyve-text">
+                    real-world data replaces assumptions
+                  </span>
+                  , enabling smarter, more sustainable, and more efficient technological
+                  advancements. By seamlessly integrating high-density sensory solutions into
+                  complex surfaces, we empower industries to optimize performance, safety, and
+                  sustainability in ways never before possible.
                 </motion.p>
 
-                <motion.p 
+                <motion.p
                   variants={itemVariants}
                   className="text-base md:text-lg text-hyve-text/70 font-light leading-relaxed"
                 >
-                  We are committed to leading the way in <span className="font-semibold text-hyve-text">aerodynamic innovation</span>, helping industries 
-                  accelerate development cycles, reduce costs, and achieve net-zero goals through 
-                  cutting-edge sensor technology.
+                  We are committed to leading the way in{' '}
+                  <span className="font-semibold text-hyve-text">aerodynamic innovation</span>,
+                  helping industries accelerate development cycles, reduce costs, and achieve
+                  net-zero goals through cutting-edge sensor technology.
                 </motion.p>
               </motion.div>
             </div>
@@ -141,7 +141,7 @@ export const Vision = () => {
                 transition={{
                   duration: 4,
                   repeat: Infinity,
-                  ease: "easeInOut"
+                  ease: 'easeInOut',
                 }}
                 className="absolute top-1/4 left-1/4 w-2 h-2 bg-hyve-accent rounded-full"
               />
@@ -152,8 +152,8 @@ export const Vision = () => {
                 transition={{
                   duration: 4,
                   repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0.5
+                  ease: 'easeInOut',
+                  delay: 0.5,
                 }}
                 className="absolute top-1/2 right-1/3 w-3 h-3 bg-hyve-interactive rounded-full"
               />
@@ -164,12 +164,12 @@ export const Vision = () => {
                 transition={{
                   duration: 4,
                   repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 1
+                  ease: 'easeInOut',
+                  delay: 1,
                 }}
                 className="absolute bottom-1/3 left-1/2 w-2 h-2 bg-hyve-accent rounded-full"
               />
-              
+
               {/* Connecting lines */}
               <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 400">
                 <motion.path
@@ -180,7 +180,7 @@ export const Vision = () => {
                   opacity="0.3"
                   initial={{ pathLength: 0 }}
                   whileInView={{ pathLength: 1 }}
-                  transition={{ duration: 2, ease: "easeInOut" }}
+                  transition={{ duration: 2, ease: 'easeInOut' }}
                   viewport={{ once: true }}
                 />
                 <motion.path
@@ -191,7 +191,7 @@ export const Vision = () => {
                   opacity="0.3"
                   initial={{ pathLength: 0 }}
                   whileInView={{ pathLength: 1 }}
-                  transition={{ duration: 2, delay: 0.5, ease: "easeInOut" }}
+                  transition={{ duration: 2, delay: 0.5, ease: 'easeInOut' }}
                   viewport={{ once: true }}
                 />
                 <defs>
@@ -216,4 +216,4 @@ export const Vision = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-transparent via-hyve-background/5 to-transparent" />
     </section>
   )
-} 
+}
