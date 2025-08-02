@@ -36,7 +36,7 @@ export const Hero = () => {
     <section className="relative h-screen flex items-center overflow-hidden pointer-events-none">
       {/* Asymmetric Layout Container */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
           {/* Left Content */}
           <motion.div
             variants={containerVariants}
@@ -113,7 +113,7 @@ export const Hero = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="text-left relative w-[400px] h-[500px] justify-self-end"
+            className="text-left relative w-[500px] h-[500px] justify-self-end"
           >
             <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl border border-gray-800" />
 
