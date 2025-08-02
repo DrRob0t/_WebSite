@@ -44,8 +44,8 @@ export const HeroSwiper: React.FC<HeroSwiperProps> = ({ className = '' }) => {
             <div className="w-full h-full relative overflow-hidden">
               {/* Video Background */}
               {slide.video && (
-                <div className="absolute inset-0 flex items-center justify-center p-4">
-                  <video autoPlay loop muted playsInline className="w-full h-full">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <video autoPlay loop muted playsInline className="hero-video">
                     <source src={slide.video} type="video/webm" />
                   </video>
                 </div>

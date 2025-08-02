@@ -118,7 +118,7 @@ export const Hero = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="relative w-[600px] h-[600px] justify-self-end lg:justify-self-center"
+            className="relative w-[650px] h-[600px] justify-self-end lg:justify-self-center"
           >
             {/* Removed background - fully transparent now */}
             <div className="relative z-10 w-full h-full">

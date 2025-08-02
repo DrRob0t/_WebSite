@@ -32,10 +32,10 @@
 
 /* Video styling - make videos bigger */
 .hero-swiper video {
-  width: 180%;
-  height: 180%;
+  width: 150%;
+  height: 150%;
   object-fit: contain;
-  transform: scale(1.1); /* Make videos even larger */
+  transform: scale(1); /* Make videos even larger */
 }
 
 /* Ensure slides don't have pointer events except for pagination */
