@@ -3,6 +3,7 @@ import { ArrowRight, ChevronDown } from 'lucide-react'
 import React from 'react'
 
 import { Button } from '@/components/ui/button'
+import { HeroSwiper } from '@/components/ui/HeroSwiper'
 
 // Animation variants
 const containerVariants = {
@@ -108,16 +109,18 @@ export const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Right Side - Similar Container */}
+          {/* Right Side - Swiper Container */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
             className="text-left relative w-[500px] h-[500px] justify-self-end"
           >
-            <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl border border-gray-800" />
+            <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl" />
 
-            <div className="relative z-10">{/* Content will go here - empty for now */}</div>
+            <div className="relative z-10 w-full h-full">
+              <HeroSwiper className="pointer-events-auto" />
+            </div>
           </motion.div>
         </div>
       </div>

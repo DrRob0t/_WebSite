@@ -1,0 +1,17 @@
+/* Custom Swiper styles for Hero section */
+.hero-swiper .swiper {
+  position: relative;
+}
+
+.hero-swiper .swiper-pagination {
+  bottom: 8px !important;
+}
+
+.hero-swiper .swiper-pagination-bullet {
+  transition: all 0.3s ease;
+  opacity: 1;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  transform: scale(1.2);
+}
