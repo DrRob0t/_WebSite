@@ -9,6 +9,9 @@ interface CustomMeshBackgroundProps {
   waveAmplitude?: number // Height of the wave effect
   waveFrequency?: number // How many waves across the grid
   waveSpeed?: number // Speed of wave animation
+  streamlineCount?: number // Number of air flow streamlines
+  streamlineOpacity?: number // Opacity of streamlines (0-1)
+  streamlineSpeed?: number // Speed of streamline flow animation
 }
 
 interface PointData {
@@ -45,6 +48,9 @@ export const CustomMeshBackground = ({
   waveAmplitude = 0.3, // Gentle wave height
   waveFrequency = 0.3, // Frequency of waves across the grid
   waveSpeed = 0.65, // Speed of wave animation
+  streamlineCount = 12, // Number of air flow streamlines
+  streamlineOpacity = 0.15, // Very subtle by default
+  streamlineSpeed = 1.0, // Normal flow speed
 }: CustomMeshBackgroundProps) => {
   const mountRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -105,6 +111,101 @@ export const CustomMeshBackground = ({
 
     // Add horizontal line segments
     const gridYOffset = 7 // Lift the grid up by 2 units
+    
+    // ============ TOP HALF ANIMATION: Air Flow Streamlines ============
+    // Create streamlines for wind tunnel-like air flow visualization
+    const streamlines: any[] = [] // eslint-disable-line @typescript-eslint/no-explicit-any
+    const streamlineGroup = new THREE.Group()
+    
+    // Create streamlines at different heights
+    for (let i = 0; i < streamlineCount; i++) {
+      const y = 15 + (i / (streamlineCount - 1)) * 15 // Y: 15 to 30
+      const phase = (i / streamlineCount) * Math.PI * 2 // Phase offset for variety
+      
+      // Create a curved path for the streamline
+      const points = []
+      const segments = 100
+      
+      for (let j = 0; j <= segments; j++) {
+        const t = j / segments
+        const x = -60 + t * 120 // Flow from left to right
+        const z = Math.sin(t * Math.PI * 2 + phase) * 10 - 5 // Gentle sine wave
+        const yOffset = Math.sin(t * Math.PI * 3 + phase * 0.5) * 2 // Vertical undulation
+        points.push(new THREE.Vector3(x, y + yOffset, z))
+      }
+      
+      const curve = new THREE.CatmullRomCurve3(points)
+      
+      // Create streamline geometry with gradient opacity
+      const streamlineGeometry = new THREE.BufferGeometry()
+      const streamlinePoints = curve.getPoints(200)
+      const positions = new Float32Array(streamlinePoints.length * 3)
+      const opacities = new Float32Array(streamlinePoints.length)
+      
+      streamlinePoints.forEach((point, idx) => {
+        positions[idx * 3] = point.x
+        positions[idx * 3 + 1] = point.y
+        positions[idx * 3 + 2] = point.z
+        
+        // Fade in and out at edges
+        const t = idx / (streamlinePoints.length - 1)
+        const fadeIn = Math.min(t * 5, 1) // Quick fade in
+        const fadeOut = Math.min((1 - t) * 5, 1) // Quick fade out
+        opacities[idx] = fadeIn * fadeOut
+      })
+      
+      streamlineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+      streamlineGeometry.setAttribute('opacity', new THREE.Float32BufferAttribute(opacities, 1))
+      
+      // Create custom shader material for smooth gradient
+      const streamlineMaterial = new THREE.ShaderMaterial({
+        transparent: true,
+        uniforms: {
+          time: { value: 0 },
+          baseOpacity: { value: streamlineOpacity }, // Configurable opacity
+          color: { value: new THREE.Color(0x166088) },
+        },
+        vertexShader: `
+          attribute float opacity;
+          varying float vOpacity;
+          varying float vX;
+          uniform float time;
+          
+          void main() {
+            vOpacity = opacity;
+            vX = position.x;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          uniform float time;
+          uniform float baseOpacity;
+          uniform vec3 color;
+          varying float vOpacity;
+          varying float vX;
+          
+          void main() {
+            // Create moving gradient effect
+            float flow = sin((vX + time * 20.0) * 0.1) * 0.5 + 0.5;
+            float finalOpacity = vOpacity * baseOpacity * (0.5 + flow * 0.5);
+            gl_FragColor = vec4(color, finalOpacity);
+          }
+        `,
+      })
+      
+      const streamline = new THREE.Line(streamlineGeometry, streamlineMaterial)
+      streamlineGroup.add(streamline)
+      
+      streamlines.push({
+        mesh: streamline,
+        material: streamlineMaterial,
+        curve: curve,
+        phase: phase,
+        speed: (0.5 + Math.random() * 0.3) * streamlineSpeed, // Varying speeds with multiplier
+      })
+    }
+    
+    scene.add(streamlineGroup)
     for (let i = 0; i <= gridDivisions; i++) {
       const z = (i / gridDivisions) * gridDepth - gridDepth / 2
       for (let j = 0; j < gridDivisions; j++) {
@@ -300,6 +401,17 @@ export const CustomMeshBackground = ({
       const pointPositions = pointGeometry.attributes.position.array as Float32Array
       const gridPositions = gridGeometry.attributes.position.array as Float32Array
       let hasPhysicsMovement = false
+      
+      // ============ ANIMATE STREAMLINES ============
+      // Update time uniform for shader animation
+      streamlines.forEach((streamline, index) => {
+        // Update shader time for flowing effect
+        streamline.material.uniforms.time.value = waveTime * streamline.speed
+        
+        // Optional: Add subtle vertical movement to the entire streamline
+        const verticalOffset = Math.sin(waveTime * 0.3 + streamline.phase) * 0.5
+        streamline.mesh.position.y = verticalOffset
+      })
 
       // Physics animation parameters
       const springStrength = 0.035
@@ -538,6 +650,13 @@ export const CustomMeshBackground = ({
         currentMount.removeChild(renderer.domElement)
       }
 
+      // Clean up streamlines
+      streamlines.forEach(streamline => {
+        streamlineGroup.remove(streamline.mesh)
+        streamline.mesh.geometry.dispose()
+        streamline.material.dispose()
+      })
+      
       // Clean up geometries and materials
       gridGeometry.dispose()
       pointGeometry.dispose()
@@ -547,7 +666,7 @@ export const CustomMeshBackground = ({
 
       sceneRef.current = null
     }
-  }, [enabled, vertexPointSize, rippleRadiusMultiplier, waveAmplitude, waveFrequency, waveSpeed])
+  }, [enabled, vertexPointSize, rippleRadiusMultiplier, waveAmplitude, waveFrequency, waveSpeed, streamlineCount, streamlineOpacity, streamlineSpeed])
 
   if (!enabled) {
     return <div className={className}>{children}</div>
