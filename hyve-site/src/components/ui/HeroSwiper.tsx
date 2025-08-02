@@ -12,12 +12,12 @@ interface HeroSwiperProps {
 }
 
 const slides = [
-  { id: 1, name: 'Aerospace', content: '' },
-  { id: 2, name: 'Health Monitoring', content: '' },
-  { id: 3, name: 'Motorsport', content: '' },
-  { id: 4, name: 'Energy', content: '' },
-  { id: 5, name: 'Robotics', content: '' },
-  { id: 6, name: 'Hyve', content: '' },
+  { id: 1, name: 'Aerospace', video: '/models/3d_animations/A320.webm' },
+  { id: 2, name: 'Health Monitoring', video: null },
+  { id: 3, name: 'Motorsport', video: '/models/3d_animations/F1-Car.webm' },
+  { id: 4, name: 'Energy', video: '/models/3d_animations/Wind-Turbine.webm' },
+  { id: 5, name: 'Robotics', video: null },
+  { id: 6, name: 'Hyve', video: null },
 ]
 
 export const HeroSwiper: React.FC<HeroSwiperProps> = ({ className = '' }) => {
@@ -33,7 +33,7 @@ export const HeroSwiper: React.FC<HeroSwiperProps> = ({ className = '' }) => {
           bulletActiveClass: 'swiper-pagination-bullet-active !bg-hyve-text !w-2 !h-2',
         }}
         autoplay={{
-          delay: 4000,
+          delay: 6000, // Change this value to adjust slide duration (in milliseconds) - 4000 = 4 seconds
           disableOnInteraction: false,
         }}
         loop={true}
@@ -41,10 +41,21 @@ export const HeroSwiper: React.FC<HeroSwiperProps> = ({ className = '' }) => {
       >
         {slides.map(slide => (
           <SwiperSlide key={slide.id} className="w-full h-full">
-            <div className="w-full h-full flex items-center justify-center p-8">
-              <div className="text-center">
-                <h3 className="text-2xl font-light text-hyve-text/20">{slide.name}</h3>
-                {/* Content placeholder - empty for now */}
+            <div className="w-full h-full relative overflow-hidden">
+              {/* Video Background */}
+              {slide.video && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <video autoPlay loop muted playsInline className="w-full h-full object-contain">
+                    <source src={slide.video} type="video/webm" />
+                  </video>
+                </div>
+              )}
+
+              {/* Slide Name Overlay */}
+              <div className="absolute bottom-16 left-0 right-0 text-center z-10">
+                <h3 className="text-xl font-light text-hyve-text/30 tracking-wider uppercase">
+                  {slide.name}
+                </h3>
               </div>
             </div>
           </SwiperSlide>
