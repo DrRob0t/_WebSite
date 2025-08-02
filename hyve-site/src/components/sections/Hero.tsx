@@ -120,7 +120,9 @@ export const Hero = () => {
             animate="visible"
             className="relative w-[650px] h-[600px] justify-self-end lg:justify-self-center"
           >
-            {/* Removed background - fully transparent now */}
+            {/* Subtle background for visual consistency with left side */}
+            <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl" />
+            
             <div className="relative z-10 w-full h-full">
               <HeroSwiper className="pointer-events-auto" />
             </div>

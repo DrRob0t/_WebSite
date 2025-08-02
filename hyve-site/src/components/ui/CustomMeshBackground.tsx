@@ -12,6 +12,7 @@ interface CustomMeshBackgroundProps {
   streamlineCount?: number // Number of air flow streamlines
   streamlineOpacity?: number // Opacity of streamlines (0-1)
   streamlineSpeed?: number // Speed of streamline flow animation
+  streamlineSpeedMultiplier?: number // Independent speed control for streamlines relative to mesh
 }
 
 interface PointData {
@@ -51,6 +52,7 @@ export const CustomMeshBackground = ({
   streamlineCount = 12, // Number of air flow streamlines
   streamlineOpacity = 0.15, // Very subtle by default
   streamlineSpeed = 1.0, // Normal flow speed
+  streamlineSpeedMultiplier = 2.7, // Streamlines move 30% slower than mesh by default
 }: CustomMeshBackgroundProps) => {
   const mountRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -300,6 +302,7 @@ export const CustomMeshBackground = ({
 
     // Wave animation state
     let waveTime = 0
+    let streamlineTime = 0 // Separate time for streamlines
     let animationId: number | null = null
 
     // Store original Y positions for wave calculation
@@ -395,8 +398,11 @@ export const CustomMeshBackground = ({
 
     // Main animation loop that handles both wave and physics
     const animate = () => {
-      // Increment wave time
+      // Increment wave time for mesh grid
       waveTime += 0.016 * waveSpeed // Assuming 60fps
+      
+      // Increment streamline time separately - can be faster or slower
+      streamlineTime += 0.016 * streamlineSpeed * streamlineSpeedMultiplier
 
       const pointPositions = pointGeometry.attributes.position.array as Float32Array
       const gridPositions = gridGeometry.attributes.position.array as Float32Array
@@ -405,11 +411,11 @@ export const CustomMeshBackground = ({
       // ============ ANIMATE STREAMLINES ============
       // Update time uniform for shader animation
       streamlines.forEach((streamline, index) => {
-        // Update shader time for flowing effect
-        streamline.material.uniforms.time.value = waveTime * streamline.speed
+        // Update shader time for flowing effect using separate streamlineTime
+        streamline.material.uniforms.time.value = streamlineTime * streamline.speed
         
         // Optional: Add subtle vertical movement to the entire streamline
-        const verticalOffset = Math.sin(waveTime * 0.3 + streamline.phase) * 0.5
+        const verticalOffset = Math.sin(streamlineTime * 0.2 + streamline.phase) * 0.5
         streamline.mesh.position.y = verticalOffset
       })
 
@@ -666,7 +672,7 @@ export const CustomMeshBackground = ({
 
       sceneRef.current = null
     }
-  }, [enabled, vertexPointSize, rippleRadiusMultiplier, waveAmplitude, waveFrequency, waveSpeed, streamlineCount, streamlineOpacity, streamlineSpeed])
+  }, [enabled, vertexPointSize, rippleRadiusMultiplier, waveAmplitude, waveFrequency, waveSpeed, streamlineCount, streamlineOpacity, streamlineSpeed, streamlineSpeedMultiplier])
 
   if (!enabled) {
     return <div className={className}>{children}</div>
