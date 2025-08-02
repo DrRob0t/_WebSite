@@ -36,8 +36,8 @@ export const Hero = () => {
   return (
     <section className="relative h-screen flex items-center overflow-hidden pointer-events-none">
       {/* Asymmetric Layout Container */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
+      <div className="relative z-10 w-full mx-auto px-6 lg:px-12" style={{ maxWidth: '1600px' }}>
+        <div className="grid lg:grid-cols-[1fr_600px] gap-12 lg:gap-24 items-center">
           {/* Left Content */}
           <motion.div
             variants={containerVariants}
@@ -57,8 +57,12 @@ export const Hero = () => {
                 variants={itemVariants}
                 className="text-4xl md:text-6xl lg:text-7xl font-extralight leading-[1.1] mb-6"
               >
-                <span className="block text-hyve-text">Adaptation Through Insight. </span>
-                <span className="block text-hyve-text mt-1">Evolution Through Data.</span>
+                <span className="block text-hyve-text">
+                  Adaptation Through <span className="font-medium">Insight</span>.{' '}
+                </span>
+                <span className="block text-hyve-text mt-1">
+                  Evolution Through <span className="font-medium">Data</span>.
+                </span>
                 <span className="block mt-1">
                   <span className="relative font-normal italic">
                     {/* Main gradient text */}
@@ -72,7 +76,7 @@ export const Hero = () => {
               {/* Refined Subheadline */}
               <motion.p
                 variants={itemVariants}
-                className="text-base md:text-lg text-hyve-text/70 max-w-md mb-10 font-light leading-relaxed"
+                className="text-base md:text-lg text-hyve-text/70 max-w-lg mb-10 font-light leading-relaxed"
               >
                 Hyve’s Haptic Matrix unlocks real-world, high-density data where it matters
                 most—fueling insight, driving innovation, and enabling intelligent evolution across
@@ -114,10 +118,9 @@ export const Hero = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="text-left relative w-[500px] h-[500px] justify-self-end"
+            className="relative w-[600px] h-[600px] justify-self-end lg:justify-self-center"
           >
-            <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl" />
-
+            {/* Removed background - fully transparent now */}
             <div className="relative z-10 w-full h-full">
               <HeroSwiper className="pointer-events-auto" />
             </div>

@@ -1,6 +1,19 @@
 /* Custom Swiper styles for Hero section */
+.hero-swiper {
+  background: transparent !important;
+}
+
 .hero-swiper .swiper {
   position: relative;
+  background: transparent !important;
+}
+
+.hero-swiper .swiper-wrapper {
+  background: transparent !important;
+}
+
+.hero-swiper .swiper-slide {
+  background: transparent !important;
 }
 
 .hero-swiper .swiper-pagination {
@@ -17,12 +30,12 @@
   transform: scale(1.2);
 }
 
-/* Video styling */
+/* Video styling - make videos bigger */
 .hero-swiper video {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
+  width: 180%;
+  height: 180%;
+  object-fit: contain;
+  transform: scale(1.1); /* Make videos even larger */
 }
 
 /* Ensure slides don't have pointer events except for pagination */
