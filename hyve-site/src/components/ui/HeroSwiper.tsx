@@ -33,7 +33,7 @@ export const HeroSwiper: React.FC<HeroSwiperProps> = ({ className = '' }) => {
           bulletActiveClass: 'swiper-pagination-bullet-active !bg-hyve-text !w-2 !h-2',
         }}
         autoplay={{
-          delay: 6000, // Change this value to adjust slide duration (in milliseconds) - 4000 = 4 seconds
+          delay: 10000, // Change this value to adjust slide duration (in milliseconds) - 4000 = 4 seconds
           disableOnInteraction: false,
         }}
         loop={true}
