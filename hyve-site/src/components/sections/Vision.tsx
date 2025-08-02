@@ -6,7 +6,7 @@ const HYVE_COLORS = {
   interactive: 'rgb(0 149 229)', // #0095E5
   interactiveLight: 'rgb(0 167 209)', // #00A7D1
   accent: 'rgb(127 179 190)', // #7FB3BE
-  text: 'rgb(22 96 136)', // #166088
+  text: 'rgb(61 70 87)', // #3D4657
 }
 
 // Animation variants matching Hero section

@@ -10,8 +10,8 @@ export const hyveColors = {
   background: '#F4F2F3',
   content: '#CDE2E7',
   accent: '#7FB3BE',
-  text: '#166088',
-  header: '#102542',
+  text: '#3D4657',
+  header: '#2A303C',
 } as const
 
 export type HyveColor = keyof typeof hyveColors

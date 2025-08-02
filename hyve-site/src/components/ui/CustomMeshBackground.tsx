@@ -18,10 +18,10 @@ interface PointData {
 }
 
 // IMPORTANT: When updating Tailwind colors, update these RGB values:
-// hyve.text (#166088) = RGB(0.086, 0.376, 0.533)
+// hyve.text (#3D4657) = RGB(0.239, 0.275, 0.341)
 // hyve.background (#F4F2F3) = #F4F2F3
 // hyve.content (#CDE2E7) = #CDE2E7
-const HYVE_TEXT_RGB = { r: 0.086, g: 0.376, b: 0.533 } // #166088
+const HYVE_TEXT_RGB = { r: 0.239, g: 0.275, b: 0.341 } // #3D4657
 
 /**
  * 🌐 CUSTOM MESH GRID BACKGROUND
@@ -441,9 +441,9 @@ export const CustomMeshBackground = ({
           // Reset all colors to default
           for (let i = 0; i < pointsData.length; i++) {
             const colorIndex = i * 3
-            colors[colorIndex] = HYVE_TEXT_RGB.r // R of #166088
-            colors[colorIndex + 1] = HYVE_TEXT_RGB.g // G of #166088
-            colors[colorIndex + 2] = HYVE_TEXT_RGB.b // B of #166088
+            colors[colorIndex] = HYVE_TEXT_RGB.r // R of #3D4657
+            colors[colorIndex + 1] = HYVE_TEXT_RGB.g // G of #3D4657
+            colors[colorIndex + 2] = HYVE_TEXT_RGB.b // B of #3D4657
           }
 
           // Get the clicked point coordinates

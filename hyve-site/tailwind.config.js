@@ -40,14 +40,14 @@ export default {
           "interactive-dark": "#028396", // #028396
           "interactive-light": "#02c1de", // #02c1de
           
-          // Text/Interactive (Lapis Lazuli) - Body text, links, buttons
-          text: "#166088",
-          "text-dark": "#0F4A6B",
-          "text-light": "#2A7BA3",
+          // Text/Interactive (Charcoal) - Body text, links, buttons
+          text: "#3D4657",
+          "text-dark": "#2D3543",
+          "text-light": "#4D576A",
           
-          // Headers (Oxford Blue) - Main headings, strong emphasis
-          header: "#102542",
-          "header-light": "#1A3A5C",
+          // Headers (Gunmetal) - Main headings, strong emphasis
+          header: "#2A303C",
+          "header-light": "#3A404C",
         },
         
         // 🎯 SHADCN UI MAPPED TO HYVE BRAND
@@ -55,14 +55,14 @@ export default {
         input: "#CDE2E7", 
         ring: "#7FB3BE",
         background: "#F4F2F3",
-        foreground: "#102542",
+        foreground: "#2A303C",
         primary: {
-          DEFAULT: "#166088",
+          DEFAULT: "#3D4657",
           foreground: "#F4F2F3",
         },
         secondary: {
           DEFAULT: "#CDE2E7",
-          foreground: "#102542",
+          foreground: "#2A303C",
         },
         destructive: {
           DEFAULT: "#ef4444",
@@ -70,7 +70,7 @@ export default {
         },
         muted: {
           DEFAULT: "#CDE2E7",
-          foreground: "#166088",
+          foreground: "#3D4657",
         },
         accent: {
           DEFAULT: "#7FB3BE",
@@ -78,11 +78,11 @@ export default {
         },
         popover: {
           DEFAULT: "#F4F2F3",
-          foreground: "#102542",
+          foreground: "#2A303C",
         },
         card: {
           DEFAULT: "#F4F2F3",
-          foreground: "#102542",
+          foreground: "#2A303C",
         },
         chart: {
           '1': 'hsl(var(--chart-1))',
@@ -144,14 +144,14 @@ export default {
         },
       },
       boxShadow: {
-        'hyve': '0 4px 6px -1px rgba(16, 37, 66, 0.1), 0 2px 4px -1px rgba(16, 37, 66, 0.06)',
-        'hyve-lg': '0 10px 15px -3px rgba(16, 37, 66, 0.1), 0 4px 6px -2px rgba(16, 37, 66, 0.05)',
-        'hyve-xl': '0 20px 25px -5px rgba(16, 37, 66, 0.1), 0 10px 10px -5px rgba(16, 37, 66, 0.04)',
+        'hyve': '0 4px 6px -1px rgba(42, 48, 60, 0.1), 0 2px 4px -1px rgba(42, 48, 60, 0.06)',
+        'hyve-lg': '0 10px 15px -3px rgba(42, 48, 60, 0.1), 0 4px 6px -2px rgba(42, 48, 60, 0.05)',
+        'hyve-xl': '0 20px 25px -5px rgba(42, 48, 60, 0.1), 0 10px 10px -5px rgba(42, 48, 60, 0.04)',
       },
       backgroundImage: {
         'gradient-hyve': 'linear-gradient(135deg, #F4F2F3 0%, #CDE2E7 100%)',
-        'gradient-accent': 'linear-gradient(135deg, #7FB3BE 0%, #166088 100%)',
-        'gradient-dark': 'linear-gradient(135deg, #102542 0%, #166088 100%)',
+        'gradient-accent': 'linear-gradient(135deg, #7FB3BE 0%, #3D4657 100%)',
+        'gradient-dark': 'linear-gradient(135deg, #2A303C 0%, #3D4657 100%)',
       },
     },
   },
