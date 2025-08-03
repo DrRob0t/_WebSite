@@ -13,7 +13,7 @@ interface HeroSwiperProps {
 
 const slides = [
   { id: 1, name: 'Aerospace', video: '/models/3d_animations/A320.webm' },
-  { id: 2, name: 'Health Monitoring', video: null },
+  { id: 2, name: 'Health Monitoring', video: '/models/3d_animations/Structural-Health.webm' },
   { id: 3, name: 'Motorsport', video: '/models/3d_animations/F1-Car.webm' },
   { id: 4, name: 'Energy', video: '/models/3d_animations/Wind-Turbine.webm' },
   { id: 5, name: 'Robotics', video: null },
