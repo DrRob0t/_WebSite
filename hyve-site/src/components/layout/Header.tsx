@@ -14,6 +14,7 @@ import {
   Send,
 } from 'lucide-react'
 import React, { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -40,10 +41,28 @@ import { cn } from '@/lib/utils'
 
 // Logo component
 const Logo = () => (
-  <div className="flex items-center space-x-">
+  <Link to="/" className="flex items-center space-x-">
     <img src="/src/assets/logo/HD-logo-dk.svg" alt="Hyve Dynamics" className="h-10 w-auto" />
-  </div>
+  </Link>
 )
+
+// Custom navigation link component
+const NavLink = React.forwardRef<
+  HTMLAnchorElement,
+  React.ComponentPropsWithoutRef<typeof Link>
+>(({ className, ...props }, ref) => (
+  <Link
+    ref={ref}
+    className={cn(
+      'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-200',
+      'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark',
+      'group hover:scale-[1.02]',
+      className
+    )}
+    {...props}
+  />
+))
+NavLink.displayName = 'NavLink'
 
 // Contact Form Component
 const ContactForm = () => {
@@ -193,8 +212,8 @@ const industriesItems = [
     description: 'Advanced sensing for aviation and space applications',
   },
   {
-    name: 'Motorsports',
-    href: '/industries/motorsports',
+    name: 'Automotive',
+    href: '/industries/automotive',
     icon: Car,
     description: 'Real-time aerodynamic data for racing performance',
   },
@@ -205,7 +224,7 @@ const industriesItems = [
     description: 'Optimizing renewable energy systems',
   },
   {
-    name: 'Structural Health Monitoring',
+    name: 'Structural Health',
     href: '/industries/structural-health',
     icon: Shield,
     description: 'Predictive maintenance for critical infrastructure',
@@ -251,15 +270,17 @@ const DesktopNavigation = () => (
     <NavigationMenuList className="space-x-2">
       {/* Home */}
       <NavigationMenuItem>
-        <NavigationMenuLink
-          href="/"
-          className={cn(
-            'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
-            'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
-            'font-body text-hyve-text'
-          )}
-        >
-          Home
+        <NavigationMenuLink asChild>
+          <Link
+            to="/"
+            className={cn(
+              'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
+              'font-body text-hyve-text'
+            )}
+          >
+            Home
+          </Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
 
@@ -303,14 +324,7 @@ const DesktopNavigation = () => (
               return (
                 <li key={item.name}>
                   <NavigationMenuLink asChild>
-                    <a
-                      className={cn(
-                        'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-200',
-                        'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark',
-                        'group hover:scale-[1.02]'
-                      )}
-                      href={item.href}
-                    >
+                    <NavLink to={item.href}>
                       <div className="flex items-center gap-2">
                         <div className="p-1.5 rounded-md bg-hyve-accent/20 group-hover:bg-hyve-accent/30 transition-colors">
                           <Icon className="h-4 w-4 text-hyve-text group-hover:text-hyve-text-dark" />
@@ -320,7 +334,7 @@ const DesktopNavigation = () => (
                       <p className="line-clamp-2 text-xs leading-snug text-hyve-text/70 group-hover:text-hyve-text-dark/70">
                         {item.description}
                       </p>
-                    </a>
+                    </NavLink>
                   </NavigationMenuLink>
                 </li>
               )
@@ -341,14 +355,7 @@ const DesktopNavigation = () => (
               return (
                 <li key={item.name}>
                   <NavigationMenuLink asChild>
-                    <a
-                      className={cn(
-                        'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-200',
-                        'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark',
-                        'group hover:scale-[1.02]'
-                      )}
-                      href={item.href}
-                    >
+                    <NavLink to={item.href}>
                       <div className="flex items-center gap-2">
                         <div className="p-1.5 rounded-md bg-hyve-interactive/20 group-hover:bg-hyve-interactive/30 transition-colors">
                           <Icon className="h-4 w-4 text-hyve-text group-hover:text-hyve-text-dark" />
@@ -358,7 +365,7 @@ const DesktopNavigation = () => (
                       <p className="line-clamp-2 text-xs leading-snug text-hyve-text/70 group-hover:text-hyve-text-dark/70">
                         {item.description}
                       </p>
-                    </a>
+                    </NavLink>
                   </NavigationMenuLink>
                 </li>
               )
@@ -393,8 +400,8 @@ const MobileNavigation = () => {
           </SheetHeader>
           <nav className="flex flex-col space-y-4 mt-8">
             {/* Home */}
-            <a
-              href="/"
+            <Link
+              to="/"
               onClick={() => setIsOpen(false)}
               className={cn(
                 'text-lg font-medium py-2 px-4 rounded-md transition-colors',
@@ -403,11 +410,11 @@ const MobileNavigation = () => {
               )}
             >
               Home
-            </a>
+            </Link>
 
             {/* Haptic Matrix */}
-            <a
-              href="/haptic-matrix"
+            <Link
+              to="/haptic-matrix"
               onClick={() => setIsOpen(false)}
               className={cn(
                 'text-lg font-medium py-2 px-4 rounded-md transition-colors',
@@ -416,11 +423,11 @@ const MobileNavigation = () => {
               )}
             >
               Haptic Matrix
-            </a>
+            </Link>
 
             {/* Vision */}
-            <a
-              href="#vision"
+            <Link
+              to="/#vision"
               onClick={() => setIsOpen(false)}
               className={cn(
                 'text-lg font-medium py-2 px-4 rounded-md transition-colors',
@@ -429,7 +436,7 @@ const MobileNavigation = () => {
               )}
             >
               Vision
-            </a>
+            </Link>
 
             {/* Industries Dropdown */}
             <div>
@@ -451,9 +458,9 @@ const MobileNavigation = () => {
                   {industriesItems.map(item => {
                     const Icon = item.icon
                     return (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         onClick={() => setIsOpen(false)}
                         className={cn(
                           'flex items-center gap-2 text-sm py-2 px-4 rounded-md transition-colors',
@@ -463,7 +470,7 @@ const MobileNavigation = () => {
                       >
                         <Icon className="h-4 w-4" />
                         {item.name}
-                      </a>
+                      </Link>
                     )
                   })}
                 </div>
@@ -490,9 +497,9 @@ const MobileNavigation = () => {
                   {insightsItems.map(item => {
                     const Icon = item.icon
                     return (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         onClick={() => setIsOpen(false)}
                         className={cn(
                           'flex items-center gap-2 text-sm py-2 px-4 rounded-md transition-colors',
@@ -502,7 +509,7 @@ const MobileNavigation = () => {
                       >
                         <Icon className="h-4 w-4" />
                         {item.name}
-                      </a>
+                      </Link>
                     )
                   })}
                 </div>

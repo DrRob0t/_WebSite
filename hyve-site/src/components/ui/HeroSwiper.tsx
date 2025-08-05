@@ -16,8 +16,7 @@ const slides = [
   { id: 2, name: 'Health Monitoring', video: '/models/3d_animations/Structural-Health.webm' },
   { id: 3, name: 'Motorsport', video: '/models/3d_animations/F1-Car.webm' },
   { id: 4, name: 'Energy', video: '/models/3d_animations/Wind-Turbine.webm' },
-  { id: 5, name: 'Robotics', video: null },
-  { id: 6, name: 'Hyve', video: null },
+  { id: 5, name: 'Robotics', video: '/models/3d_animations/Robot.webm' },
 ]
 
 export const HeroSwiper: React.FC<HeroSwiperProps> = ({ className = '' }) => {
