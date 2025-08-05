@@ -13,6 +13,8 @@ interface CustomMeshBackgroundProps {
   streamlineOpacity?: number // Opacity of streamlines (0-1)
   streamlineSpeed?: number // Speed of streamline flow animation
   streamlineSpeedMultiplier?: number // Independent speed control for streamlines relative to mesh
+  blur?: boolean // Whether to apply blur overlay for better content focus
+  blurIntensity?: string // Blur intensity (e.g., 'sm', 'md', 'lg', 'xl')
 }
 
 interface PointData {
@@ -53,6 +55,8 @@ export const CustomMeshBackground = ({
   streamlineOpacity = 0.15, // Very subtle by default
   streamlineSpeed = 2.0, // Normal flow speed
   streamlineSpeedMultiplier = 2.7, // Streamlines move 30% slower than mesh by default
+  blur = false,
+  blurIntensity = 'sm',
 }: CustomMeshBackgroundProps) => {
   const mountRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<any>(null) // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -678,6 +682,16 @@ export const CustomMeshBackground = ({
     return <div className={className}>{children}</div>
   }
 
+  const getBlurClass = () => {
+    switch (blurIntensity) {
+      case 'sm': return 'backdrop-blur-sm'
+      case 'md': return 'backdrop-blur-md'
+      case 'lg': return 'backdrop-blur-lg'
+      case 'xl': return 'backdrop-blur-xl'
+      default: return 'backdrop-blur-sm'
+    }
+  }
+
   return (
     <div className={`relative ${className}`}>
       <div
@@ -688,6 +702,9 @@ export const CustomMeshBackground = ({
           background: 'linear-gradient(to bottom, #F4F2F3 0%, #CDE2E7 100%)', // Hyve light gradient
         }}
       />
+      {blur && (
+        <div className={`absolute inset-0 ${getBlurClass()} bg-white/10 z-[2]`} />
+      )}
       <div className="relative z-10 pointer-events-none">{children}</div>
     </div>
   )

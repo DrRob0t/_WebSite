@@ -1,4 +1,8 @@
-import { IndustryPageTemplate } from '@/components/pages/IndustryPageTemplate'
+// You can switch between these layouts to see which works best:
+import { IndustryPageTemplate } from '@/components/pages/IndustryPageTemplate' // Original scrolling layout
+import { IndustryPageCompact } from '@/components/pages/IndustryPageCompact' // Compressed horizontal layout
+import { IndustryPageMagazine } from '@/components/pages/IndustryPageMagazine' // Magazine-style layout
+import { IndustryPageFocused } from '@/components/pages/IndustryPageFocused' // Single container focused layout
 
 const aerospaceData = {
   id: 'aerospace',
@@ -34,5 +38,18 @@ const aerospaceData = {
 }
 
 export const AerospacePage = () => {
-  return <IndustryPageTemplate industry={aerospaceData} />
+  // 🎨 CHOOSE YOUR LAYOUT:
+  // Uncomment the layout you want to use:
+  
+  // Option 1: Original scrolling layout (requires scrolling to see features)
+  // return <IndustryPageTemplate industry={aerospaceData} />
+  
+  // Option 2: Compressed horizontal layout (everything on one screen)
+  // return <IndustryPageCompact industry={aerospaceData} />
+  
+  // Option 3: Magazine-style layout (better use of vertical space)
+  // return <IndustryPageMagazine industry={aerospaceData} />
+  
+  // Option 4: Single container focused layout (based on your mockup) ✨ NEW
+  return <IndustryPageFocused industry={aerospaceData} />
 }
