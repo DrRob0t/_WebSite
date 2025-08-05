@@ -297,7 +297,7 @@ export const CustomMeshBackground = ({
     scene.add(points)
 
     // Position camera for perspective view
-    camera.position.set(0, 12, 35) // Higher and further back for better coverage
+    camera.position.set(0, 10, 35) // Higher and further back for better coverage
     camera.lookAt(0, -3, -15) // Look further down and deeper
 
     // Wave animation state
