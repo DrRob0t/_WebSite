@@ -14,7 +14,7 @@ import {
   Send,
 } from 'lucide-react'
 import React, { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -47,21 +47,20 @@ const Logo = () => (
 )
 
 // Custom navigation link component
-const NavLink = React.forwardRef<
-  HTMLAnchorElement,
-  React.ComponentPropsWithoutRef<typeof Link>
->(({ className, ...props }, ref) => (
-  <Link
-    ref={ref}
-    className={cn(
-      'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-200',
-      'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark',
-      'group hover:scale-[1.02]',
-      className
-    )}
-    {...props}
-  />
-))
+const NavLink = React.forwardRef<HTMLAnchorElement, React.ComponentPropsWithoutRef<typeof Link>>(
+  ({ className, ...props }, ref) => (
+    <Link
+      ref={ref}
+      className={cn(
+        'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all duration-200',
+        'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark',
+        'group hover:scale-[1.02]',
+        className
+      )}
+      {...props}
+    />
+  )
+)
 NavLink.displayName = 'NavLink'
 
 // Contact Form Component

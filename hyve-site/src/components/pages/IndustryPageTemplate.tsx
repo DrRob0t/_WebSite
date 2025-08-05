@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 import { ArrowLeft, Download, ChevronRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { CustomMeshBackground } from '@/components/ui/CustomMeshBackground'
 
@@ -159,13 +159,7 @@ export const IndustryPageTemplate: React.FC<IndustryPageProps> = ({ industry }) 
                   {/* Glass morphism container */}
                   <div className="absolute inset-0 bg-gradient-to-br from-hyve-accent/10 to-hyve-interactive/10 rounded-3xl blur-xl" />
                   <div className="relative bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20">
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-auto rounded-2xl"
-                    >
+                    <video autoPlay loop muted playsInline className="w-full h-auto rounded-2xl">
                       <source src={industry.videoPath} type="video/webm" />
                       Your browser does not support the video tag.
                     </video>
@@ -209,9 +203,7 @@ export const IndustryPageTemplate: React.FC<IndustryPageProps> = ({ industry }) 
                             {feature.title}
                           </h3>
                         </div>
-                        <p className="text-hyve-text/80 leading-relaxed">
-                          {feature.description}
-                        </p>
+                        <p className="text-hyve-text/80 leading-relaxed">{feature.description}</p>
                       </div>
                     </Card>
                   </motion.div>
@@ -236,9 +228,7 @@ export const IndustryPageTemplate: React.FC<IndustryPageProps> = ({ industry }) 
                 variants={itemVariants}
                 className="max-w-4xl mx-auto bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-sm rounded-3xl p-12 border border-hyve-content"
               >
-                <p className="text-xl text-hyve-text leading-relaxed mb-8">
-                  {industry.summary}
-                </p>
+                <p className="text-xl text-hyve-text leading-relaxed mb-8">{industry.summary}</p>
                 <p className="text-2xl font-semibold text-hyve-header font-heading">
                   {industry.cta}
                 </p>

@@ -1,15 +1,16 @@
 // src/App.tsx - Hyve Dynamics with Header and Navigation
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+
 import { Layout } from '@/components/layout/Layout'
 import { Hero } from '@/components/sections/Hero'
-import { Vision } from '@/components/sections/Vision'
 import { Industries } from '@/components/sections/Industries'
+import { Vision } from '@/components/sections/Vision'
 import { CustomMeshBackground } from '@/components/ui/CustomMeshBackground'
 import { AerospacePage } from '@/pages/industries/AerospacePage'
 import { AutomotivePage } from '@/pages/industries/AutomotivePage'
 import { EnergyPage } from '@/pages/industries/EnergyPage'
-import { StructuralHealthPage } from '@/pages/industries/StructuralHealthPage'
 import { RoboticsPage } from '@/pages/industries/RoboticsPage'
+import { StructuralHealthPage } from '@/pages/industries/StructuralHealthPage'
 
 // Home page component
 const HomePage = () => {

@@ -2,8 +2,8 @@ import { motion } from 'framer-motion'
 import { Plane, Car, Wind, Shield, Bot, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 
 // Industry data
 const industries = [
@@ -120,7 +120,9 @@ export const Industries = () => {
                     <Card className="h-full p-8 bg-white/80 backdrop-blur-sm border-hyve-content hover:border-hyve-accent transition-all duration-300 hover:shadow-xl group cursor-pointer">
                       <div className="flex flex-col h-full">
                         {/* Icon */}
-                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${industry.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                        <div
+                          className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${industry.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                        >
                           <Icon className={`h-8 w-8 ${industry.iconColor}`} />
                         </div>
 

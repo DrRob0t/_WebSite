@@ -122,7 +122,7 @@ export const Hero = () => {
           >
             {/* Subtle background for visual consistency with left side */}
             <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl" />
-            
+
             <div className="relative z-10 w-full h-full">
               <HeroSwiper className="pointer-events-auto" />
             </div>

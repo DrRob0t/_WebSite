@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 import { ArrowLeft, Download, ChevronRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { CustomMeshBackground } from '@/components/ui/CustomMeshBackground'
 
 interface IndustryPageProps {
@@ -60,7 +60,6 @@ export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) =
   return (
     <div className="min-h-screen relative">
       <CustomMeshBackground enabled={true} className="min-h-screen" blur={true} blurIntensity="sm">
-        
         {/* Main Content */}
         <section className="relative min-h-screen flex items-center py-20">
           <div className="relative z-10 w-full max-w-[1400px] mx-auto">
@@ -168,7 +167,7 @@ export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) =
                     <h2 className="text-2xl md:text-3xl font-bold text-hyve-header mb-8 font-heading">
                       Key Features & Benefits
                     </h2>
-                    
+
                     <div className="space-y-4">
                       {industry.features.map((feature, index) => (
                         <motion.div
@@ -192,7 +191,10 @@ export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) =
                     </div>
 
                     {/* Summary */}
-                    <motion.div variants={itemVariants} className="mt-10 pt-8 border-t border-hyve-content/20">
+                    <motion.div
+                      variants={itemVariants}
+                      className="mt-10 pt-8 border-t border-hyve-content/20"
+                    >
                       <p className="text-sm md:text-base text-hyve-text/90 leading-relaxed mb-4">
                         {industry.summary}
                       </p>

@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 import { ArrowLeft, Download, ChevronRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { CustomMeshBackground } from '@/components/ui/CustomMeshBackground'
 
 interface IndustryPageProps {
@@ -145,19 +145,10 @@ export const IndustryPageMagazine: React.FC<IndustryPageProps> = ({ industry }) 
 
               {/* Center Column - Video */}
               <div className="lg:col-span-3 flex items-center">
-                <motion.div
-                  variants={itemVariants}
-                  className="relative w-full h-full"
-                >
+                <motion.div variants={itemVariants} className="relative w-full h-full">
                   <div className="absolute inset-0 bg-gradient-to-br from-hyve-accent/10 to-hyve-interactive/10 rounded-2xl blur-xl" />
                   <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20 h-full flex items-center">
-                    <video
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      className="w-full h-auto rounded-xl"
-                    >
+                    <video autoPlay loop muted playsInline className="w-full h-auto rounded-xl">
                       <source src={industry.videoPath} type="video/webm" />
                       Your browser does not support the video tag.
                     </video>

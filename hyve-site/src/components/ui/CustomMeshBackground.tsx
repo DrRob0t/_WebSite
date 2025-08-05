@@ -69,7 +69,7 @@ export const CustomMeshBackground = ({
 
     // @ts-expect-error - Three.js global
     if (!window.THREE) {
-      console.warn('Three.js not loaded, skipping custom mesh background')
+      // Three.js not loaded, skipping custom mesh background
       return
     }
 
@@ -117,21 +117,21 @@ export const CustomMeshBackground = ({
 
     // Add horizontal line segments
     const gridYOffset = 7 // Lift the grid up by 2 units
-    
+
     // ============ TOP HALF ANIMATION: Air Flow Streamlines ============
     // Create streamlines for wind tunnel-like air flow visualization
     const streamlines: any[] = [] // eslint-disable-line @typescript-eslint/no-explicit-any
     const streamlineGroup = new THREE.Group()
-    
+
     // Create streamlines at different heights
     for (let i = 0; i < streamlineCount; i++) {
       const y = 15 + (i / (streamlineCount - 1)) * 15 // Y: 15 to 30
       const phase = (i / streamlineCount) * Math.PI * 2 // Phase offset for variety
-      
+
       // Create a curved path for the streamline
       const points = []
       const segments = 100
-      
+
       for (let j = 0; j <= segments; j++) {
         const t = j / segments
         const x = -60 + t * 120 // Flow from left to right
@@ -139,30 +139,30 @@ export const CustomMeshBackground = ({
         const yOffset = Math.sin(t * Math.PI * 3 + phase * 0.5) * 2 // Vertical undulation
         points.push(new THREE.Vector3(x, y + yOffset, z))
       }
-      
+
       const curve = new THREE.CatmullRomCurve3(points)
-      
+
       // Create streamline geometry with gradient opacity
       const streamlineGeometry = new THREE.BufferGeometry()
       const streamlinePoints = curve.getPoints(200)
       const positions = new Float32Array(streamlinePoints.length * 3)
       const opacities = new Float32Array(streamlinePoints.length)
-      
+
       streamlinePoints.forEach((point, idx) => {
         positions[idx * 3] = point.x
         positions[idx * 3 + 1] = point.y
         positions[idx * 3 + 2] = point.z
-        
+
         // Fade in and out at edges
         const t = idx / (streamlinePoints.length - 1)
         const fadeIn = Math.min(t * 5, 1) // Quick fade in
         const fadeOut = Math.min((1 - t) * 5, 1) // Quick fade out
         opacities[idx] = fadeIn * fadeOut
       })
-      
+
       streamlineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
       streamlineGeometry.setAttribute('opacity', new THREE.Float32BufferAttribute(opacities, 1))
-      
+
       // Create custom shader material for smooth gradient
       const streamlineMaterial = new THREE.ShaderMaterial({
         transparent: true,
@@ -198,10 +198,10 @@ export const CustomMeshBackground = ({
           }
         `,
       })
-      
+
       const streamline = new THREE.Line(streamlineGeometry, streamlineMaterial)
       streamlineGroup.add(streamline)
-      
+
       streamlines.push({
         mesh: streamline,
         material: streamlineMaterial,
@@ -210,7 +210,7 @@ export const CustomMeshBackground = ({
         speed: (0.5 + Math.random() * 0.3) * streamlineSpeed, // Varying speeds with multiplier
       })
     }
-    
+
     scene.add(streamlineGroup)
     for (let i = 0; i <= gridDivisions; i++) {
       const z = (i / gridDivisions) * gridDepth - gridDepth / 2
@@ -404,20 +404,20 @@ export const CustomMeshBackground = ({
     const animate = () => {
       // Increment wave time for mesh grid
       waveTime += 0.016 * waveSpeed // Assuming 60fps
-      
+
       // Increment streamline time separately - can be faster or slower
       streamlineTime += 0.016 * streamlineSpeed * streamlineSpeedMultiplier
 
       const pointPositions = pointGeometry.attributes.position.array as Float32Array
       const gridPositions = gridGeometry.attributes.position.array as Float32Array
       let hasPhysicsMovement = false
-      
+
       // ============ ANIMATE STREAMLINES ============
       // Update time uniform for shader animation
-      streamlines.forEach((streamline, index) => {
+      streamlines.forEach(streamline => {
         // Update shader time for flowing effect using separate streamlineTime
         streamline.material.uniforms.time.value = streamlineTime * streamline.speed
-        
+
         // Optional: Add subtle vertical movement to the entire streamline
         const verticalOffset = Math.sin(streamlineTime * 0.2 + streamline.phase) * 0.5
         streamline.mesh.position.y = verticalOffset
@@ -666,7 +666,7 @@ export const CustomMeshBackground = ({
         streamline.mesh.geometry.dispose()
         streamline.material.dispose()
       })
-      
+
       // Clean up geometries and materials
       gridGeometry.dispose()
       pointGeometry.dispose()
@@ -676,7 +676,18 @@ export const CustomMeshBackground = ({
 
       sceneRef.current = null
     }
-  }, [enabled, vertexPointSize, rippleRadiusMultiplier, waveAmplitude, waveFrequency, waveSpeed, streamlineCount, streamlineOpacity, streamlineSpeed, streamlineSpeedMultiplier])
+  }, [
+    enabled,
+    vertexPointSize,
+    rippleRadiusMultiplier,
+    waveAmplitude,
+    waveFrequency,
+    waveSpeed,
+    streamlineCount,
+    streamlineOpacity,
+    streamlineSpeed,
+    streamlineSpeedMultiplier,
+  ])
 
   if (!enabled) {
     return <div className={className}>{children}</div>
@@ -684,11 +695,16 @@ export const CustomMeshBackground = ({
 
   const getBlurClass = () => {
     switch (blurIntensity) {
-      case 'sm': return 'backdrop-blur-sm'
-      case 'md': return 'backdrop-blur-md'
-      case 'lg': return 'backdrop-blur-lg'
-      case 'xl': return 'backdrop-blur-xl'
-      default: return 'backdrop-blur-sm'
+      case 'sm':
+        return 'backdrop-blur-sm'
+      case 'md':
+        return 'backdrop-blur-md'
+      case 'lg':
+        return 'backdrop-blur-lg'
+      case 'xl':
+        return 'backdrop-blur-xl'
+      default:
+        return 'backdrop-blur-sm'
     }
   }
 
@@ -702,9 +718,7 @@ export const CustomMeshBackground = ({
           background: 'linear-gradient(to bottom, #F4F2F3 0%, #CDE2E7 100%)', // Hyve light gradient
         }}
       />
-      {blur && (
-        <div className={`absolute inset-0 ${getBlurClass()} bg-white/10 z-[2]`} />
-      )}
+      {blur && <div className={`absolute inset-0 ${getBlurClass()} bg-white/10 z-[2]`} />}
       <div className="relative z-10 pointer-events-none">{children}</div>
     </div>
   )
