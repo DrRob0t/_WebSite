@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Mail, Linkedin, Building, Hash } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 import { Separator } from '@/components/ui/separator'
 
@@ -36,10 +37,11 @@ const footerSections = [
   {
     title: 'Solutions',
     links: [
-      { name: 'Aerospace', href: '#aerospace' },
-      { name: 'Motorsport', href: '#motorsport' },
-      { name: 'Energy', href: '#energy' },
-      { name: 'Defense', href: '#defense' },
+      { name: 'Aerospace', href: '/industries/aerospace' },
+      { name: 'Automotive', href: '/industries/automotive' },
+      { name: 'Energy', href: '/industries/energy' },
+      { name: 'Structural Health', href: '/industries/structural-health' },
+      { name: 'Robotics', href: '/industries/robotics' },
     ],
   },
   {
@@ -140,12 +142,21 @@ export const Footer = () => {
                     <ul className="space-y-3">
                       {section.links.map(link => (
                         <li key={link.name}>
-                          <a
-                            href={link.href}
-                            className="font-sans text-sm text-hyve-background/70 hover:text-hyve-accent transition-colors duration-200"
-                          >
-                            {link.name}
-                          </a>
+                          {link.href.startsWith('/') ? (
+                            <Link
+                              to={link.href}
+                              className="font-sans text-sm text-hyve-background/70 hover:text-hyve-accent transition-colors duration-200"
+                            >
+                              {link.name}
+                            </Link>
+                          ) : (
+                            <a
+                              href={link.href}
+                              className="font-sans text-sm text-hyve-background/70 hover:text-hyve-accent transition-colors duration-200"
+                            >
+                              {link.name}
+                            </a>
+                          )}
                         </li>
                       ))}
                     </ul>

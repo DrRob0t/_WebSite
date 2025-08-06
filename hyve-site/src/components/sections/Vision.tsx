@@ -51,7 +51,7 @@ const fadeInVariants = {
 export const Vision = () => {
   return (
     <section
-      className="relative min-h-screen flex items-center overflow-hidden py-20 lg:py-32 pointer-events-none"
+      className="relative min-h-[70vh] flex items-center overflow-hidden py-16 lg:py-20 pointer-events-none"
       id="vision"
     >
       {/* Asymmetric Layout Container */}

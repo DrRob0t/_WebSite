@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowLeft, Download, ChevronRight } from 'lucide-react'
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -52,6 +52,8 @@ const itemVariants = {
 }
 
 export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) => {
+  const navigate = useNavigate()
+  
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -61,23 +63,8 @@ export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) =
     <div className="min-h-screen relative">
       <CustomMeshBackground enabled={true} className="min-h-screen" blur={true} blurIntensity="sm">
         {/* Main Content */}
-        <section className="relative min-h-screen flex items-center py-20">
-          <div className="relative z-10 w-full max-w-[1400px] mx-auto">
-            {/* Back Button */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6 px-6 lg:px-8"
-            >
-              <Link to="/">
-                <Button variant="ghost" size="sm" className="group">
-                  <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
-                  Back to Home
-                </Button>
-              </Link>
-            </motion.div>
-
+        <section className="relative min-h-screen flex items-center py-20 pointer-events-auto">
+          <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-8">
             {/* Single Container with all content */}
             <motion.div
               variants={containerVariants}
@@ -88,6 +75,18 @@ export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) =
               <div className="grid lg:grid-cols-2 h-full">
                 {/* Left Side - Animation on top, content below */}
                 <div className="p-8 lg:p-12 flex flex-col">
+                  {/* Back Button */}
+                  <motion.div variants={itemVariants} className="mb-6">
+                    <Link 
+                      to="/"
+                      className="inline-flex items-center px-3 py-2 text-sm font-medium text-hyve-text hover:text-hyve-accent transition-colors group cursor-pointer pointer-events-auto"
+                      style={{ position: 'relative', zIndex: 50 }}
+                    >
+                      <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                      Back to Home
+                    </Link>
+                  </motion.div>
+                  
                   {/* Video Animation */}
                   <motion.div variants={itemVariants} className="mb-16 lg:mb-20">
                     <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-hyve-accent/10 to-hyve-interactive/10 p-1">

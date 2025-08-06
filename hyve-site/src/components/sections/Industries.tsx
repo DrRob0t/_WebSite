@@ -84,7 +84,7 @@ const itemVariants = {
 export const Industries = () => {
   return (
     <section
-      className="relative py-16 lg:py-24 overflow-hidden pointer-events-none"
+      className="relative py-12 lg:py-16 overflow-hidden pointer-events-none"
       id="industries"
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
@@ -99,9 +99,9 @@ export const Industries = () => {
           {/* Background container */}
           <div className="absolute inset-0 -m-8 bg-gradient-to-br from-white/90 to-hyve-content/30 backdrop-blur-md rounded-3xl shadow-xl" />
 
-          <div className="relative z-10 px-8 py-12 lg:px-12 lg:py-16">
+          <div className="relative z-10 px-8 py-8 lg:px-12 lg:py-10">
             {/* Section Header */}
-            <motion.div variants={itemVariants} className="text-center mb-12">
+            <motion.div variants={itemVariants} className="text-center mb-8">
               <h2 className="text-3xl md:text-4xl font-bold text-hyve-header mb-4 font-heading">
                 Industries We Transform
               </h2>
@@ -155,7 +155,7 @@ export const Industries = () => {
             </div>
 
             {/* CTA */}
-            <motion.div variants={itemVariants} className="text-center mt-10">
+            <motion.div variants={itemVariants} className="text-center mt-8">
               <p className="text-base text-hyve-text/80 mb-4">
                 Ready to revolutionize your industry?
               </p>

@@ -31,7 +31,8 @@ const HomePage = () => {
         {/* Industries section */}
         <Industries />
 
-        <div className="min-h-[60vh]" />
+        {/* Footer spacing */}
+        <div className="h-24" />
       </CustomMeshBackground>
     </div>
   )

@@ -34,7 +34,7 @@ const itemVariants = {
 
 export const Hero = () => {
   return (
-    <section className="relative h-screen flex items-center overflow-hidden pointer-events-none">
+    <section className="relative min-h-[80vh] flex items-center overflow-hidden pointer-events-none py-16 lg:py-20">
       {/* Asymmetric Layout Container */}
       <div className="relative z-10 w-full mx-auto px-6 lg:px-12" style={{ maxWidth: '1600px' }}>
         <div className="grid lg:grid-cols-[1fr_600px] gap-12 lg:gap-24 items-center">
