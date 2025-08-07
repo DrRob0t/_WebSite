@@ -6,13 +6,33 @@ import { Toaster } from 'sonner'
 import './index.css'
 import App from './App.tsx'
 import { setupAxe } from './lib/axe-setup'
+import { validateEnvironment } from './lib/env'
 import { reportWebVitals } from './lib/web-vitals'
+
+// Validate environment variables at startup
+try {
+  validateEnvironment()
+} catch (error) {
+  console.error('Failed to start application:', error)
+  document.body.innerHTML = `
+    <div style="display: flex; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif;">
+      <div style="text-align: center; padding: 2rem; border: 1px solid #ef4444; border-radius: 8px; background: #fef2f2;">
+        <h1 style="color: #dc2626; margin-bottom: 1rem;">Configuration Error</h1>
+        <p style="color: #7f1d1d;">Please check your environment variables and try again.</p>
+        <pre style="margin-top: 1rem; padding: 1rem; background: #fff; border-radius: 4px; text-align: left; overflow: auto;">
+          ${error instanceof Error ? error.message : String(error)}
+        </pre>
+      </div>
+    </div>
+  `
+  throw error
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HelmetProvider>
       <App />
-      <Toaster 
+      <Toaster
         position="top-center"
         toastOptions={{
           classNames: {

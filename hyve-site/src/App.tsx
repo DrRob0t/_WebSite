@@ -8,6 +8,7 @@ import { Hero } from '@/components/sections/Hero'
 import { Industries } from '@/components/sections/Industries'
 import { Vision } from '@/components/sections/Vision'
 import { CustomMeshBackground } from '@/components/ui/CustomMeshBackground'
+import { ScrollToTop } from '@/components/ui/scroll-to-top'
 import { AboutPage } from '@/pages/AboutPage'
 import { HapticMatrixPage } from '@/pages/HapticMatrixPage'
 import { AerospacePage } from '@/pages/industries/AerospacePage'
@@ -16,7 +17,6 @@ import { EnergyPage } from '@/pages/industries/EnergyPage'
 import { RoboticsPage } from '@/pages/industries/RoboticsPage'
 import { StructuralHealthPage } from '@/pages/industries/StructuralHealthPage'
 import { NotFound } from '@/pages/NotFound'
-import { ScrollToTop } from '@/components/ui/scroll-to-top'
 
 // Home page component
 const HomePage = () => {

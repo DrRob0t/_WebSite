@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { toast } from 'sonner'
+
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,7 +13,6 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { toast } from 'sonner'
 
 /**
  * Demo component showcasing proper focus management
@@ -31,7 +32,7 @@ export const FocusManagementDemo = () => {
   return (
     <div className="p-8">
       <h2 className="text-2xl font-bold mb-4">Focus Management Demo</h2>
-      
+
       <div className="space-y-4">
         <p className="text-gray-600">
           Try navigating with keyboard only (Tab, Shift+Tab, Escape, Enter)
@@ -40,9 +41,7 @@ export const FocusManagementDemo = () => {
         {/* Dialog with proper focus management */}
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline">
-              Open Dialog (Press Enter)
-            </Button>
+            <Button variant="outline">Open Dialog (Press Enter)</Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -51,7 +50,7 @@ export const FocusManagementDemo = () => {
                 Focus is trapped within this dialog. Press Tab to navigate, Escape to close.
               </DialogDescription>
             </DialogHeader>
-            
+
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
@@ -61,13 +60,13 @@ export const FocusManagementDemo = () => {
                   <Input
                     id="demo-name"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={e => setName(e.target.value)}
                     className="col-span-3"
                     placeholder="Enter your name"
                     autoFocus // First input gets focus
                   />
                 </div>
-                
+
                 <div className="text-sm text-gray-600 p-2 border rounded">
                   <p>Keyboard shortcuts:</p>
                   <ul className="list-disc list-inside mt-1">
@@ -78,18 +77,12 @@ export const FocusManagementDemo = () => {
                   </ul>
                 </div>
               </div>
-              
+
               <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setOpen(false)}
-                >
+                <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                   Cancel (Esc)
                 </Button>
-                <Button type="submit">
-                  Submit (Enter)
-                </Button>
+                <Button type="submit">Submit (Enter)</Button>
               </DialogFooter>
             </form>
           </DialogContent>

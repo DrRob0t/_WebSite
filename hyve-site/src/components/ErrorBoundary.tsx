@@ -1,7 +1,8 @@
+import { AlertTriangle } from 'lucide-react'
 import React, { Component } from 'react'
 import type { ErrorInfo, ReactNode } from 'react'
+
 import { Button } from '@/components/ui/button'
-import { AlertTriangle } from 'lucide-react'
 
 interface Props {
   children: ReactNode
@@ -28,10 +29,10 @@ export class ErrorBoundary extends Component<Props, State> {
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error to monitoring service (e.g., Sentry, LogRocket)
     console.error('Error caught by ErrorBoundary:', error, errorInfo)
-    
+
     // You can also log to an error reporting service here
     // Example: Sentry.captureException(error, { extra: errorInfo })
-    
+
     this.setState({
       error,
       errorInfo,
@@ -61,11 +62,11 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full">
               <AlertTriangle className="w-6 h-6 text-red-600" />
             </div>
-            
+
             <h1 className="mt-4 text-2xl font-bold text-center text-gray-900">
               Oops! Something went wrong
             </h1>
-            
+
             <p className="mt-2 text-center text-gray-600">
               We're sorry for the inconvenience. An unexpected error has occurred.
             </p>
@@ -83,19 +84,11 @@ export class ErrorBoundary extends Component<Props, State> {
             )}
 
             <div className="mt-6 flex flex-col gap-3">
-              <Button 
-                onClick={this.handleReset}
-                className="w-full"
-                variant="default"
-              >
+              <Button onClick={this.handleReset} className="w-full" variant="default">
                 Go to Homepage
               </Button>
-              
-              <Button
-                onClick={() => window.history.back()}
-                className="w-full"
-                variant="outline"
-              >
+
+              <Button onClick={() => window.history.back()} className="w-full" variant="outline">
                 Go Back
               </Button>
             </div>

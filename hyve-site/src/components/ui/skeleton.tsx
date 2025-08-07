@@ -5,14 +5,7 @@ interface SkeletonProps {
 }
 
 export const Skeleton = ({ className }: SkeletonProps) => {
-  return (
-    <div
-      className={cn(
-        'animate-pulse rounded-md bg-gray-200 dark:bg-gray-800',
-        className
-      )}
-    />
-  )
+  return <div className={cn('animate-pulse rounded-md bg-gray-200 dark:bg-gray-800', className)} />
 }
 
 // Common skeleton patterns
@@ -28,23 +21,11 @@ export const SkeletonCard = ({ className }: { className?: string }) => {
   )
 }
 
-export const SkeletonText = ({ 
-  lines = 3,
-  className 
-}: { 
-  lines?: number
-  className?: string 
-}) => {
+export const SkeletonText = ({ lines = 3, className }: { lines?: number; className?: string }) => {
   return (
     <div className={cn('space-y-2', className)}>
       {Array.from({ length: lines }).map((_, i) => (
-        <Skeleton
-          key={i}
-          className={cn(
-            'h-4',
-            i === lines - 1 ? 'w-3/4' : 'w-full'
-          )}
-        />
+        <Skeleton key={i} className={cn('h-4', i === lines - 1 ? 'w-3/4' : 'w-full')} />
       ))}
     </div>
   )
@@ -54,28 +35,20 @@ export const SkeletonButton = ({ className }: { className?: string }) => {
   return <Skeleton className={cn('h-10 w-24', className)} />
 }
 
-export const SkeletonAvatar = ({ 
+export const SkeletonAvatar = ({
   size = 'md',
-  className 
-}: { 
+  className,
+}: {
   size?: 'sm' | 'md' | 'lg'
-  className?: string 
+  className?: string
 }) => {
   const sizeClasses = {
     sm: 'h-8 w-8',
     md: 'h-10 w-10',
     lg: 'h-12 w-12',
   }
-  
-  return (
-    <Skeleton 
-      className={cn(
-        'rounded-full',
-        sizeClasses[size],
-        className
-      )} 
-    />
-  )
+
+  return <Skeleton className={cn('rounded-full', sizeClasses[size], className)} />
 }
 
 // Industry card skeleton for your specific use case

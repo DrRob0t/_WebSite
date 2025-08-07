@@ -1,6 +1,7 @@
-import * as React from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
+import * as React from 'react'
+
 import { cn } from '@/lib/utils'
 
 /**
@@ -35,7 +36,8 @@ const FocusDialogOverlay = React.forwardRef<
 ))
 FocusDialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
-interface FocusDialogContentProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
+interface FocusDialogContentProps
+  extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
   showCloseButton?: boolean
   onEscapeKeyDown?: (event: KeyboardEvent) => void
   onCloseAutoFocus?: (event: Event) => void
@@ -63,7 +65,7 @@ const FocusDialogContent = React.forwardRef<
     >
       {children}
       {showCloseButton && (
-        <DialogPrimitive.Close 
+        <DialogPrimitive.Close
           className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
           aria-label="Close dialog"
         >
@@ -76,21 +78,12 @@ const FocusDialogContent = React.forwardRef<
 ))
 FocusDialogContent.displayName = DialogPrimitive.Content.displayName
 
-const FocusDialogHeader = ({ 
-  className, 
-  ...props 
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div 
-    className={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)} 
-    {...props} 
-  />
+const FocusDialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)} {...props} />
 )
 FocusDialogHeader.displayName = 'FocusDialogHeader'
 
-const FocusDialogFooter = ({ 
-  className, 
-  ...props 
-}: React.HTMLAttributes<HTMLDivElement>) => (
+const FocusDialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)}
     {...props}

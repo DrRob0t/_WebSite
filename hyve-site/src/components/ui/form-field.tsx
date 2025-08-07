@@ -1,5 +1,6 @@
-import * as React from 'react'
 import { AlertCircle } from 'lucide-react'
+import * as React from 'react'
+
 import { cn } from '@/lib/utils'
 
 interface FormFieldErrorProps {
@@ -40,7 +41,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   htmlFor,
 }) => {
   return (
-    <div className={cn("space-y-2", className)}>
+    <div className={cn('space-y-2', className)}>
       <label
         htmlFor={htmlFor}
         className="text-sm font-body font-medium text-hyve-text flex items-center gap-1"
@@ -56,7 +57,7 @@ export const FormField: React.FC<FormFieldProps> = ({
 
 // Helper function to get field error styling
 export const getFieldErrorStyles = (hasError: boolean) => {
-  return hasError ? "border-red-500 focus:border-red-500" : ""
+  return hasError ? 'border-red-500 focus:border-red-500' : ''
 }
 
 // Helper function to get field aria attributes

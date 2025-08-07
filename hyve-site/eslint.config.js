@@ -5,6 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import react from 'eslint-plugin-react'
 import jsxA11y from 'eslint-plugin-jsx-a11y'
 import importPlugin from 'eslint-plugin-import'
+import security from 'eslint-plugin-security'
 import tseslint from 'typescript-eslint'
 import prettier from 'eslint-plugin-prettier'
 import prettierConfig from 'eslint-config-prettier'
@@ -31,6 +32,7 @@ export default tseslint.config([
       'react-refresh': reactRefresh,
       'jsx-a11y': jsxA11y,
       import: importPlugin,
+      security,
       prettier,
     },
     languageOptions: {
@@ -146,6 +148,20 @@ export default tseslint.config([
           arrowParens: 'avoid',
         },
       ],
+
+      // Security Rules
+      'security/detect-object-injection': 'error',
+      'security/detect-non-literal-regexp': 'warn',
+      'security/detect-unsafe-regex': 'error',
+      'security/detect-buffer-noassert': 'error',
+      'security/detect-child-process': 'error',
+      'security/detect-disable-mustache-escape': 'error',
+      'security/detect-eval-with-expression': 'error',
+      'security/detect-no-csrf-before-method-override': 'error',
+      'security/detect-non-literal-fs-filename': 'warn',
+      'security/detect-non-literal-require': 'warn',
+      'security/detect-possible-timing-attacks': 'warn',
+      'security/detect-pseudoRandomBytes': 'error',
 
       // Custom rules for the project
       'no-restricted-imports': [

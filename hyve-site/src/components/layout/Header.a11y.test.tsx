@@ -1,7 +1,8 @@
-import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/react'
 import { axe, toHaveNoViolations } from 'jest-axe'
 import { BrowserRouter } from 'react-router-dom'
+import { describe, it, expect } from 'vitest'
+
 import { Header } from './Header'
 
 expect.extend(toHaveNoViolations)
@@ -13,7 +14,7 @@ describe('Header Accessibility', () => {
         <Header />
       </BrowserRouter>
     )
-    
+
     const results = await axe(container)
     expect(results).toHaveNoViolations()
   })
@@ -24,7 +25,7 @@ describe('Header Accessibility', () => {
         <Header />
       </BrowserRouter>
     )
-    
+
     const nav = container.querySelector('nav')
     expect(nav).toBeInTheDocument()
   })
@@ -35,7 +36,7 @@ describe('Header Accessibility', () => {
         <Header />
       </BrowserRouter>
     )
-    
+
     const logo = container.querySelector('img[alt*="Hyve"]')
     expect(logo).toBeInTheDocument()
     expect(logo).toHaveAttribute('alt')
@@ -47,7 +48,7 @@ describe('Header Accessibility', () => {
         <Header />
       </BrowserRouter>
     )
-    
+
     const links = container.querySelectorAll('a')
     links.forEach(link => {
       // Check if link has accessible text or aria-label
@@ -63,7 +64,7 @@ describe('Header Accessibility', () => {
         <Header />
       </BrowserRouter>
     )
-    
+
     const menuButtons = container.querySelectorAll('button[role="combobox"]')
     menuButtons.forEach(button => {
       expect(button).toHaveAttribute('aria-expanded')

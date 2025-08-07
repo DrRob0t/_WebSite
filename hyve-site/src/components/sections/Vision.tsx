@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 
-
 // Animation variants matching Hero section
 const containerVariants = {
   hidden: { opacity: 0 },

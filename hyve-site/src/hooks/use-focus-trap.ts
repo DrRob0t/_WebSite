@@ -12,12 +12,7 @@ interface UseFocusTrapOptions {
  * Useful for modals, dialogs, and dropdown menus
  */
 export const useFocusTrap = (options: UseFocusTrapOptions = {}) => {
-  const {
-    enabled = true,
-    autoFocus = true,
-    restoreFocus = true,
-    onEscape
-  } = options
+  const { enabled = true, autoFocus = true, restoreFocus = true, onEscape } = options
 
   const containerRef = useRef<HTMLElement>(null)
   const previousActiveElement = useRef<HTMLElement | null>(null)
@@ -26,7 +21,7 @@ export const useFocusTrap = (options: UseFocusTrapOptions = {}) => {
     if (!enabled || !containerRef.current) return
 
     const container = containerRef.current
-    
+
     // Store the previously focused element
     if (restoreFocus) {
       previousActiveElement.current = document.activeElement as HTMLElement
@@ -42,7 +37,7 @@ export const useFocusTrap = (options: UseFocusTrapOptions = {}) => {
         'select:not([disabled])',
         '[tabindex]:not([tabindex="-1"])',
       ].join(',')
-      
+
       return Array.from(container.querySelectorAll(selector)) as HTMLElement[]
     }
 
@@ -92,7 +87,7 @@ export const useFocusTrap = (options: UseFocusTrapOptions = {}) => {
     // Cleanup function
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
-      
+
       // Restore focus to the previously focused element
       if (restoreFocus && previousActiveElement.current) {
         previousActiveElement.current.focus()
@@ -115,7 +110,7 @@ export const getFirstFocusableElement = (container: HTMLElement): HTMLElement | 
     'select:not([disabled])',
     '[tabindex]:not([tabindex="-1"])',
   ].join(',')
-  
+
   return container.querySelector(selector)
 }
 
@@ -125,14 +120,14 @@ export const getFirstFocusableElement = (container: HTMLElement): HTMLElement | 
 export const isFocusable = (element: HTMLElement): boolean => {
   if (element.hasAttribute('disabled')) return false
   if (element.getAttribute('tabindex') === '-1') return false
-  
+
   const focusableTags = ['A', 'BUTTON', 'INPUT', 'SELECT', 'TEXTAREA']
   const tagName = element.tagName
-  
+
   if (focusableTags.includes(tagName)) {
     if (tagName === 'A' && !element.hasAttribute('href')) return false
     return true
   }
-  
+
   return element.hasAttribute('tabindex')
 }

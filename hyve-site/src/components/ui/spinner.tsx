@@ -38,12 +38,12 @@ export const PageSpinner = ({ className }: { className?: string }) => {
 }
 
 // Inline spinner with text
-export const SpinnerWithText = ({ 
-  text = 'Loading...', 
-  className 
-}: { 
+export const SpinnerWithText = ({
+  text = 'Loading...',
+  className,
+}: {
   text?: string
-  className?: string 
+  className?: string
 }) => {
   return (
     <div className={cn('flex items-center gap-3', className)}>

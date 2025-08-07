@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
 import { motion, useScroll, useSpring } from 'framer-motion'
+import { useEffect, useState } from 'react'
+
 import { cn } from '@/lib/utils'
 
 interface ScrollProgressProps {
@@ -9,18 +10,18 @@ interface ScrollProgressProps {
   showOnPages?: string[] // Optional: only show on specific pages
 }
 
-export const ScrollProgress = ({ 
-  className, 
+export const ScrollProgress = ({
+  className,
   height = 3,
   color = 'bg-hyve-accent',
-  showOnPages 
+  showOnPages,
 }: ScrollProgressProps) => {
   const [isVisible, setIsVisible] = useState(true)
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   })
 
   useEffect(() => {
@@ -35,14 +36,10 @@ export const ScrollProgress = ({
 
   return (
     <motion.div
-      className={cn(
-        "fixed top-0 left-0 right-0 z-[60] origin-left",
-        color,
-        className
-      )}
-      style={{ 
+      className={cn('fixed top-0 left-0 right-0 z-[60] origin-left', color, className)}
+      style={{
         scaleX,
-        height: `${height}px`
+        height: `${height}px`,
       }}
     />
   )
@@ -58,7 +55,7 @@ export const useScrollPercentage = () => {
       const documentHeight = document.documentElement.scrollHeight
       const scrollTop = window.scrollY
       const scrollableHeight = documentHeight - windowHeight
-      
+
       if (scrollableHeight > 0) {
         const currentPercentage = (scrollTop / scrollableHeight) * 100
         setPercentage(Math.min(100, Math.max(0, currentPercentage)))

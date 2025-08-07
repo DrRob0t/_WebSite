@@ -1,5 +1,5 @@
-import { Helmet } from 'react-helmet-async'
 import React from 'react'
+import { Helmet } from 'react-helmet-async'
 
 interface SEOProps {
   title?: string
@@ -21,14 +21,7 @@ const defaultSEO = {
   type: 'website',
 }
 
-export const SEO: React.FC<SEOProps> = ({
-  title,
-  description,
-  keywords,
-  image,
-  url,
-  type,
-}) => {
+export const SEO: React.FC<SEOProps> = ({ title, description, keywords, image, url, type }) => {
   const seo = {
     title: title ? `${title} | Hyve Dynamics` : defaultSEO.title,
     description: description || defaultSEO.description,

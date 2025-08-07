@@ -1,5 +1,5 @@
-import { toast as sonnerToast } from 'sonner'
 import React from 'react'
+import { toast as sonnerToast } from 'sonner'
 
 // Custom toast utility functions for consistent messaging across the app
 
@@ -37,7 +37,7 @@ export const toast = {
   },
 
   // Loading notification with promise
-  promise: <T,>(
+  promise: <T>(
     promise: Promise<T>,
     {
       loading = 'Loading...',

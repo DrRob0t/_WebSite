@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
-import { ArrowUp } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { ArrowUp } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
@@ -30,7 +31,7 @@ export const ScrollToTop = ({ showAfter = 300, className }: ScrollToTopProps) =>
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
   }
 
@@ -42,10 +43,7 @@ export const ScrollToTop = ({ showAfter = 300, className }: ScrollToTopProps) =>
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.5 }}
           transition={{ duration: 0.2 }}
-          className={cn(
-            "fixed bottom-6 right-6 z-50",
-            className
-          )}
+          className={cn('fixed bottom-6 right-6 z-50', className)}
         >
           <Button
             onClick={scrollToTop}

@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
 import {
   Menu,
@@ -15,10 +16,9 @@ import {
   AlertCircle,
 } from 'lucide-react'
 import React, { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -70,12 +70,13 @@ NavLink.displayName = 'NavLink'
 
 // Form validation schema
 const contactFormSchema = z.object({
-  name: z.string()
+  name: z
+    .string()
     .min(2, 'Name must be at least 2 characters')
     .max(50, 'Name must be less than 50 characters'),
-  email: z.string()
-    .email('Please enter a valid email address'),
-  message: z.string()
+  email: z.string().email('Please enter a valid email address'),
+  message: z
+    .string()
     .min(10, 'Message must be at least 10 characters')
     .max(500, 'Message must be less than 500 characters'),
 })
@@ -85,7 +86,7 @@ type ContactFormData = z.infer<typeof contactFormSchema>
 // Contact Form Component
 const ContactForm = () => {
   const [open, setOpen] = useState(false)
-  
+
   const {
     register,
     handleSubmit,
@@ -127,12 +128,15 @@ const ContactForm = () => {
   }
 
   return (
-    <Dialog open={open} onOpenChange={(value) => {
-      setOpen(value)
-      if (!value) {
-        reset() // Reset form when dialog closes
-      }
-    }}>
+    <Dialog
+      open={open}
+      onOpenChange={value => {
+        setOpen(value)
+        if (!value) {
+          reset() // Reset form when dialog closes
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <Button
           size="sm"
@@ -143,7 +147,7 @@ const ContactForm = () => {
           <span className="hidden sm:inline">Contact Us</span>
         </Button>
       </DialogTrigger>
-      <DialogContent 
+      <DialogContent
         className="sm:max-w-[425px] bg-hyve-background"
         aria-describedby="contact-form-description"
       >
@@ -165,11 +169,11 @@ const ContactForm = () => {
               {...register('name')}
               placeholder="Your name"
               className={cn(
-                "font-body border-hyve-content focus:border-hyve-accent",
-                errors.name && "border-red-500 focus:border-red-500"
+                'font-body border-hyve-content focus:border-hyve-accent',
+                errors.name && 'border-red-500 focus:border-red-500'
               )}
               aria-invalid={!!errors.name}
-              aria-describedby={errors.name ? "name-error" : undefined}
+              aria-describedby={errors.name ? 'name-error' : undefined}
             />
             {errors.name && (
               <p id="name-error" className="text-sm text-red-500 flex items-center gap-1 mt-1">
@@ -189,11 +193,11 @@ const ContactForm = () => {
               {...register('email')}
               placeholder="your@email.com"
               className={cn(
-                "font-body border-hyve-content focus:border-hyve-accent",
-                errors.email && "border-red-500 focus:border-red-500"
+                'font-body border-hyve-content focus:border-hyve-accent',
+                errors.email && 'border-red-500 focus:border-red-500'
               )}
               aria-invalid={!!errors.email}
-              aria-describedby={errors.email ? "email-error" : undefined}
+              aria-describedby={errors.email ? 'email-error' : undefined}
             />
             {errors.email && (
               <p id="email-error" className="text-sm text-red-500 flex items-center gap-1 mt-1">
@@ -213,11 +217,11 @@ const ContactForm = () => {
               placeholder="Tell us about your project or inquiry..."
               rows={4}
               className={cn(
-                "font-body border-hyve-content focus:border-hyve-accent resize-none",
-                errors.message && "border-red-500 focus:border-red-500"
+                'font-body border-hyve-content focus:border-hyve-accent resize-none',
+                errors.message && 'border-red-500 focus:border-red-500'
               )}
               aria-invalid={!!errors.message}
-              aria-describedby={errors.message ? "message-error" : undefined}
+              aria-describedby={errors.message ? 'message-error' : undefined}
             />
             {errors.message && (
               <p id="message-error" className="text-sm text-red-500 flex items-center gap-1 mt-1">

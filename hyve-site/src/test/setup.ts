@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
-import { expect, afterEach } from 'vitest'
-import { cleanup } from '@testing-library/react'
 import * as matchers from '@testing-library/jest-dom/matchers'
+import { cleanup } from '@testing-library/react'
+import { expect, afterEach } from 'vitest'
 
 expect.extend(matchers)
 
@@ -33,7 +33,9 @@ global.IntersectionObserver = class IntersectionObserver {
   root = null
   rootMargin = '0px'
   thresholds = [0]
-  takeRecords() { return [] }
+  takeRecords() {
+    return []
+  }
 } as any
 
 // Mock scrollTo
