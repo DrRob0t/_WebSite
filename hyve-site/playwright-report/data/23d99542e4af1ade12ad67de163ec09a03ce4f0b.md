@@ -1,0 +1,137 @@
+# Page snapshot
+
+```yaml
+- banner:
+  - link "Hyve Dynamics":
+    - /url: /
+    - link "Hyve Dynamics":
+      - /url: /
+      - img "Hyve Dynamics"
+  - navigation "Main":
+    - list:
+      - listitem:
+        - link "Home":
+          - /url: /
+      - listitem:
+        - link "Haptic Matrix":
+          - /url: /haptic-matrix
+      - listitem:
+        - link "Vision":
+          - /url: "#vision"
+      - listitem:
+        - link "About":
+          - /url: /about
+      - listitem:
+        - button "Industries"
+      - listitem:
+        - button "Insights"
+  - button "Contact Us"
+- main:
+  - heading "Adaptation Through Insight. Evolution Through Data." [level=1]
+  - paragraph: Hyve’s Haptic Matrix unlocks real-world, high-density data where it matters most—fueling insight, driving innovation, and enabling intelligent evolution across machines, vehicles, and structures.
+  - button "Explore Technology"
+  - button "Get in Touch →"
+  - heading "Aerospace" [level=3]
+  - heading "Health Monitoring" [level=3]
+  - heading "Motorsport" [level=3]
+  - heading "Energy" [level=3]
+  - heading "Robotics" [level=3]
+  - text: Our Vision
+  - heading "Transforming Industries Through Real-World Intelligence" [level=2]
+  - paragraph: Hyve Dynamics envisions a future where real-world data replaces assumptions, enabling smarter, more sustainable, and more efficient technological advancements. By seamlessly integrating high-density sensory solutions into complex surfaces, we empower industries to optimize performance, safety, and sustainability in ways never before possible.
+  - paragraph: We are committed to leading the way in aerodynamic innovation, helping industries accelerate development cycles, reduce costs, and achieve net-zero goals through cutting-edge sensor technology.
+  - heading "€300+ Billion" [level=3]
+  - paragraph: Global Opportunity by 2030
+  - text: €60B Aerospace €106B IoT Sensors €16.6B Structural Health €19.4B Wind Energy
+  - heading "Key Growth Drivers" [level=4]
+  - text: Net Zero sustainability mandates Digital transformation acceleration €6.9T infrastructure replacement IoT & AI technology convergence
+  - paragraph: Positioning Hyve at the intersection of the world's largest growth markets
+  - heading "Industries We Transform" [level=2]
+  - paragraph: Real-time insights across diverse sectors with our cutting-edge sensor technology
+  - link "Aerospace Aviation & space sensing Explore":
+    - /url: /industries/aerospace
+    - heading "Aerospace" [level=3]
+    - paragraph: Aviation & space sensing
+    - text: Explore
+  - link "Automotive Real-time aerodynamics Explore":
+    - /url: /industries/automotive
+    - heading "Automotive" [level=3]
+    - paragraph: Real-time aerodynamics
+    - text: Explore
+  - link "Energy Renewable optimization Explore":
+    - /url: /industries/energy
+    - heading "Energy" [level=3]
+    - paragraph: Renewable optimization
+    - text: Explore
+  - link "Structural Infrastructure monitoring Explore":
+    - /url: /industries/structural-health
+    - heading "Structural" [level=3]
+    - paragraph: Infrastructure monitoring
+    - text: Explore
+  - link "Robotics Tactile intelligence Explore":
+    - /url: /industries/robotics
+    - heading "Robotics" [level=3]
+    - paragraph: Tactile intelligence
+    - text: Explore
+  - paragraph: Ready to revolutionize your industry?
+  - button "Contact Our Experts"
+- contentinfo:
+  - img "Hyve Dynamics Holdings"
+  - paragraph: Transforming industries through real-world intelligence. We envision a future where data replaces assumptions, enabling smarter and more efficient technological advancements.
+  - link "info@hyvedynamics.com":
+    - /url: mailto:info@hyvedynamics.com
+  - text: "Hyve Dynamics Holdings Company No: 12258323"
+  - link "LinkedIn":
+    - /url: https://uk.linkedin.com/company/hyve-dynamics
+  - heading "Company" [level=3]
+  - list:
+    - listitem:
+      - link "About Us":
+        - /url: /about
+    - listitem:
+      - link "Our Technology":
+        - /url: /haptic-matrix
+    - listitem:
+      - link "Industries":
+        - /url: /#industries
+    - listitem:
+      - link "Careers":
+        - /url: "#careers"
+  - heading "Solutions" [level=3]
+  - list:
+    - listitem:
+      - link "Aerospace":
+        - /url: /industries/aerospace
+    - listitem:
+      - link "Automotive":
+        - /url: /industries/automotive
+    - listitem:
+      - link "Energy":
+        - /url: /industries/energy
+    - listitem:
+      - link "Structural Health":
+        - /url: /industries/structural-health
+    - listitem:
+      - link "Robotics":
+        - /url: /industries/robotics
+  - heading "Resources" [level=3]
+  - list:
+    - listitem:
+      - link "Case Studies":
+        - /url: "#case-studies"
+    - listitem:
+      - link "White Papers":
+        - /url: "#white-papers"
+    - listitem:
+      - link "News":
+        - /url: "#news"
+    - listitem:
+      - link "Contact":
+        - /url: "#contact"
+  - paragraph: © 2025 Hyve Dynamics Holdings. All rights reserved.
+  - link "Privacy Policy":
+    - /url: "#privacy"
+  - link "Terms of Service":
+    - /url: "#terms"
+  - text: Registered in England & Wales
+```
