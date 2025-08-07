@@ -46,7 +46,7 @@ import { cn } from '@/lib/utils'
 
 // Logo component
 const Logo = () => (
-  <Link to="/" className="flex items-center space-x-2">
+  <Link to="/" className="flex items-center space-x-2" aria-label="Hyve Dynamics Home">
     <img src="/HD-Logo-dk.svg" alt="Hyve Dynamics" className="h-10 w-auto" />
   </Link>
 )
@@ -118,7 +118,9 @@ const ContactForm = () => {
       // Reset form and close dialog
       reset()
       setOpen(false)
-    } catch (error) {
+    } catch {
+      // Contact form submission failed
+
       // Show error toast
       toast.error('Failed to send message', {
         description: 'Please try again or contact us directly at info@hyvedynamics.com',
@@ -657,9 +659,7 @@ export const Header = () => {
         <div className="flex h-16 items-center justify-between">
           {/* Logo Section */}
           <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
-            <a href="/" className="flex items-center space-x-2">
-              <Logo />
-            </a>
+            <Logo />
           </motion.div>
 
           {/* Desktop Navigation */}

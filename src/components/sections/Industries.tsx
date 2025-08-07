@@ -128,7 +128,9 @@ export const Industries = () => {
                           <div
                             className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-14 lg:h-14 rounded-xl bg-gradient-to-br ${industry.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300`}
                           >
-                            <Icon className={`h-6 w-6 sm:h-7 sm:w-7 lg:h-7 lg:w-7 ${industry.iconColor}`} />
+                            <Icon
+                              className={`h-6 w-6 sm:h-7 sm:w-7 lg:h-7 lg:w-7 ${industry.iconColor}`}
+                            />
                           </div>
 
                           {/* Title */}

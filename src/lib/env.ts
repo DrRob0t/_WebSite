@@ -26,7 +26,7 @@ export interface AppEnv {
 function getEnvVar(key: string, defaultValue?: string): string {
   const value = import.meta.env[`VITE_${key}`] || defaultValue
   if (!value) {
-    console.warn(`Environment variable VITE_${key} is not set`)
+    // Environment variable not set
     return ''
   }
   return value
@@ -119,25 +119,7 @@ export function validateEnvironment(): void {
       console.warn('⚠️ SECURITY WARNING: Debug tools are enabled in production')
     }
 
-    // Analytics warnings
-    if (!env.GA_MEASUREMENT_ID && env.ENABLE_ANALYTICS) {
-      console.warn('VITE_GA_MEASUREMENT_ID not set but analytics is enabled')
-    }
-
-    // Error tracking warnings
-    if (!env.SENTRY_DSN) {
-      console.warn('VITE_SENTRY_DSN not set - error tracking disabled in production')
-    }
-
-    // CSP reporting warnings
-    if (env.ENABLE_CSP_REPORTS && !env.CSP_REPORT_URI) {
-      console.warn('VITE_CSP_REPORT_URI not set but CSP reporting is enabled')
-    }
-
-    // Required production configurations
-    if (!env.CDN_URL) {
-      console.warn('VITE_CDN_URL not set - consider using a CDN for production')
-    }
+    // Additional production configuration checks would go here
   }
 
   if (errors.length > 0) {
@@ -145,15 +127,7 @@ export function validateEnvironment(): void {
     throw new Error(`Environment validation failed: ${errors.join(', ')}`)
   }
 
-  // Log configuration in development
-  if (env.IS_DEVELOPMENT) {
-    console.log('Environment configuration:', {
-      APP_NAME: env.APP_NAME,
-      APP_VERSION: env.APP_VERSION,
-      API_URL: env.API_URL,
-      ENABLE_ANALYTICS: env.ENABLE_ANALYTICS,
-    })
-  }
+  // Environment configuration loaded for development
 }
 
 /**

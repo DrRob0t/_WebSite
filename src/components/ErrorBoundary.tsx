@@ -28,7 +28,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error to monitoring service (e.g., Sentry, LogRocket)
-    console.error('Error caught by ErrorBoundary:', error, errorInfo)
+    // Error information captured by boundary
 
     // You can also log to an error reporting service here
     // Example: Sentry.captureException(error, { extra: errorInfo })

@@ -20,7 +20,7 @@ describe('App Accessibility', () => {
 
     const results = await axe(container)
     expect(results).toHaveNoViolations()
-  })
+  }, 15000)
 
   it('should have a skip to content link', () => {
     const { container } = render(

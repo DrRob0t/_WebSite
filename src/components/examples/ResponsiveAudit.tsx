@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
 import { Smartphone, Tablet, Monitor, AlertCircle, Check, X } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useState, useEffect } from 'react'
+
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface Issue {
   component: string
@@ -35,7 +36,7 @@ export const ResponsiveAudit = () => {
 
     // Check touch target sizes
     const buttons = document.querySelectorAll('button, a')
-    buttons.forEach((element) => {
+    buttons.forEach(element => {
       const rect = element.getBoundingClientRect()
       if (rect.width < 44 || rect.height < 44) {
         newIssues.push({
@@ -60,7 +61,7 @@ export const ResponsiveAudit = () => {
     // Check text readability on mobile
     if (width < 768) {
       const textElements = document.querySelectorAll('p, span, div')
-      textElements.forEach((element) => {
+      textElements.forEach(element => {
         const fontSize = window.getComputedStyle(element).fontSize
         if (parseInt(fontSize) < 14) {
           newIssues.push({
@@ -77,7 +78,8 @@ export const ResponsiveAudit = () => {
     // Check for fixed positioning issues on mobile
     if (width < 768) {
       const fixedElements = document.querySelectorAll('[style*="position: fixed"]')
-      if (fixedElements.length > 2) { // Allow header and maybe one more
+      if (fixedElements.length > 2) {
+        // Allow header and maybe one more
         newIssues.push({
           component: 'layout',
           issue: 'Multiple fixed position elements may cause issues on mobile',
@@ -104,8 +106,8 @@ export const ResponsiveAudit = () => {
     const checkTouch = () => {
       setIsTouchDevice(
         'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        window.matchMedia('(pointer: coarse)').matches
+          navigator.maxTouchPoints > 0 ||
+          window.matchMedia('(pointer: coarse)').matches
       )
     }
 
@@ -159,7 +161,13 @@ export const ResponsiveAudit = () => {
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Touch Device:</span>
-              <span>{isTouchDevice ? <Check className="h-4 w-4 text-green-500" /> : <X className="h-4 w-4 text-red-500" />}</span>
+              <span>
+                {isTouchDevice ? (
+                  <Check className="h-4 w-4 text-green-500" />
+                ) : (
+                  <X className="h-4 w-4 text-red-500" />
+                )}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Pixel Ratio:</span>

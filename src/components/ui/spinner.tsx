@@ -5,7 +5,7 @@ interface SpinnerProps {
   size?: 'sm' | 'md' | 'lg' | 'xl'
 }
 
-const sizeClasses = {
+const sizeClasses: Record<string, string> = {
   sm: 'h-4 w-4',
   md: 'h-6 w-6',
   lg: 'h-8 w-8',
@@ -13,11 +13,12 @@ const sizeClasses = {
 }
 
 export const Spinner = ({ className, size = 'md' }: SpinnerProps) => {
+  const sizeClass = sizeClasses[size] || sizeClasses.md
   return (
     <div
       className={cn(
         'animate-spin rounded-full border-2 border-current border-t-transparent text-primary',
-        sizeClasses[size],
+        sizeClass,
         className
       )}
       role="status"

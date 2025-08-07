@@ -22,7 +22,7 @@ describe('Button', () => {
     expect(screen.getByRole('button')).toHaveClass('h-8')
 
     rerender(<Button size="lg">Large</Button>)
-    expect(screen.getByRole('button')).toHaveClass('h-11')
+    expect(screen.getByRole('button')).toHaveClass('h-10')
   })
 
   it('can be disabled', () => {

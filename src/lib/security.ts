@@ -53,7 +53,7 @@ export function sanitizeUrl(url: string): string {
 
   // Block dangerous protocols
   if (cleanUrl.match(/^(javascript|data|vbscript|file|about):/i)) {
-    console.warn('Blocked potentially dangerous URL:', cleanUrl)
+    // Blocked potentially dangerous URL
     return '#'
   }
 
@@ -126,7 +126,7 @@ export function generateSecureToken(): string {
     return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('')
   } else {
     // Fallback for older browsers (less secure)
-    console.warn('Using fallback random number generation - not cryptographically secure')
+    // Using fallback random number generation
     return Math.random().toString(36).substring(2) + Date.now().toString(36)
   }
 }

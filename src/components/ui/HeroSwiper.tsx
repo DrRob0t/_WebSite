@@ -52,9 +52,12 @@ export const HeroSwiper: React.FC<HeroSwiperProps> = ({ className = '' }) => {
 
               {/* Slide Name Overlay */}
               <div className="absolute bottom-16 left-0 right-0 text-center z-10">
-                <h3 className="text-xl font-light text-hyve-text/30 tracking-wider uppercase">
+                <p
+                  className="text-xl font-light text-hyve-text/30 tracking-wider uppercase"
+                  role="presentation"
+                >
                   {slide.name}
-                </h3>
+                </p>
               </div>
             </div>
           </SwiperSlide>

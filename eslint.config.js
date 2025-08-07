@@ -186,4 +186,19 @@ export default tseslint.config([
       '@typescript-eslint/no-var-requires': 'off',
     },
   },
+
+  // Script files (Node.js environment)
+  {
+    files: ['scripts/**/*.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+    rules: {
+      'no-console': 'off',
+      'no-undef': 'off', // Node.js globals are handled by globals.node
+      'no-unused-vars': 'warn',
+    },
+  },
 ])

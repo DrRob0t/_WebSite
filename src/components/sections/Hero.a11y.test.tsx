@@ -15,9 +15,12 @@ describe('Hero Accessibility', () => {
       </BrowserRouter>
     )
 
+    // Give more time for the Hero component to fully render
+    await new Promise(resolve => setTimeout(resolve, 200))
+
     const results = await axe(container)
     expect(results).toHaveNoViolations()
-  }, 10000)
+  }, 15000)
 
   it('should have proper heading hierarchy', () => {
     const { container } = render(

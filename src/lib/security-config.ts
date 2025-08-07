@@ -246,14 +246,7 @@ export function initializeSecurity(): void {
 
   // Log security status
   if (env.IS_DEVELOPMENT) {
-    console.log('🔒 Security Configuration:', {
-      environment: env.IS_PRODUCTION ? 'production' : 'development',
-      cspEnabled: true,
-      securityHeaders: Object.keys(generateSecurityHeaders()).length,
-      httpsRequired: env.IS_PRODUCTION,
-      analyticsEnabled: env.ENABLE_ANALYTICS,
-      errorTracking: !!env.SENTRY_DSN,
-    })
+    // Security configuration loaded for development
   }
 
   // Handle validation results

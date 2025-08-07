@@ -42,13 +42,14 @@ export const SkeletonAvatar = ({
   size?: 'sm' | 'md' | 'lg'
   className?: string
 }) => {
-  const sizeClasses = {
+  const sizeClasses: Record<string, string> = {
     sm: 'h-8 w-8',
     md: 'h-10 w-10',
     lg: 'h-12 w-12',
   }
 
-  return <Skeleton className={cn('rounded-full', sizeClasses[size], className)} />
+  const sizeClass = sizeClasses[size] || sizeClasses.md
+  return <Skeleton className={cn('rounded-full', sizeClass, className)} />
 }
 
 // Industry card skeleton for your specific use case

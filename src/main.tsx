@@ -8,8 +8,8 @@ import './styles/responsive-fixes.css'
 import App from './App.tsx'
 import { setupAxe } from './lib/axe-setup'
 import { validateEnvironment } from './lib/env'
-import { reportWebVitals } from './lib/web-vitals'
 import { initializeSecurity } from './lib/security-config'
+import { reportWebVitals } from './lib/web-vitals'
 
 // Validate environment variables at startup
 try {

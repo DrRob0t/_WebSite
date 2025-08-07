@@ -12,7 +12,8 @@ export const reportWebVitals = (onPerfEntry?: (metric: any) => void) => {
 
 // Optional: Log to console in development
 if (import.meta.env.DEV) {
-  reportWebVitals((metric: any) => {
-    console.log(metric)
+  reportWebVitals((_metric: any) => {
+    // Web vital metric captured
+    // You can send to analytics service here
   })
 }

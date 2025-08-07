@@ -70,7 +70,7 @@ export const CustomMeshBackground = ({
     // @ts-expect-error - Three.js global
     if (!window.THREE) {
       // Three.js not loaded, skipping custom mesh background
-      console.warn('Three.js not loaded, skipping custom mesh background')
+      // Three.js not loaded, skipping custom mesh background
       return
     }
 
@@ -81,8 +81,8 @@ export const CustomMeshBackground = ({
 
     // @ts-expect-error - Three.js global
     const THREE = window.THREE
-    
-    console.log('CustomMeshBackground: Initializing Three.js scene')
+
+    // Initializing Three.js scene
 
     // Scene setup
     const scene = new THREE.Scene()
@@ -648,9 +648,9 @@ export const CustomMeshBackground = ({
 
     // Cleanup
     return () => {
-      console.log('CustomMeshBackground: Cleaning up Three.js scene')
+      // Cleaning up Three.js scene
       window.removeEventListener('resize', handleResize)
-      
+
       if (renderer.domElement) {
         renderer.domElement.removeEventListener('click', handleClick)
       }
@@ -693,7 +693,7 @@ export const CustomMeshBackground = ({
       if (pointGeometry) pointGeometry.dispose()
       if (pointMaterial) pointMaterial.dispose()
       if (lineMaterial) lineMaterial.dispose()
-      
+
       // Clean up renderer and remove canvas
       if (renderer) {
         if (currentMount && renderer.domElement && currentMount.contains(renderer.domElement)) {
