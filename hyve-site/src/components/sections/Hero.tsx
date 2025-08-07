@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, ChevronDown } from 'lucide-react'
-import React from 'react'
+
+import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import { HeroSwiper } from '@/components/ui/HeroSwiper'
@@ -33,6 +34,8 @@ const itemVariants = {
 }
 
 export const Hero = () => {
+  const navigate = useNavigate()
+
   return (
     <section className="relative min-h-[80vh] flex items-center overflow-hidden pointer-events-none py-16 lg:py-20">
       {/* Asymmetric Layout Container */}
@@ -91,11 +94,7 @@ export const Hero = () => {
                 <Button
                   size="lg"
                   className="group bg-transparent border border-hyve-text text-hyve-text hover:bg-hyve-text hover:text-white px-8 py-5 transition-all duration-300"
-                  onClick={() => {
-                    document.getElementById('technology')?.scrollIntoView({
-                      behavior: 'smooth',
-                    })
-                  }}
+                  onClick={() => navigate('/haptic-matrix')}
                 >
                   <span className="flex items-center gap-2 text-sm font-light tracking-wide">
                     Explore Technology

@@ -162,6 +162,15 @@ export const Industries = () => {
               <Button
                 size="default"
                 className="bg-hyve-text hover:bg-hyve-text-dark text-white pointer-events-auto"
+                onClick={() => {
+                  // Trigger the contact form in the header
+                  const contactButton = document.querySelector(
+                    '[data-contact-trigger]'
+                  ) as HTMLButtonElement
+                  if (contactButton) {
+                    contactButton.click()
+                  }
+                }}
               >
                 Contact Our Experts
                 <ArrowRight className="ml-2 h-4 w-4" />

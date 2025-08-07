@@ -311,6 +311,20 @@ const DesktopNavigation = () => (
         </NavigationMenuLink>
       </NavigationMenuItem>
 
+      {/* About */}
+      <NavigationMenuItem>
+        <NavigationMenuLink
+          href="/about"
+          className={cn(
+            'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+            'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
+            'font-body text-hyve-text'
+          )}
+        >
+          About
+        </NavigationMenuLink>
+      </NavigationMenuItem>
+
       {/* Industries Dropdown */}
       <NavigationMenuItem>
         <NavigationMenuTrigger className="font-body text-hyve-text hover:bg-hyve-content hover:text-hyve-text-dark">
@@ -435,6 +449,19 @@ const MobileNavigation = () => {
               )}
             >
               Vision
+            </Link>
+
+            {/* About */}
+            <Link
+              to="/about"
+              onClick={() => setIsOpen(false)}
+              className={cn(
+                'text-lg font-medium py-2 px-4 rounded-md transition-colors',
+                'hover:bg-hyve-content hover:text-hyve-text-dark',
+                'font-body text-hyve-text'
+              )}
+            >
+              About
             </Link>
 
             {/* Industries Dropdown */}

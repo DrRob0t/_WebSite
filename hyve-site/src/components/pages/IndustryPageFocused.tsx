@@ -53,7 +53,7 @@ const itemVariants = {
 
 export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) => {
   const navigate = useNavigate()
-  
+
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -77,7 +77,7 @@ export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) =
                 <div className="p-8 lg:p-12 flex flex-col">
                   {/* Back Button */}
                   <motion.div variants={itemVariants} className="mb-6">
-                    <Link 
+                    <Link
                       to="/"
                       className="inline-flex items-center px-3 py-2 text-sm font-medium text-hyve-text hover:text-hyve-accent transition-colors group cursor-pointer pointer-events-auto"
                       style={{ position: 'relative', zIndex: 50 }}
@@ -86,7 +86,7 @@ export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) =
                       Back to Home
                     </Link>
                   </motion.div>
-                  
+
                   {/* Video Animation */}
                   <motion.div variants={itemVariants} className="mb-16 lg:mb-20">
                     <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-hyve-accent/10 to-hyve-interactive/10 p-1">
@@ -144,6 +144,15 @@ export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) =
                       <Button
                         size="lg"
                         className="bg-hyve-text hover:bg-hyve-text-dark text-white group"
+                        onClick={() => {
+                          // Trigger the contact form in the header
+                          const contactButton = document.querySelector(
+                            '[data-contact-trigger]'
+                          ) as HTMLButtonElement
+                          if (contactButton) {
+                            contactButton.click()
+                          }
+                        }}
                       >
                         Get Started
                         <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -152,6 +161,10 @@ export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) =
                         size="lg"
                         variant="outline"
                         className="border-hyve-accent text-hyve-text hover:bg-hyve-accent/10"
+                        onClick={() => {
+                          // Navigate to insights/white-papers when available
+                          navigate('/insights/white-papers')
+                        }}
                       >
                         <Download className="mr-2 h-4 w-4" />
                         Whitepaper

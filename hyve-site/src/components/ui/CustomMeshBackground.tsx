@@ -148,7 +148,7 @@ export const CustomMeshBackground = ({
       const positions = new Float32Array(streamlinePoints.length * 3)
       const opacities = new Float32Array(streamlinePoints.length)
 
-      streamlinePoints.forEach((point, idx) => {
+      streamlinePoints.forEach((point: any, idx: number) => {
         positions[idx * 3] = point.x
         positions[idx * 3 + 1] = point.y
         positions[idx * 3 + 2] = point.z

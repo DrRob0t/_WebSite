@@ -28,9 +28,9 @@ const footerSections = [
   {
     title: 'Company',
     links: [
-      { name: 'About Us', href: '#about' },
-      { name: 'Our Technology', href: '#technology' },
-      { name: 'Industries', href: '#industries' },
+      { name: 'About Us', href: '/about' },
+      { name: 'Our Technology', href: '/haptic-matrix' },
+      { name: 'Industries', href: '/#industries' },
       { name: 'Careers', href: '#careers' },
     ],
   },
