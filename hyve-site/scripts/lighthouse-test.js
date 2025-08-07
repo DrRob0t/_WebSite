@@ -1,6 +1,6 @@
-const fs = require('fs');
-const lighthouse = require('lighthouse');
-const chromeLauncher = require('chrome-launcher');
+import fs from 'fs';
+import lighthouse from 'lighthouse';
+import * as chromeLauncher from 'chrome-launcher';
 
 async function runLighthouse(url) {
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });

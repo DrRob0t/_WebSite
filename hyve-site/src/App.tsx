@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import { SEO } from '@/components/common/SEO'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { Layout } from '@/components/layout/Layout'
 import { Hero } from '@/components/sections/Hero'
 import { Industries } from '@/components/sections/Industries'
@@ -14,6 +15,7 @@ import { AutomotivePage } from '@/pages/industries/AutomotivePage'
 import { EnergyPage } from '@/pages/industries/EnergyPage'
 import { RoboticsPage } from '@/pages/industries/RoboticsPage'
 import { StructuralHealthPage } from '@/pages/industries/StructuralHealthPage'
+import { NotFound } from '@/pages/NotFound'
 
 // Home page component
 const HomePage = () => {
@@ -48,16 +50,20 @@ function App() {
   return (
     <Router>
       <Layout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/haptic-matrix" element={<HapticMatrixPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/industries/aerospace" element={<AerospacePage />} />
-          <Route path="/industries/automotive" element={<AutomotivePage />} />
-          <Route path="/industries/energy" element={<EnergyPage />} />
-          <Route path="/industries/structural-health" element={<StructuralHealthPage />} />
-          <Route path="/industries/robotics" element={<RoboticsPage />} />
-        </Routes>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/haptic-matrix" element={<HapticMatrixPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/industries/aerospace" element={<AerospacePage />} />
+            <Route path="/industries/automotive" element={<AutomotivePage />} />
+            <Route path="/industries/energy" element={<EnergyPage />} />
+            <Route path="/industries/structural-health" element={<StructuralHealthPage />} />
+            <Route path="/industries/robotics" element={<RoboticsPage />} />
+            {/* Catch-all route for 404 pages */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ErrorBoundary>
       </Layout>
     </Router>
   )

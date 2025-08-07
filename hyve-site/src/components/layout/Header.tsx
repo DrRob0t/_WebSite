@@ -41,8 +41,8 @@ import { cn } from '@/lib/utils'
 
 // Logo component
 const Logo = () => (
-  <Link to="/" className="flex items-center space-x-">
-    <img src="/src/assets/logo/HD-logo-dk.svg" alt="Hyve Dynamics" className="h-10 w-auto" />
+  <Link to="/" className="flex items-center space-x-2">
+    <img src="/HD-Logo-dk.svg" alt="Hyve Dynamics" className="h-10 w-auto" />
   </Link>
 )
 
