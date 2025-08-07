@@ -2,6 +2,8 @@
 
 This guide explains how to deploy the Hyve Dynamics website to GitHub Pages.
 
+> **Note:** GitHub Pages must be enabled in repository settings before the first deployment.
+
 ## 🚀 Automatic Deployment
 
 The website is automatically deployed to GitHub Pages whenever you push to the `main` branch.
