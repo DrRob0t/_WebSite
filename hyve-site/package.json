@@ -19,7 +19,9 @@
     "test:coverage": "vitest --coverage",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:lighthouse": "node scripts/lighthouse-test.js",
+    "test:lighthouse": "concurrently -k -s first \"npm run preview\" \"wait-on http://localhost:4173 && node scripts/lighthouse-test.js\"",
+    "test:lighthouse:dev": "concurrently -k -s first \"npm run dev\" \"wait-on http://localhost:5173 && node scripts/lighthouse-test.js -- http://localhost:5173\"",
+    "test:lighthouse:only": "node scripts/lighthouse-test.js",
     "test:a11y": "vitest src/**/*.a11y.test.{ts,tsx}"
   },
   "dependencies": {
@@ -67,6 +69,7 @@
     "@typescript-eslint/eslint-plugin": "^8.38.0",
     "@typescript-eslint/parser": "^8.38.0",
     "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^9.2.0",
     "eslint": "^9.30.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -89,7 +92,8 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
     "vite": "^7.0.4",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "wait-on": "^8.0.4"
   },
   "lint-staged": {
     "*.{ts,tsx}": [

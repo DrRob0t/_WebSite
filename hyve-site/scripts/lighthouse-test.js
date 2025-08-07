@@ -1,8 +1,33 @@
 import fs from 'fs';
 import lighthouse from 'lighthouse';
 import * as chromeLauncher from 'chrome-launcher';
+import waitOn from 'wait-on';
+
+async function waitForServer(url, timeout = 30000) {
+  console.log(`⏳ Waiting for server at ${url}...`);
+  try {
+    await waitOn({
+      resources: [url],
+      timeout,
+      validateStatus: function (status) {
+        return status >= 200 && status < 300;
+      }
+    });
+    console.log('✅ Server is ready!');
+    return true;
+  } catch (err) {
+    console.error('❌ Server did not start in time:', err.message);
+    return false;
+  }
+}
 
 async function runLighthouse(url) {
+  // Wait for server to be ready
+  const serverReady = await waitForServer(url);
+  if (!serverReady) {
+    process.exit(1);
+  }
+
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
   const options = {
     logLevel: 'info',
@@ -26,10 +51,10 @@ async function runLighthouse(url) {
   
   console.log('\n📊 Lighthouse Scores:');
   console.log('===================');
-  console.log(`Performance: ${scores.performance}`);
-  console.log(`Accessibility: ${scores.accessibility}`);
-  console.log(`Best Practices: ${scores.bestPractices}`);
-  console.log(`SEO: ${scores.seo}`);
+  console.log(`Performance: ${scores.performance.toFixed(0)}`);
+  console.log(`Accessibility: ${scores.accessibility.toFixed(0)}`);
+  console.log(`Best Practices: ${scores.bestPractices.toFixed(0)}`);
+  console.log(`SEO: ${scores.seo.toFixed(0)}`);
   
   // Log Core Web Vitals
   const metrics = runnerResult.lhr.audits;
@@ -48,7 +73,7 @@ async function runLighthouse(url) {
 }
 
 // Run the test
-const url = process.argv[2] || 'http://localhost:5173';
+const url = process.argv[2] || 'http://localhost:4173';
 console.log(`🔍 Running Lighthouse audit on ${url}...`);
 
 runLighthouse(url)

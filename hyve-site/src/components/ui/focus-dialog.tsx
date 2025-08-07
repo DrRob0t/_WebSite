@@ -125,24 +125,27 @@ FocusDialogDescription.displayName = DialogPrimitive.Description.displayName
 // Hook to programmatically manage dialog focus
 export const useDialogFocus = () => {
   const [dialogOpen, setDialogOpen] = React.useState(false)
-  const triggerRef = React.useRef<HTMLElement>(null)
+  const previousFocusRef = React.useRef<HTMLElement | null>(null)
 
   const openDialog = React.useCallback(() => {
     // Store current focus
-    triggerRef.current = document.activeElement as HTMLElement
+    previousFocusRef.current = document.activeElement as HTMLElement
     setDialogOpen(true)
   }, [])
 
   const closeDialog = React.useCallback(() => {
     setDialogOpen(false)
-    // Focus will be restored automatically by Radix
+    // Restore focus manually if needed
+    if (previousFocusRef.current) {
+      previousFocusRef.current.focus()
+    }
   }, [])
 
   return {
     dialogOpen,
     openDialog,
     closeDialog,
-    triggerRef,
+    previousFocusRef,
   }
 }
 

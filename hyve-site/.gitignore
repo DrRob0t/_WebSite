@@ -25,3 +25,6 @@ dist-ssr
 
 # Bundle analysis
 stats.html
+
+# Lighthouse reports
+lighthouse-report.html

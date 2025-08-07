@@ -1,4 +1,5 @@
 import { toast as sonnerToast } from 'sonner'
+import React from 'react'
 
 // Custom toast utility functions for consistent messaging across the app
 
@@ -56,7 +57,7 @@ export const toast = {
   },
 
   // Custom notification
-  custom: (component: React.ReactNode) => {
+  custom: (component: (id: string | number) => React.ReactElement) => {
     return sonnerToast.custom(component)
   },
 
