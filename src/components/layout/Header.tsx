@@ -18,6 +18,7 @@ import {
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { getPublicAssetPath } from '@/lib/assets'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
@@ -47,7 +48,7 @@ import { cn } from '@/lib/utils'
 // Logo component
 const Logo = () => (
   <Link to="/" className="flex items-center space-x-2" aria-label="Hyve Dynamics Home">
-    <img src="/HD-Logo-dk.svg" alt="Hyve Dynamics" className="h-10 w-auto" />
+    <img src={getPublicAssetPath('HD-Logo-dk.svg')} alt="Hyve Dynamics" className="h-10 w-auto" />
   </Link>
 )
 

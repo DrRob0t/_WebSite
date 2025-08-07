@@ -1,4 +1,5 @@
 import { IndustryPageFocused } from '@/components/pages/IndustryPageFocused'
+import { getVideoPath } from '@/lib/assets'
 
 const automotiveData = {
   id: 'automotive',
@@ -7,7 +8,7 @@ const automotiveData = {
   tagline: 'Driving the Future of Automotive Innovation',
   description:
     'Real-Time Aerodynamic & Structural Data for Superior Performance. At Hyve Dynamics, we revolutionize automotive testing with real-time, high-density aerodynamic, thermal, and structural data.',
-  videoPath: '/models/3d_animations/F1-Car.webm',
+  videoPath: getVideoPath('F1-Car.webm'),
   features: [
     {
       title: 'Real-Time Performance Insights',

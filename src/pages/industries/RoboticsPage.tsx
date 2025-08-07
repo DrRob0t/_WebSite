@@ -1,4 +1,5 @@
 import { IndustryPageFocused } from '@/components/pages/IndustryPageFocused'
+import { getVideoPath } from '@/lib/assets'
 
 const roboticsData = {
   id: 'robotics',
@@ -7,7 +8,7 @@ const roboticsData = {
   tagline: 'Advancing Robotics with Environmental Intelligence',
   description:
     'Real-Time Operational Insights for Next-Generation Automation. At Hyve Dynamics, we unlock new dimensions of robotic performance by providing real-time environmental and interaction data that gives your automation systems unprecedented situational awareness.',
-  videoPath: '/models/3d_animations/Robot.webm',
+  videoPath: getVideoPath('Robot.webm'),
   features: [
     {
       title: 'Environmental Awareness',

@@ -3,12 +3,13 @@ import { Mail, Linkedin, Building, Hash } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { Separator } from '@/components/ui/separator'
+import { getPublicAssetPath } from '@/lib/assets'
 
 // Logo component for footer
 const FooterLogo = () => (
   <div className="flex items-center space-x-2">
     <img
-      src="/src/assets/logo/logo_white.svg"
+      src={getPublicAssetPath('logo_white.svg')}
       alt="Hyve Dynamics Holdings"
       className="h-8 w-auto opacity-90 hover:opacity-100 transition-opacity"
     />

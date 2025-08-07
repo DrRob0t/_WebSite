@@ -1,4 +1,5 @@
 import { IndustryPageFocused } from '@/components/pages/IndustryPageFocused'
+import { getVideoPath } from '@/lib/assets'
 
 const energyData = {
   id: 'energy',
@@ -7,7 +8,7 @@ const energyData = {
   tagline: 'Maximizing Renewable Energy Efficiency with Real-Time Data',
   description:
     'Optimizing Wind, Solar, and Hydro Systems with Cutting-Edge Sensor Technology. At Hyve Dynamics, we empower the renewable energy sector with real-time, high-density aerodynamic, thermal, and structural data.',
-  videoPath: '/models/3d_animations/Wind-Turbine.webm',
+  videoPath: getVideoPath('Wind-Turbine.webm'),
   features: [
     {
       title: 'Real-Time Monitoring',

@@ -1,4 +1,5 @@
 import { IndustryPageFocused } from '@/components/pages/IndustryPageFocused'
+import { getVideoPath } from '@/lib/assets'
 
 const structuralHealthData = {
   id: 'structural-health',
@@ -7,7 +8,7 @@ const structuralHealthData = {
   tagline: 'Real-Time FEA Validation and Predictive Maintenance Intelligence',
   description:
     'Transforming Infrastructure Monitoring with Live Structural Analysis. At Hyve Dynamics, we revolutionize structural health monitoring by delivering real-time Finite Element Analysis (FEA) validation under actual operating conditions.',
-  videoPath: '/models/3d_animations/Structural-Health.webm',
+  videoPath: getVideoPath('Structural-Health.webm'),
   features: [
     {
       title: 'Real-Time FEA Correlation',

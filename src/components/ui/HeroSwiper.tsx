@@ -1,6 +1,7 @@
 import React from 'react'
 import { Pagination, Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { getVideoPath } from '@/lib/assets'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -12,11 +13,11 @@ interface HeroSwiperProps {
 }
 
 const slides = [
-  { id: 1, name: 'Aerospace', video: '/models/3d_animations/A320.webm' },
-  { id: 2, name: 'Health Monitoring', video: '/models/3d_animations/Structural-Health.webm' },
-  { id: 3, name: 'Motorsport', video: '/models/3d_animations/F1-Car.webm' },
-  { id: 4, name: 'Energy', video: '/models/3d_animations/Wind-Turbine.webm' },
-  { id: 5, name: 'Robotics', video: '/models/3d_animations/Robot.webm' },
+  { id: 1, name: 'Aerospace', video: getVideoPath('A320.webm') },
+  { id: 2, name: 'Health Monitoring', video: getVideoPath('Structural-Health.webm') },
+  { id: 3, name: 'Motorsport', video: getVideoPath('F1-Car.webm') },
+  { id: 4, name: 'Energy', video: getVideoPath('Wind-Turbine.webm') },
+  { id: 5, name: 'Robotics', video: getVideoPath('Robot.webm') },
 ]
 
 export const HeroSwiper: React.FC<HeroSwiperProps> = ({ className = '' }) => {

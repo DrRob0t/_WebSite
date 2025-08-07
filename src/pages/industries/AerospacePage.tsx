@@ -3,6 +3,7 @@
 import { IndustryPageFocused } from '@/components/pages/IndustryPageFocused' // Single container focused layout
 // import { IndustryPageMagazine } from '@/components/pages/IndustryPageMagazine' // Magazine-style layout
 // import { IndustryPageTemplate } from '@/components/pages/IndustryPageTemplate' // Original scrolling layout
+import { getVideoPath } from '@/lib/assets'
 
 const aerospaceData = {
   id: 'aerospace',
@@ -11,7 +12,7 @@ const aerospaceData = {
   tagline: 'Real-Time Aerodynamic Data',
   description:
     'Unlocking Precision, Performance, and Sustainability in Aviation. At Hyve Dynamics, we are transforming aerospace research and development with real-time, high-density aerodynamic data acquisition.',
-  videoPath: '/models/3d_animations/A320.webm',
+  videoPath: getVideoPath('A320.webm'),
   features: [
     {
       title: 'Real-Time Insights',

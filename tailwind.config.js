@@ -99,9 +99,9 @@ export default {
       },
       fontFamily: {
         // 🔤 HYVE DYNAMICS CUSTOM FONTS
-        'heading': ['Peach Classy', 'serif'], // Main headings, hero titles
+        'heading': ['Poppins', 'system-ui', 'sans-serif'], // Main headings, hero titles (using Poppins until custom font is available)
         'body': ['Poppins', 'system-ui', 'sans-serif'], // Body text, descriptions
-        'sans': ['Moto Sans', 'system-ui', 'sans-serif'], // UI elements, navigation
+        'sans': ['Poppins', 'system-ui', 'sans-serif'], // UI elements, navigation (using Poppins until custom font is available)
         'mono': ['JetBrains Mono', 'Consolas', 'monospace'], // Code, technical specs
       },
       fontSize: {
