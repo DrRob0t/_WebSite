@@ -23,3 +23,26 @@ Object.defineProperty(window, 'matchMedia', {
     removeListener: () => {}, // deprecated
   }),
 })
+
+// Mock IntersectionObserver
+global.IntersectionObserver = class IntersectionObserver {
+  constructor() {}
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  root = null
+  rootMargin = '0px'
+  thresholds = [0]
+  takeRecords() { return [] }
+} as any
+
+// Mock scrollTo
+window.scrollTo = () => {}
+
+// Mock ResizeObserver
+global.ResizeObserver = class ResizeObserver {
+  constructor() {}
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+} as any

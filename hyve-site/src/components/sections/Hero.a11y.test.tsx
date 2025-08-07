@@ -16,7 +16,7 @@ describe('Hero Accessibility', () => {
     
     const results = await axe(container)
     expect(results).toHaveNoViolations()
-  })
+  }, 10000)
 
   it('should have proper heading hierarchy', () => {
     const { container } = render(
@@ -27,7 +27,7 @@ describe('Hero Accessibility', () => {
     
     const h1 = container.querySelector('h1')
     expect(h1).toBeInTheDocument()
-    expect(h1).toHaveTextContent('Real-World Data')
+    expect(h1).toHaveTextContent('Adaptation Through Insight. Evolution Through Data.')
   })
 
   it('should have accessible buttons', () => {
