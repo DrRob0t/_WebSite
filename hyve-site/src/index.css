@@ -10,7 +10,7 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   :root {
     --background: 244 242 243; /* #F4F2F3 - White Smoke */
     --foreground: 42 48 60; /* #2A303C - Gunmetal */

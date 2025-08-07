@@ -22,7 +22,11 @@
     "test:lighthouse": "concurrently -k -s first \"npm run preview\" \"wait-on http://localhost:4173 && node scripts/lighthouse-test.js\"",
     "test:lighthouse:dev": "concurrently -k -s first \"npm run dev\" \"wait-on http://localhost:5173 && node scripts/lighthouse-test.js -- http://localhost:5173\"",
     "test:lighthouse:only": "node scripts/lighthouse-test.js",
-    "test:a11y": "vitest src/**/*.a11y.test.{ts,tsx}"
+    "test:a11y": "vitest src/**/*.a11y.test.{ts,tsx}",
+    "security:audit": "node scripts/security-audit.js",
+    "security:deps": "npm audit --audit-level moderate",
+    "security:fix": "npm audit fix",
+    "security:check": "npm run security:deps && npm run security:audit"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

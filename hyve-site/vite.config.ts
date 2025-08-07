@@ -4,6 +4,51 @@ import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig } from 'vite'
 
+// Enhanced security headers for production
+const getSecurityHeaders = (isProduction = false) => ({
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'X-XSS-Protection': '1; mode=block',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': [
+    'camera=()',
+    'microphone=()',
+    'geolocation=()',
+    'payment=()',
+    'accelerometer=()',
+    'gyroscope=()',
+    'magnetometer=()',
+    'usb=()',
+    'serial=()',
+    'bluetooth=()',
+  ].join(', '),
+  ...(isProduction && {
+    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+    'Expect-CT': 'max-age=86400, enforce',
+  }),
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    isProduction
+      ? "script-src 'self' https://cdnjs.cloudflare.com"
+      : "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com",
+    "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
+    "font-src 'self' fonts.gstatic.com data:",
+    "img-src 'self' data: blob: https:",
+    "connect-src 'self' https://api.hyvedynamics.com",
+    "media-src 'self' blob:",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "frame-src 'none'",
+    'upgrade-insecure-requests',
+    'block-all-mixed-content',
+  ].join('; '),
+  'Cross-Origin-Embedder-Policy': 'require-corp',
+  'Cross-Origin-Opener-Policy': 'same-origin',
+  'Cross-Origin-Resource-Policy': 'same-origin',
+})
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -21,36 +66,10 @@ export default defineConfig({
     },
   },
   server: {
-    headers: {
-      // Security headers for development
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-    },
+    headers: getSecurityHeaders(false), // Development headers
   },
   preview: {
-    headers: {
-      // Security headers for preview
-      'X-Content-Type-Options': 'nosniff',
-      'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Content-Security-Policy': [
-        "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Note: Remove unsafe-* in production
-        "style-src 'self' 'unsafe-inline' fonts.googleapis.com",
-        "font-src 'self' fonts.gstatic.com",
-        "img-src 'self' data: blob:",
-        "connect-src 'self'",
-        "media-src 'self'",
-        "object-src 'none'",
-        "base-uri 'self'",
-        "form-action 'self'",
-        "frame-ancestors 'none'",
-        'upgrade-insecure-requests',
-      ].join('; '),
-    },
+    headers: getSecurityHeaders(true), // Production-like headers for preview
   },
   build: {
     // Optimize build

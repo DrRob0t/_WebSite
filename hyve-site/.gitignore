@@ -28,3 +28,22 @@ stats.html
 
 # Lighthouse reports
 lighthouse-report.html
+
+# Security files
+.env
+.env.local
+.env.production
+.env.staging
+*.key
+*.pem
+*.p12
+private.key
+server.key
+id_rsa
+id_dsa
+id_ecdsa
+credentials.json
+service-account.json
+
+# Security audit reports
+security-audit-report.json

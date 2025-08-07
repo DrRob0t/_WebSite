@@ -9,6 +9,14 @@ export interface AppEnv {
   readonly GA_MEASUREMENT_ID?: string
   readonly SENTRY_DSN?: string
   readonly ENABLE_ANALYTICS: boolean
+  readonly ENABLE_CSP_REPORTS: boolean
+  readonly CSP_REPORT_URI?: string
+  readonly CDN_URL?: string
+  readonly ENABLE_DEBUG_TOOLS: boolean
+  readonly ENABLE_PERFORMANCE_MONITORING: boolean
+  readonly CONTACT_API_ENDPOINT?: string
+  readonly LINKEDIN_URL?: string
+  readonly TWITTER_URL?: string
 }
 
 /**
@@ -46,6 +54,14 @@ export const env: AppEnv = {
   GA_MEASUREMENT_ID: import.meta.env.VITE_GA_MEASUREMENT_ID,
   SENTRY_DSN: import.meta.env.VITE_SENTRY_DSN,
   ENABLE_ANALYTICS: getBooleanEnvVar('ENABLE_ANALYTICS', false),
+  ENABLE_CSP_REPORTS: getBooleanEnvVar('ENABLE_CSP_REPORTS', false),
+  CSP_REPORT_URI: import.meta.env.VITE_CSP_REPORT_URI,
+  CDN_URL: import.meta.env.VITE_CDN_URL,
+  ENABLE_DEBUG_TOOLS: getBooleanEnvVar('ENABLE_DEBUG_TOOLS', !import.meta.env.PROD),
+  ENABLE_PERFORMANCE_MONITORING: getBooleanEnvVar('ENABLE_PERFORMANCE_MONITORING', false),
+  CONTACT_API_ENDPOINT: import.meta.env.VITE_CONTACT_API_ENDPOINT,
+  LINKEDIN_URL: getEnvVar('LINKEDIN_URL', 'https://linkedin.com/company/hyve-dynamics'),
+  TWITTER_URL: getEnvVar('TWITTER_URL', 'https://twitter.com/hyvedynamics'),
 } as const
 
 /**
@@ -64,21 +80,63 @@ export function validateEnvironment(): void {
     errors.push('VITE_API_URL is required')
   }
 
-  // Validate URL format
-  try {
-    new URL(env.API_URL)
-  } catch {
-    errors.push('VITE_API_URL must be a valid URL')
+  // Validate URL formats
+  const urlsToValidate = [
+    { url: env.API_URL, name: 'VITE_API_URL' },
+    { url: env.CDN_URL, name: 'VITE_CDN_URL', optional: true },
+    { url: env.CSP_REPORT_URI, name: 'VITE_CSP_REPORT_URI', optional: true },
+    { url: env.CONTACT_API_ENDPOINT, name: 'VITE_CONTACT_API_ENDPOINT', optional: true },
+    { url: env.LINKEDIN_URL, name: 'VITE_LINKEDIN_URL', optional: true },
+    { url: env.TWITTER_URL, name: 'VITE_TWITTER_URL', optional: true },
+  ]
+
+  urlsToValidate.forEach(({ url, name, optional }) => {
+    if (url) {
+      try {
+        new URL(url)
+      } catch {
+        errors.push(`${name} must be a valid URL`)
+      }
+    } else if (!optional) {
+      errors.push(`${name} is required`)
+    }
+  })
+
+  // Validate Sentry DSN format if provided
+  if (env.SENTRY_DSN && !env.SENTRY_DSN.startsWith('https://')) {
+    errors.push('VITE_SENTRY_DSN must be a valid Sentry DSN starting with https://')
   }
 
-  // Log warnings for optional but recommended variables
+  // Validate GA Measurement ID format if provided
+  if (env.GA_MEASUREMENT_ID && !env.GA_MEASUREMENT_ID.match(/^G-[A-Z0-9]+$/)) {
+    errors.push('VITE_GA_MEASUREMENT_ID must be in format G-XXXXXXXXXX')
+  }
+
+  // Production-specific validations
   if (env.IS_PRODUCTION) {
+    // Security warnings
+    if (env.ENABLE_DEBUG_TOOLS) {
+      console.warn('⚠️ SECURITY WARNING: Debug tools are enabled in production')
+    }
+
+    // Analytics warnings
     if (!env.GA_MEASUREMENT_ID && env.ENABLE_ANALYTICS) {
       console.warn('VITE_GA_MEASUREMENT_ID not set but analytics is enabled')
     }
 
+    // Error tracking warnings
     if (!env.SENTRY_DSN) {
-      console.warn('VITE_SENTRY_DSN not set - error tracking disabled')
+      console.warn('VITE_SENTRY_DSN not set - error tracking disabled in production')
+    }
+
+    // CSP reporting warnings
+    if (env.ENABLE_CSP_REPORTS && !env.CSP_REPORT_URI) {
+      console.warn('VITE_CSP_REPORT_URI not set but CSP reporting is enabled')
+    }
+
+    // Required production configurations
+    if (!env.CDN_URL) {
+      console.warn('VITE_CDN_URL not set - consider using a CDN for production')
     }
   }
 
