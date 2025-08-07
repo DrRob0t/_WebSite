@@ -16,6 +16,7 @@ import { EnergyPage } from '@/pages/industries/EnergyPage'
 import { RoboticsPage } from '@/pages/industries/RoboticsPage'
 import { StructuralHealthPage } from '@/pages/industries/StructuralHealthPage'
 import { NotFound } from '@/pages/NotFound'
+import { ScrollToTop } from '@/components/ui/scroll-to-top'
 
 // Home page component
 const HomePage = () => {
@@ -64,6 +65,7 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ErrorBoundary>
+        <ScrollToTop showAfter={400} />
       </Layout>
     </Router>
   )

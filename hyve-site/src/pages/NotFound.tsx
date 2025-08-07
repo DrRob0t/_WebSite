@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Home, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SEO } from '@/components/common/SEO'
+import { toast } from 'sonner'
 
 export const NotFound = () => {
   return (

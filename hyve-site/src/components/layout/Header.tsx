@@ -12,9 +12,14 @@ import {
   Mail,
   Newspaper,
   Send,
+  AlertCircle,
 } from 'lucide-react'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -63,46 +68,71 @@ const NavLink = React.forwardRef<HTMLAnchorElement, React.ComponentPropsWithoutR
 )
 NavLink.displayName = 'NavLink'
 
+// Form validation schema
+const contactFormSchema = z.object({
+  name: z.string()
+    .min(2, 'Name must be at least 2 characters')
+    .max(50, 'Name must be less than 50 characters'),
+  email: z.string()
+    .email('Please enter a valid email address'),
+  message: z.string()
+    .min(10, 'Message must be at least 10 characters')
+    .max(500, 'Message must be less than 500 characters'),
+})
+
+type ContactFormData = z.infer<typeof contactFormSchema>
+
 // Contact Form Component
 const ContactForm = () => {
   const [open, setOpen] = useState(false)
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
+  
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+    mode: 'onBlur', // Validate on blur for better UX
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+  const onSubmit = async (data: ContactFormData) => {
+    try {
+      // Simulate form submission
+      // In production, you'd send this to your backend
+      await new Promise(resolve => setTimeout(resolve, 1500))
 
-    // Simulate form submission
-    // In production, you'd send this to your backend
+      // For now, we'll also open the email client
+      const mailtoLink = `mailto:info@hyvedynamics.com?subject=Contact from ${data.name}&body=${encodeURIComponent(
+        `Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`
+      )}`
+      window.open(mailtoLink)
 
-    // For now, we'll just open the email client
-    const mailtoLink = `mailto:info@hyvedynamics.com?subject=Contact from ${formData.name}&body=${encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    )}`
-    window.open(mailtoLink)
+      // Show success toast
+      toast.success('Message sent successfully!', {
+        description: "We'll get back to you as soon as possible.",
+        duration: 5000,
+      })
 
-    setTimeout(() => {
-      setIsSubmitting(false)
+      // Reset form and close dialog
+      reset()
       setOpen(false)
-      // Reset form
-      setFormData({ name: '', email: '', message: '' })
-    }, 1000)
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }))
+    } catch (error) {
+      // Show error toast
+      toast.error('Failed to send message', {
+        description: 'Please try again or contact us directly at info@hyvedynamics.com',
+        duration: 5000,
+      })
+    }
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={(value) => {
+      setOpen(value)
+      if (!value) {
+        reset() // Reset form when dialog closes
+      }
+    }}>
       <DialogTrigger asChild>
         <Button
           size="sm"
@@ -113,29 +143,40 @@ const ContactForm = () => {
           <span className="hidden sm:inline">Contact Us</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-hyve-background">
+      <DialogContent 
+        className="sm:max-w-[425px] bg-hyve-background"
+        aria-describedby="contact-form-description"
+      >
         <DialogHeader>
           <DialogTitle className="text-2xl font-body font-light text-hyve-header">
             Get in Touch
           </DialogTitle>
-          <DialogDescription className="text-hyve-text/70 font-body">
+          <DialogDescription id="contact-form-description" className="text-hyve-text/70 font-body">
             Send us a message and we&apos;ll get back to you as soon as possible.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
           <div className="space-y-2">
             <Label htmlFor="name" className="text-sm font-body font-medium text-hyve-text">
               Name
             </Label>
             <Input
               id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
+              {...register('name')}
               placeholder="Your name"
-              required
-              className="font-body border-hyve-content focus:border-hyve-accent"
+              className={cn(
+                "font-body border-hyve-content focus:border-hyve-accent",
+                errors.name && "border-red-500 focus:border-red-500"
+              )}
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "name-error" : undefined}
             />
+            {errors.name && (
+              <p id="name-error" className="text-sm text-red-500 flex items-center gap-1 mt-1">
+                <AlertCircle className="h-3 w-3" />
+                {errors.name.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -144,14 +185,22 @@ const ContactForm = () => {
             </Label>
             <Input
               id="email"
-              name="email"
               type="email"
-              value={formData.email}
-              onChange={handleChange}
+              {...register('email')}
               placeholder="your@email.com"
-              required
-              className="font-body border-hyve-content focus:border-hyve-accent"
+              className={cn(
+                "font-body border-hyve-content focus:border-hyve-accent",
+                errors.email && "border-red-500 focus:border-red-500"
+              )}
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? "email-error" : undefined}
             />
+            {errors.email && (
+              <p id="email-error" className="text-sm text-red-500 flex items-center gap-1 mt-1">
+                <AlertCircle className="h-3 w-3" />
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -160,14 +209,22 @@ const ContactForm = () => {
             </Label>
             <Textarea
               id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
+              {...register('message')}
               placeholder="Tell us about your project or inquiry..."
-              required
               rows={4}
-              className="font-body border-hyve-content focus:border-hyve-accent resize-none"
+              className={cn(
+                "font-body border-hyve-content focus:border-hyve-accent resize-none",
+                errors.message && "border-red-500 focus:border-red-500"
+              )}
+              aria-invalid={!!errors.message}
+              aria-describedby={errors.message ? "message-error" : undefined}
             />
+            {errors.message && (
+              <p id="message-error" className="text-sm text-red-500 flex items-center gap-1 mt-1">
+                <AlertCircle className="h-3 w-3" />
+                {errors.message.message}
+              </p>
+            )}
           </div>
 
           <div className="flex gap-3 pt-4">
