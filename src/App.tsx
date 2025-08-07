@@ -33,8 +33,14 @@ const HomePage = () => {
           {/* Hero section with proper pointer-events handling */}
           <Hero />
 
+          {/* Spacing between Hero and Vision */}
+          <div className="h-16 lg:h-24" />
+
           {/* Vision section */}
           <Vision />
+
+          {/* Spacing between Vision and Industries */}
+          <div className="h-16 lg:h-24" />
 
           {/* Industries section */}
           <Industries />
