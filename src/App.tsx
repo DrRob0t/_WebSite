@@ -55,7 +55,7 @@ const HomePage = () => {
 
 function App() {
   return (
-    <Router>
+    <Router basename={import.meta.env.BASE_URL}>
       <Layout>
         <ErrorBoundary>
           <Routes>

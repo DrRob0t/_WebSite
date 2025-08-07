@@ -52,6 +52,7 @@ const getSecurityHeaders = (isProduction = false) => ({
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: process.env.GITHUB_PAGES ? '/_WebSite/' : '/',
   plugins: [
     react(),
     visualizer({
