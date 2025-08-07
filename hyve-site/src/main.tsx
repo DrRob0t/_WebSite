@@ -4,14 +4,17 @@ import { HelmetProvider } from 'react-helmet-async'
 import { Toaster } from 'sonner'
 
 import './index.css'
+import './styles/responsive-fixes.css'
 import App from './App.tsx'
 import { setupAxe } from './lib/axe-setup'
 import { validateEnvironment } from './lib/env'
 import { reportWebVitals } from './lib/web-vitals'
+import { initializeSecurity } from './lib/security-config'
 
 // Validate environment variables at startup
 try {
   validateEnvironment()
+  initializeSecurity()
 } catch (error) {
   console.error('Failed to start application:', error)
   document.body.innerHTML = `

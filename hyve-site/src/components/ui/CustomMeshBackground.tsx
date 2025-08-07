@@ -70,11 +70,19 @@ export const CustomMeshBackground = ({
     // @ts-expect-error - Three.js global
     if (!window.THREE) {
       // Three.js not loaded, skipping custom mesh background
+      console.warn('Three.js not loaded, skipping custom mesh background')
       return
+    }
+
+    // Clear any existing content first
+    while (currentMount.firstChild) {
+      currentMount.removeChild(currentMount.firstChild)
     }
 
     // @ts-expect-error - Three.js global
     const THREE = window.THREE
+    
+    console.log('CustomMeshBackground: Initializing Three.js scene')
 
     // Scene setup
     const scene = new THREE.Scene()
@@ -640,40 +648,61 @@ export const CustomMeshBackground = ({
 
     // Cleanup
     return () => {
+      console.log('CustomMeshBackground: Cleaning up Three.js scene')
       window.removeEventListener('resize', handleResize)
-      renderer.domElement.removeEventListener('click', handleClick)
+      
+      if (renderer.domElement) {
+        renderer.domElement.removeEventListener('click', handleClick)
+      }
 
       // Stop animation
       if (animationId) {
         cancelAnimationFrame(animationId)
+        animationId = null
       }
 
       // Clean up visual ripples
       visualRipples.forEach(ripple => {
-        rippleGroup.remove(ripple.mesh)
-        ripple.geometry.dispose()
-        ripple.material.dispose()
+        if (rippleGroup && ripple.mesh) {
+          rippleGroup.remove(ripple.mesh)
+        }
+        if (ripple.geometry) {
+          ripple.geometry.dispose()
+        }
+        if (ripple.material) {
+          ripple.material.dispose()
+        }
       })
       visualRipples.length = 0
 
-      if (currentMount && renderer.domElement) {
-        currentMount.removeChild(renderer.domElement)
-      }
-
       // Clean up streamlines
       streamlines.forEach(streamline => {
-        streamlineGroup.remove(streamline.mesh)
-        streamline.mesh.geometry.dispose()
-        streamline.material.dispose()
+        if (streamlineGroup && streamline.mesh) {
+          streamlineGroup.remove(streamline.mesh)
+        }
+        if (streamline.mesh.geometry) {
+          streamline.mesh.geometry.dispose()
+        }
+        if (streamline.material) {
+          streamline.material.dispose()
+        }
       })
 
       // Clean up geometries and materials
-      gridGeometry.dispose()
-      pointGeometry.dispose()
-      pointMaterial.dispose()
-      lineMaterial.dispose()
-      renderer.dispose()
+      if (gridGeometry) gridGeometry.dispose()
+      if (pointGeometry) pointGeometry.dispose()
+      if (pointMaterial) pointMaterial.dispose()
+      if (lineMaterial) lineMaterial.dispose()
+      
+      // Clean up renderer and remove canvas
+      if (renderer) {
+        if (currentMount && renderer.domElement && currentMount.contains(renderer.domElement)) {
+          currentMount.removeChild(renderer.domElement)
+        }
+        renderer.dispose()
+      }
 
+      // Clear scene reference
       sceneRef.current = null
     }
   }, [

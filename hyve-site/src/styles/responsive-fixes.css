@@ -1,0 +1,202 @@
+/* Responsive Design Fixes */
+
+/* Ensure minimum touch target sizes on mobile */
+@media (max-width: 768px) {
+  /* All interactive elements should have minimum 44x44px touch targets */
+  button,
+  a,
+  [role="button"],
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Small buttons need padding adjustment */
+  .btn-sm,
+  button[class*="size-sm"] {
+    padding: 0.75rem 1rem;
+  }
+
+  /* Icon buttons need proper sizing */
+  button[class*="size-icon"] {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* Ensure navigation links are touch-friendly */
+  nav a,
+  .navigation-menu a {
+    padding: 0.75rem 1rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Fix text sizes for better readability */
+  body {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  p,
+  .text-sm {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Prevent horizontal scroll */
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Fix container padding on mobile */
+  .hyve-container,
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Fix grid gaps on mobile */
+  .grid {
+    gap: 1rem;
+  }
+
+  /* Ensure cards have proper spacing */
+  .card {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Tablet-specific fixes */
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Adjust grid layouts for tablets */
+  .grid-cols-5 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Ensure proper spacing */
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices */
+  button:hover,
+  a:hover {
+    transform: none !important;
+  }
+
+  /* Add active states for better feedback */
+  button:active,
+  a:active {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+
+  /* Disable hover-only interactions */
+  .group:hover .group-hover\:translate-x-1,
+  .group:hover .group-hover\:-translate-x-1,
+  .group:hover .group-hover\:scale-110 {
+    transform: none !important;
+  }
+}
+
+/* Hover states only for devices that support it */
+@media (hover: hover) and (pointer: fine) {
+  /* Keep hover effects only on desktop */
+  button,
+  a {
+    transition: all 0.2s ease;
+  }
+
+  button:hover,
+  a:hover {
+    transition: all 0.2s ease;
+  }
+}
+
+/* Fix CustomMeshBackground on mobile */
+@media (max-width: 768px) {
+  /* Reduce complexity on mobile for performance */
+  canvas {
+    max-resolution: 2dppx;
+  }
+
+  /* Ensure proper z-index stacking */
+  .pointer-events-auto {
+    position: relative;
+    z-index: 10;
+  }
+}
+
+/* Landscape mode fixes for mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Reduce header height in landscape */
+  header {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  /* Adjust hero section */
+  .hero-section {
+    min-height: 100vh;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Use higher quality images */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Fix for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+  /* Fix 100vh issue on iOS */
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+
+  /* Fix position fixed issues */
+  .fixed {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  /* Hide navigation and interactive elements */
+  header,
+  footer,
+  button,
+  .no-print {
+    display: none !important;
+  }
+
+  /* Ensure good contrast */
+  * {
+    color: #000 !important;
+    background: #fff !important;
+  }
+}

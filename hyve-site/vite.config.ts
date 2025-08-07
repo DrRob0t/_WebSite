@@ -2,6 +2,7 @@ import * as path from 'path'
 
 import react from '@vitejs/plugin-react'
 import { visualizer } from 'rollup-plugin-visualizer'
+// import createSitemap from 'vite-plugin-sitemap'
 import { defineConfig } from 'vite'
 
 // Enhanced security headers for production
@@ -59,6 +60,7 @@ export default defineConfig({
       gzipSize: true,
       brotliSize: true,
     }),
+    // Note: Sitemap created manually in public/sitemap.xml
   ],
   resolve: {
     alias: {

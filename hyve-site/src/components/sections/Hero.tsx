@@ -57,7 +57,7 @@ export const Hero = () => {
               {/* Main Headline */}
               <motion.h1
                 variants={itemVariants}
-                className="text-4xl md:text-6xl lg:text-7xl font-extralight leading-[1.1] mb-6"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extralight leading-[1.1] mb-6"
               >
                 <span className="block text-hyve-text">
                   Adaptation Through <span className="font-medium">Insight</span>.{' '}

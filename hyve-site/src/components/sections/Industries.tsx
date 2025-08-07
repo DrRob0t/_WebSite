@@ -111,7 +111,7 @@ export const Industries = () => {
             </motion.div>
 
             {/* Industries Grid - More compact */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
               {industries.map((industry, index) => {
                 const Icon = industry.icon
                 return (
@@ -122,27 +122,27 @@ export const Industries = () => {
                     className="pointer-events-auto"
                   >
                     <Link to={industry.href}>
-                      <Card className="h-full p-4 lg:p-5 bg-white/90 backdrop-blur-sm border-hyve-content/50 hover:border-hyve-accent transition-all duration-300 hover:shadow-lg group cursor-pointer">
+                      <Card className="h-full p-4 sm:p-5 lg:p-5 bg-white/90 backdrop-blur-sm border-hyve-content/50 hover:border-hyve-accent transition-all duration-300 hover:shadow-lg group cursor-pointer min-h-[120px]">
                         <div className="flex flex-col items-center text-center h-full">
                           {/* Icon */}
                           <div
-                            className={`w-12 h-12 lg:w-14 lg:h-14 rounded-xl bg-gradient-to-br ${industry.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300`}
+                            className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-14 lg:h-14 rounded-xl bg-gradient-to-br ${industry.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300`}
                           >
-                            <Icon className={`h-6 w-6 lg:h-7 lg:w-7 ${industry.iconColor}`} />
+                            <Icon className={`h-6 w-6 sm:h-7 sm:w-7 lg:h-7 lg:w-7 ${industry.iconColor}`} />
                           </div>
 
                           {/* Title */}
-                          <h3 className="text-base lg:text-lg font-semibold text-hyve-header mb-2 font-heading">
+                          <h3 className="text-base sm:text-lg lg:text-lg font-semibold text-hyve-header mb-2 font-heading">
                             {industry.title}
                           </h3>
 
                           {/* Description - Show on larger screens */}
-                          <p className="hidden lg:block text-sm text-hyve-text/70 leading-relaxed mb-3 flex-grow">
+                          <p className="hidden sm:block text-sm text-hyve-text/70 leading-relaxed mb-3 flex-grow">
                             {industry.description}
                           </p>
 
                           {/* Learn More - Compact */}
-                          <div className="flex items-center text-hyve-interactive text-sm font-medium group-hover:text-hyve-interactive-dark transition-colors">
+                          <div className="flex items-center text-hyve-interactive text-sm font-medium group-hover:text-hyve-interactive-dark transition-colors mt-auto">
                             <span>Explore</span>
                             <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
                           </div>

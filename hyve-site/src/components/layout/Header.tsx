@@ -461,7 +461,7 @@ const MobileNavigation = () => {
     <div className="lg:hidden">
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="hover:bg-hyve-content">
+          <Button variant="ghost" size="icon" className="hover:bg-hyve-content h-11 w-11">
             <Menu className="h-5 w-5 text-hyve-text" />
             <span className="sr-only">Toggle menu</span>
           </Button>

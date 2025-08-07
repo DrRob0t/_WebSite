@@ -32,7 +32,6 @@ export function sanitizeHtml(dirty: string): string {
     ],
     ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'target', 'rel'],
     ALLOW_DATA_ATTR: false,
-    FORBID_SCRIPT: true,
     FORBID_TAGS: ['script', 'object', 'embed', 'style', 'link'],
     FORBID_ATTR: ['onerror', 'onload', 'onclick', 'onmouseover'],
   })

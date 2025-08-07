@@ -172,7 +172,7 @@ export function generateCSP(): string {
  * Generate environment-appropriate security headers
  */
 export function generateSecurityHeaders(): Record<string, string> {
-  const headers = { ...securityConfig.headers.base }
+  const headers: Record<string, string> = { ...securityConfig.headers.base }
 
   // Add production-only headers
   if (env.IS_PRODUCTION) {
