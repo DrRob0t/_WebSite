@@ -38,8 +38,11 @@ export const Hero = () => {
   return (
     <section className="relative min-h-[80vh] flex items-center overflow-hidden pointer-events-none py-16 lg:py-20">
       {/* Asymmetric Layout Container */}
-      <div className="relative z-10 w-full mx-auto px-6 lg:px-12" style={{ maxWidth: '1600px' }}>
-        <div className="grid lg:grid-cols-[1fr_600px] gap-12 lg:gap-24 items-center">
+      <div
+        className="relative z-10 w-full mx-auto px-4 sm:px-6 lg:px-12"
+        style={{ maxWidth: '1600px' }}
+      >
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-12 lg:gap-24 items-center justify-items-center">
           {/* Left Content */}
           <motion.div
             variants={containerVariants}
@@ -88,14 +91,14 @@ export const Hero = () => {
               {/* Elegant CTA Group */}
               <motion.div
                 variants={itemVariants}
-                className="flex flex-col sm:flex-row gap-4 pointer-events-auto"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 pointer-events-auto items-start"
               >
                 <Button
-                  size="lg"
-                  className="group bg-transparent border border-hyve-text text-hyve-text hover:bg-hyve-text hover:text-white px-8 py-5 transition-all duration-300"
+                  size="sm"
+                  className="group bg-transparent border border-hyve-text text-hyve-text hover:bg-hyve-text hover:text-white px-5 py-3 sm:px-7 sm:py-4 lg:px-8 lg:py-5 transition-all duration-300 self-start w-auto"
                   onClick={() => navigate('/haptic-matrix')}
                 >
-                  <span className="flex items-center gap-2 text-sm font-light tracking-wide">
+                  <span className="flex items-center gap-2 text-xs sm:text-sm font-light tracking-wide">
                     Explore Technology
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </span>
@@ -116,7 +119,7 @@ export const Hero = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="relative w-[650px] h-[600px] justify-self-end lg:justify-self-center"
+            className="relative w-full max-w-[650px] h-[380px] sm:h-[460px] md:h-[540px] lg:h-[620px] justify-self-center lg:justify-self-center mx-auto"
           >
             {/* Subtle background for visual consistency with left side */}
             <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl" />

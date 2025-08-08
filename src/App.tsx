@@ -34,19 +34,19 @@ const HomePage = () => {
           <Hero />
 
           {/* Spacing between Hero and Vision */}
-          <div className="h-16 lg:h-24" />
+          <div className="h-36 md:h-28 lg:h-32" />
 
           {/* Vision section */}
           <Vision />
 
           {/* Spacing between Vision and Industries */}
-          <div className="h-16 lg:h-24" />
+          <div className="h-36 md:h-28 lg:h-32" />
 
           {/* Industries section */}
           <Industries />
 
           {/* Footer spacing */}
-          <div className="h-24" />
+          <div className="h-28 md:h-32" />
         </CustomMeshBackground>
       </div>
     </>

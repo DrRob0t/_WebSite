@@ -1,5 +1,35 @@
 /* Responsive Design Fixes */
 
+/* Global safeguards to prevent horizontal overflow and media over-expansion */
+html,
+body {
+  overflow-x: hidden;
+}
+
+/* Ensure media scales within containers */
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Defensive text wrapping to avoid overflow from long tokens/URLs */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+span,
+div {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
 /* Ensure minimum touch target sizes on mobile */
 @media (max-width: 768px) {
   /* All interactive elements should have minimum 44x44px touch targets */

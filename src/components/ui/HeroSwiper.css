@@ -6,6 +6,8 @@
 .hero-swiper .swiper {
   position: relative;
   background: transparent !important;
+  margin-left: auto;
+  margin-right: auto; /* ensure centering within container */
 }
 
 .hero-swiper .swiper-wrapper {
@@ -30,12 +32,45 @@
   transform: scale(1.2);
 }
 
-/* Video styling - make videos bigger */
+/* Layout for each slide */
+.hero-swiper .slide-content {
+  height: 100%;
+}
+
+.hero-swiper .video-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 78%; /* make the slide taller, reserve space for label */
+}
+
+/* Video styling - reduce size ~20% and prevent cropping */
 .hero-swiper video {
-  width: 150%;
-  height: 150%;
-  object-fit: contain;
-  transform: scale(1); /* Make videos even larger */
+  max-width: 80%; /* ~20% reduction */
+  max-height: 100%;
+  object-fit: contain; /* no cropping */
+}
+
+.hero-swiper .label {
+  height: 12%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Smaller on narrow screens for better visibility */
+@media (max-width: 640px) {
+  .hero-swiper .video-wrap {
+    height: 72%;
+  }
+  .hero-swiper video {
+    max-width: 90%;
+  }
+  .hero-swiper .label {
+    height: auto;
+    margin-top: 8px;
+  }
 }
 
 /* Ensure slides don't have pointer events except for pagination */

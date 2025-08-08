@@ -21,6 +21,7 @@
     "test:coverage": "vitest --coverage",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
+    "test:responsive": "concurrently -k -s first \"npm run dev\" \"wait-on http://localhost:5173 && node scripts/responsive-test.js\"",
     "test:lighthouse": "concurrently -k -s first \"npm run preview\" \"wait-on http://localhost:4173 && node scripts/lighthouse-test.js\"",
     "test:lighthouse:dev": "concurrently -k -s first \"npm run dev\" \"wait-on http://localhost:5173 && node scripts/lighthouse-test.js -- http://localhost:5173\"",
     "test:lighthouse:only": "node scripts/lighthouse-test.js",

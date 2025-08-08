@@ -41,20 +41,20 @@ export const HeroSwiper: React.FC<HeroSwiperProps> = ({ className = '' }) => {
       >
         {slides.map(slide => (
           <SwiperSlide key={slide.id} className="w-full h-full">
-            <div className="w-full h-full relative overflow-hidden">
-              {/* Video Background */}
+            <div className="w-full h-full overflow-hidden flex flex-col items-center justify-center slide-content">
+              {/* Video Area */}
               {slide.video && (
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="video-wrap">
                   <video autoPlay loop muted playsInline className="hero-video">
                     <source src={slide.video} type="video/webm" />
                   </video>
                 </div>
               )}
 
-              {/* Slide Name Overlay */}
-              <div className="absolute bottom-16 left-0 right-0 text-center z-10">
+              {/* Slide Name Below Video */}
+              <div className="label mt-3 sm:mt-4">
                 <p
-                  className="text-xl font-light text-hyve-text/30 tracking-wider uppercase"
+                  className="text-base sm:text-lg font-light text-hyve-text/40 tracking-wider uppercase"
                   role="presentation"
                 >
                   {slide.name}
