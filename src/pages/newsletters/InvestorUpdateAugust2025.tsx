@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowLeft, Calendar, Clock, Share2, Download, Lock, TrendingUp, DollarSign, Users, Target } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { NoIndex } from '@/components/common/NoIndex'
@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { generateNewsletterPDF } from '@/lib/pdf-utils'
+import { toast } from 'sonner'
 
 // Animation variants
 const containerVariants = {
@@ -32,9 +34,32 @@ const itemVariants = {
 }
 
 export const InvestorUpdateAugust2025 = () => {
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true)
+    try {
+      await generateNewsletterPDF(
+        'investor-newsletter-content',
+        'Investor Update August 2025',
+        '2025-08'
+      )
+      toast.success('PDF downloaded successfully!', {
+        description: 'The investor update has been saved to your downloads folder.',
+      })
+    } catch (error) {
+      console.error('PDF generation failed:', error)
+      toast.error('Failed to generate PDF', {
+        description: 'Please try again or contact support if the issue persists.',
+      })
+    } finally {
+      setIsGeneratingPDF(false)
+    }
+  }
 
   return (
     <>
@@ -49,6 +74,8 @@ export const InvestorUpdateAugust2025 = () => {
         {/* Header Section */}
         <section className="relative py-16 lg:py-20 pointer-events-auto">
           <div className="hyve-container">
+            {/* PDF Content Wrapper - This will be captured for PDF generation */}
+            <div id="investor-newsletter-content">
             {/* Confidential Notice */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
@@ -65,12 +92,13 @@ export const InvestorUpdateAugust2025 = () => {
               </p>
             </motion.div>
 
-            {/* Back Navigation */}
+            {/* Back Navigation - Excluded from PDF */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="mb-8"
+              className="mb-8 back-navigation"
+              data-exclude-from-pdf
             >
               <Link
                 to="/"
@@ -108,14 +136,20 @@ export const InvestorUpdateAugust2025 = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex gap-3" data-exclude-from-pdf>
                   <Button variant="outline" size="sm" className="border-hyve-accent text-hyve-text hover:bg-hyve-accent hover:text-white">
                     <Share2 className="h-4 w-4 mr-2" />
                     Share (Authorized Only)
                   </Button>
-                  <Button variant="outline" size="sm" className="border-hyve-accent text-hyve-text hover:bg-hyve-accent hover:text-white">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-hyve-accent text-hyve-text hover:bg-hyve-accent hover:text-white"
+                    onClick={handleDownloadPDF}
+                    disabled={isGeneratingPDF}
+                  >
                     <Download className="h-4 w-4 mr-2" />
-                    Download PDF
+                    {isGeneratingPDF ? 'Generating PDF...' : 'Download PDF'}
                   </Button>
                 </div>
               </motion.div>
@@ -419,6 +453,7 @@ export const InvestorUpdateAugust2025 = () => {
               </motion.div>
 
             </motion.div>
+            </div> {/* End PDF Content Wrapper */}
           </div>
         </section>
       </div>

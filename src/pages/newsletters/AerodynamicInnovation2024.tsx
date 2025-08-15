@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowLeft, Calendar, Clock, Share2, Download, Plane, Car, Wind } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { SEO } from '@/components/common/SEO'
@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { generateNewsletterPDF } from '@/lib/pdf-utils'
+import { toast } from 'sonner'
 
 // Animation variants
 const containerVariants = {
@@ -31,9 +33,32 @@ const itemVariants = {
 }
 
 export const AerodynamicInnovation2024 = () => {
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true)
+    try {
+      await generateNewsletterPDF(
+        'newsletter-content',
+        'Aerodynamic Innovation 2024 Industry Outlook',
+        '2024-01'
+      )
+      toast.success('PDF downloaded successfully!', {
+        description: 'The newsletter has been saved to your downloads folder.',
+      })
+    } catch (error) {
+      console.error('PDF generation failed:', error)
+      toast.error('Failed to generate PDF', {
+        description: 'Please try again or contact support if the issue persists.',
+      })
+    } finally {
+      setIsGeneratingPDF(false)
+    }
+  }
 
   return (
     <>
@@ -47,12 +72,14 @@ export const AerodynamicInnovation2024 = () => {
         {/* Header Section */}
         <section className="relative py-16 lg:py-20 pointer-events-auto">
           <div className="hyve-container">
+            <div id="newsletter-content">
             {/* Back Navigation */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               className="mb-8"
+              data-exclude-from-pdf
             >
               <Link
                 to="/insights/newsletter"
@@ -90,14 +117,20 @@ export const AerodynamicInnovation2024 = () => {
                   </div>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="flex gap-3" data-exclude-from-pdf>
                   <Button variant="outline" size="sm" className="border-hyve-accent text-hyve-text hover:bg-hyve-accent hover:text-white">
                     <Share2 className="h-4 w-4 mr-2" />
                     Share
                   </Button>
-                  <Button variant="outline" size="sm" className="border-hyve-accent text-hyve-text hover:bg-hyve-accent hover:text-white">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-hyve-accent text-hyve-text hover:bg-hyve-accent hover:text-white"
+                    onClick={handleDownloadPDF}
+                    disabled={isGeneratingPDF}
+                  >
                     <Download className="h-4 w-4 mr-2" />
-                    Download PDF
+                    {isGeneratingPDF ? 'Generating PDF...' : 'Download PDF'}
                   </Button>
                 </div>
               </motion.div>
@@ -284,6 +317,7 @@ export const AerodynamicInnovation2024 = () => {
               </motion.div>
 
             </motion.div>
+            </div> {/* End PDF Content Wrapper */}
           </div>
         </section>
       </div>
