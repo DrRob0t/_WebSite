@@ -17,6 +17,10 @@ import { EnergyPage } from '@/pages/industries/EnergyPage'
 import { RoboticsPage } from '@/pages/industries/RoboticsPage'
 import { StructuralHealthPage } from '@/pages/industries/StructuralHealthPage'
 import { NotFound } from '@/pages/NotFound'
+import { NewsletterPage } from '@/pages/NewsletterPage'
+import { AerodynamicInnovation2024 } from '@/pages/newsletters/AerodynamicInnovation2024'
+import { SensorTechnologyTrends } from '@/pages/newsletters/SensorTechnologyTrends'
+import { InvestorUpdateQ4 } from '@/pages/newsletters/InvestorUpdateQ4'
 
 // Home page component
 const HomePage = () => {
@@ -67,6 +71,15 @@ function App() {
             <Route path="/industries/energy" element={<EnergyPage />} />
             <Route path="/industries/structural-health" element={<StructuralHealthPage />} />
             <Route path="/industries/robotics" element={<RoboticsPage />} />
+            
+            {/* Newsletter Routes */}
+            <Route path="/insights/newsletter" element={<NewsletterPage />} />
+            <Route path="/insights/newsletter/aerodynamic-innovation-2024" element={<AerodynamicInnovation2024 />} />
+            <Route path="/insights/newsletter/sensor-technology-trends" element={<SensorTechnologyTrends />} />
+            
+            {/* Secret Investor Newsletter - Not indexed */}
+            <Route path="/investor/updates/q4-2023" element={<InvestorUpdateQ4 />} />
+            
             {/* Catch-all route for 404 pages */}
             <Route path="*" element={<NotFound />} />
           </Routes>

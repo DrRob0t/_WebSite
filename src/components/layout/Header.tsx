@@ -323,7 +323,7 @@ const insightsItems = [
     name: 'Newsletter',
     href: '/insights/newsletter',
     icon: Mail,
-    description: 'Subscribe to our monthly updates',
+    description: 'Monthly updates and industry insights',
   },
 ]
 
