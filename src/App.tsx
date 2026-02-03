@@ -18,9 +18,13 @@ import { AutomotivePage } from '@/pages/industries/AutomotivePage'
 import { EnergyPage } from '@/pages/industries/EnergyPage'
 import { RoboticsPage } from '@/pages/industries/RoboticsPage'
 import { StructuralHealthPage } from '@/pages/industries/StructuralHealthPage'
+import { EventsPage } from '@/pages/EventsPage'
 import { NotFound } from '@/pages/NotFound'
 import { NewsletterPage } from '@/pages/NewsletterPage'
 import { NewsPage } from '@/pages/NewsPage'
+import { PrivacyPage } from '@/pages/PrivacyPage'
+import { TermsPage } from '@/pages/TermsPage'
+import { WhitePapersPage } from '@/pages/WhitePapersPage'
 import { AerodynamicInnovation2024 } from '@/pages/newsletters/AerodynamicInnovation2024'
 import { SensorTechnologyTrends } from '@/pages/newsletters/SensorTechnologyTrends'
 import { InvestorUpdateAugust2025 } from '@/pages/newsletters/InvestorUpdateAugust2025'
@@ -89,6 +93,12 @@ function App() {
             <Route path="/insights/newsletter" element={<NewsletterPage />} />
             <Route path="/insights/newsletter/aerodynamic-innovation-2024" element={<AerodynamicInnovation2024 />} />
             <Route path="/insights/newsletter/sensor-technology-trends" element={<SensorTechnologyTrends />} />
+            <Route path="/insights/white-papers" element={<WhitePapersPage />} />
+            <Route path="/insights/events" element={<EventsPage />} />
+            
+            {/* Legal Pages */}
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
             
             {/* Secret Investor Newsletter - Not indexed */}
             <Route path="/investor/updates/august-2025" element={<InvestorUpdateAugust2025 />} />

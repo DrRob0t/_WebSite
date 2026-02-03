@@ -58,6 +58,19 @@ interface NewsArticle {
 // Sample news data - this would typically come from a CMS or API
 const newsArticles: NewsArticle[] = [
   {
+    id: 'nwtf-conference-2025',
+    title: 'Hyve Dynamics at NWTF Conference 2025',
+    description:
+      'Hyve Dynamics attended the National Wind Tunnel Facility (NWTF) Conference 2025 in Birmingham, engaging with leading researchers, industry partners, and infrastructure providers in aerodynamic testing and experimental fluid dynamics.',
+    date: '2025-04-03',
+    readTime: '3 min read',
+    category: 'news',
+    categoryLabel: 'Company News',
+    featured: true,
+    href: 'https://uobevents.eventsair.com/nwtf-2025',
+    external: true,
+  },
+  {
     id: 'qinetiq-partnership-2025',
     title: 'Hyve Dynamics Partners with QinetiQ for High-Speed Validation',
     description:
@@ -66,7 +79,7 @@ const newsArticles: NewsArticle[] = [
     readTime: '4 min read',
     category: 'press',
     categoryLabel: 'Press Release',
-    featured: true,
+    featured: false,
   },
   {
     id: 'trl6-advancement',

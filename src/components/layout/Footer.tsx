@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Mail, Linkedin, Building, Hash } from 'lucide-react'
+import { Mail, Linkedin, Building, Hash, GraduationCap, Shield } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { Separator } from '@/components/ui/separator'
@@ -30,9 +30,9 @@ const footerSections = [
     title: 'Company',
     links: [
       { name: 'About Us', href: '/about' },
-      { name: 'Our Technology', href: '/haptic-matrix' },
-      { name: 'Industries', href: '/#industries' },
-      { name: 'Careers', href: '#careers' },
+      { name: 'Haptic Matrix', href: '/haptic-matrix' },
+      { name: 'Deployment Modes', href: '/#deployment' },
+      { name: 'Our Vision', href: '/#vision' },
     ],
   },
   {
@@ -41,7 +41,7 @@ const footerSections = [
       { name: 'Aerospace', href: '/industries/aerospace' },
       { name: 'Automotive', href: '/industries/automotive' },
       { name: 'Energy', href: '/industries/energy' },
-      { name: 'Structural Health', href: '/industries/structural-health' },
+      { name: 'Infrastructure', href: '/industries/structural-health' },
       { name: 'Robotics', href: '/industries/robotics' },
     ],
   },
@@ -49,9 +49,9 @@ const footerSections = [
     title: 'Resources',
     links: [
       { name: 'News & Blog', href: '/insights/news' },
+      { name: 'White Papers', href: '/insights/white-papers' },
+      { name: 'Events', href: '/insights/events' },
       { name: 'Newsletter', href: '/insights/newsletter' },
-      { name: 'Case Studies', href: '#case-studies' },
-      { name: 'White Papers', href: '#white-papers' },
     ],
   },
 ]
@@ -59,7 +59,6 @@ const footerSections = [
 export const Footer = () => {
   const currentYear = new Date().getFullYear()
 
-  // 🎨 FOOTER BACKGROUND COLOR: Change 'bg-hyve-header' to modify footer background
   return (
     <footer className="bg-hyve-header text-hyve-background border-t border-hyve-content/20">
       <div className="hyve-container">
@@ -78,9 +77,8 @@ export const Footer = () => {
 
               <div className="space-y-4">
                 <p className="font-body text-hyve-background/80 leading-relaxed">
-                  Transforming industries through real-world intelligence. We envision a future
-                  where data replaces assumptions, enabling smarter and more efficient technological
-                  advancements.
+                  Closing the 40-year gap in aerodynamic measurement. Real-time surface data for
+                  faster testing, smarter validation, and confident deployment.
                 </p>
 
                 {/* Contact Information */}
@@ -164,6 +162,33 @@ export const Footer = () => {
                   </motion.div>
                 ))}
               </div>
+
+              {/* Research Heritage Section */}
+              <motion.div
+                className="mt-8 pt-6 border-t border-hyve-background/10"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                viewport={{ once: true }}
+              >
+                <h4 className="font-heading text-sm font-semibold text-hyve-background/80 mb-4">
+                  Research Heritage & Partnerships
+                </h4>
+                <div className="flex flex-wrap gap-4">
+                  <div className="flex items-center gap-2 text-xs text-hyve-background/60">
+                    <GraduationCap className="h-4 w-4" />
+                    <span>Cranfield University Research</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-hyve-background/60">
+                    <Shield className="h-4 w-4" />
+                    <span>ATI Portfolio</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-hyve-background/60">
+                    <Shield className="h-4 w-4" />
+                    <span>QinetiQ Validation Partner</span>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -183,18 +208,18 @@ export const Footer = () => {
               © {currentYear} {companyInfo.name}. All rights reserved.
             </p>
             <div className="flex items-center space-x-4">
-              <a
-                href="#privacy"
+              <Link
+                to="/privacy"
                 className="font-sans text-sm text-hyve-background/60 hover:text-hyve-accent transition-colors"
               >
                 Privacy Policy
-              </a>
-              <a
-                href="#terms"
+              </Link>
+              <Link
+                to="/terms"
                 className="font-sans text-sm text-hyve-background/60 hover:text-hyve-accent transition-colors"
               >
                 Terms of Service
-              </a>
+              </Link>
             </div>
           </div>
 
