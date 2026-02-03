@@ -154,18 +154,8 @@ const NewsCard: React.FC<{ article: NewsArticle }> = ({ article }) => {
     }
   }
 
-  const CardWrapper = article.href ? Link : 'div'
-  const cardProps = article.href
-    ? { to: article.href, target: article.external ? '_blank' : undefined }
-    : {}
-
-  return (
-    <motion.div
-      variants={itemVariants}
-      className={cn('group', article.featured && 'md:col-span-2')}
-    >
-      <CardWrapper {...(cardProps as React.ComponentProps<typeof Link>)}>
-        <Card className="h-full bg-white/80 backdrop-blur-sm border border-hyve-content hover:border-hyve-accent transition-all duration-300 hover:shadow-hyve-lg cursor-pointer">
+  const cardContent = (
+    <Card className="h-full bg-white/80 backdrop-blur-sm border border-hyve-content hover:border-hyve-accent transition-all duration-300 hover:shadow-hyve-lg cursor-pointer">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between mb-3">
               <Badge variant="secondary" className={getCategoryColor(article.category)}>
@@ -199,7 +189,20 @@ const NewsCard: React.FC<{ article: NewsArticle }> = ({ article }) => {
             </div>
           </CardContent>
         </Card>
-      </CardWrapper>
+  )
+
+  return (
+    <motion.div
+      variants={itemVariants}
+      className={cn('group', article.featured && 'md:col-span-2')}
+    >
+      {article.href ? (
+        <Link to={article.href} target={article.external ? '_blank' : undefined}>
+          {cardContent}
+        </Link>
+      ) : (
+        cardContent
+      )}
     </motion.div>
   )
 }
