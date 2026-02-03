@@ -76,16 +76,68 @@ export default defineConfig({
   },
   build: {
     // Optimize build
+    chunkSizeWarningLimit: 500,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': [
-            'framer-motion',
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-navigation-menu',
-          ],
-          'three-vendor': ['three'],
+        manualChunks: (id) => {
+          // React core
+          if (id.includes('node_modules/react/') || 
+              id.includes('node_modules/react-dom/') ||
+              id.includes('node_modules/scheduler/')) {
+            return 'react-core'
+          }
+          
+          // React Router
+          if (id.includes('node_modules/react-router') ||
+              id.includes('node_modules/@remix-run/')) {
+            return 'react-router'
+          }
+          
+          // Framer Motion (large library)
+          if (id.includes('node_modules/framer-motion/')) {
+            return 'framer-motion'
+          }
+          
+          // Radix UI components
+          if (id.includes('node_modules/@radix-ui/')) {
+            return 'radix-ui'
+          }
+          
+          // Form handling
+          if (id.includes('node_modules/react-hook-form/') ||
+              id.includes('node_modules/@hookform/') ||
+              id.includes('node_modules/zod/')) {
+            return 'forms'
+          }
+          
+          // Three.js (if used)
+          if (id.includes('node_modules/three/')) {
+            return 'three'
+          }
+          
+          // Lucide icons
+          if (id.includes('node_modules/lucide-react/')) {
+            return 'icons'
+          }
+          
+          // Other utilities
+          if (id.includes('node_modules/clsx/') ||
+              id.includes('node_modules/tailwind-merge/') ||
+              id.includes('node_modules/class-variance-authority/')) {
+            return 'utils'
+          }
+          
+          // Sonner (toast notifications)
+          if (id.includes('node_modules/sonner/')) {
+            return 'sonner'
+          }
+          
+          // PDF libraries (lazy loaded with newsletter pages)
+          if (id.includes('node_modules/pdfjs-dist/') ||
+              id.includes('node_modules/jspdf/') ||
+              id.includes('node_modules/html2canvas/')) {
+            return 'pdf-libs'
+          }
         },
       },
     },
