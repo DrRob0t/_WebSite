@@ -31,7 +31,10 @@
     "security:fix": "npm audit fix",
     "security:check": "npm run security:deps && npm run security:audit",
     "web-review": "node scripts/web-review-simple.js",
-    "web-review:dev": "concurrently -k -s first \"npm run dev\" \"wait-on http://localhost:5173 && node scripts/web-review-simple.js\""
+    "web-review:dev": "concurrently -k -s first \"npm run dev\" \"wait-on http://localhost:5173 && node scripts/web-review-simple.js\"",
+    "tunnel": "cross-env TUNNEL=true vite",
+    "tunnel:ngrok": "concurrently -k \"cross-env TUNNEL=true vite\" \"wait-on http://localhost:5173 && ngrok http 5173\"",
+    "tunnel:localtunnel": "concurrently -k \"cross-env TUNNEL=true vite\" \"wait-on http://localhost:5173 && npx localtunnel --port 5173\""
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -88,6 +91,7 @@
     "chalk": "^5.5.0",
     "chrome-launcher": "^1.2.0",
     "concurrently": "^9.2.0",
+    "cross-env": "^10.1.0",
     "eslint": "^9.30.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",

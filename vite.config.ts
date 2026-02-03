@@ -50,6 +50,9 @@ const getSecurityHeaders = (isProduction = false) => ({
   'Cross-Origin-Resource-Policy': 'same-origin',
 })
 
+// Check if running in tunnel mode (ngrok, localtunnel, etc.)
+const isTunnelMode = process.env.TUNNEL === 'true'
+
 // https://vite.dev/config/
 export default defineConfig({
   base: process.env.GITHUB_PAGES ? '/_WebSite/' : '/',
@@ -69,7 +72,23 @@ export default defineConfig({
     },
   },
   server: {
-    headers: getSecurityHeaders(false), // Development headers
+    // Enable host access for tunneling (ngrok, localtunnel, etc.)
+    host: isTunnelMode ? true : 'localhost',
+    port: 5173,
+    // Allow all hosts when tunneling (ngrok, localtunnel, etc.)
+    allowedHosts: isTunnelMode ? 'all' : undefined,
+    // Allow connections from tunnel services
+    cors: isTunnelMode,
+    // Relaxed headers for tunnel mode, strict for local dev
+    headers: isTunnelMode ? undefined : getSecurityHeaders(false),
+    // Allow HMR through tunnels
+    hmr: isTunnelMode
+      ? {
+          // Use the tunnel URL for WebSocket connections
+          clientPort: 443,
+          protocol: 'wss',
+        }
+      : true,
   },
   preview: {
     headers: getSecurityHeaders(true), // Production-like headers for preview
