@@ -1,0 +1,149 @@
+SWOT Analysis — Hyve Dynamics
+
+Strengths (what the site does well)
+
+1. Clear technical credibility
+
+The site successfully communicates that Hyve is not a conventional sensor company.
+Language around conformal, high-resolution, real-time, surface-embedded sensing strongly supports deep-tech legitimacy.
+This aligns well with your wind tunnel → IVHM → operational aerospace GTM logic.
+2. Strong “new category” signal
+
+Positioning implicitly suggests a new instrumentation layer, not an incremental upgrade.
+This supports your broader ambition: real-world aerodynamics as a continuously observable system.
+Good foundation for category design, even if not fully articulated yet.
+3. Visually aligned with advanced aerospace
+
+Clean, modern aesthetic
+Feels credible to:
+aerospace engineers
+R&D leads
+government / ATI / ARIA reviewers
+Importantly: it does not look like marketing fluff — that’s a real asset at this stage.
+Weaknesses (where it underperforms vs your GTM intent)
+
+1. Value is framed too technically, not economically
+
+The site explains what Hyve is, but not clearly:
+What problem it kills first
+What cost / time / risk disappears
+For wind tunnels especially, the site underplays:
+test cycle compression
+model-to-flight correlation uplift
+instrumentation reduction
+repeatability gains
+👉 For GTM: this weakens the economic impact narrative we’ve been developing.
+
+2. Wind tunnels are not explicitly “the beachhead”
+
+From a GTM perspective, the site still feels horizontal, not deliberately sequenced.
+There is no obvious:
+“Designed for wind tunnels”
+“Built for experimental aero first”
+That slightly dilutes focus for:
+tunnel operators
+OEM aero teams
+procurement stakeholders
+👉 This matters because wind tunnels are your credibility amplifier.
+
+3. Outcomes > applications > technology (order is reversed)
+
+Current flow feels like:
+Technology → capability → possible applications
+Your GTM strategy needs:
+Mission-critical use case → step-change outcome → enabling technology
+This is subtle, but important when moving from:
+
+research interest → paid pilots → framework contracts
+Opportunities (where the site could unlock disproportionate upside)
+
+1. Economic impact positioning (huge opportunity)
+You are sitting on a massive latent story that is not yet explicit:
+
+“If aerodynamics measurement had evolved at the same pace as compute…”
+“£Xbn in unrealised efficiency, fuel, safety, and development cost savings”
+The site could:
+
+Introduce Hyve as a correction to a 40-year instrumentation stagnation
+Anchor directly into:
+net-zero
+faster certification
+reduced physical testing burden
+This would strongly support:
+
+investors
+ATI / ARIA / DASA
+OEM CTO-level conversations
+2. Clear GTM laddering
+The site could very effectively show:
+
+Wind tunnel instrumentation (now)
+Flight test & demonstrators (next)
+Operational IVHM & adaptive systems (later)
+This reassures:
+
+conservative buyers
+regulators
+risk-averse aerospace partners
+And it avoids the “too futuristic to buy” trap.
+
+3. Platform narrative
+Right now, the platform angle is implicit.
+You could explicitly frame Hyve as:
+
+the data substrate for future adaptive aerospace
+not just a sensing product, but:
+continuous datasets
+new validation workflows
+digital twin grounding
+That aligns beautifully with your PaaS / data subscription vision.
+
+Threats (external & perceptual risks)
+
+1. Being misunderstood as “just another sensor”
+Without sharper positioning:
+
+procurement teams may bucket Hyve with:
+pressure taps
+strain gauges
+optical methods
+That risks price anchoring and slow sales cycles.
+ 
+
+2. Over-futurism for near-term buyers
+If the messaging leans too much into:
+
+adaptive skins
+robotic tissue
+long-term visions
+…it may intimidate buyers who just want:
+“Make my next test campaign faster, cheaper, and better.”
+
+You need dual-layer messaging:
+
+pragmatic now
+visionary later
+ 
+
+Competitive reframing
+As the market wakes up, others may try to:
+
+reframe incremental tools as “surface sensing”
+co-opt the language without the substance
+Clear category ownership language on the site reduces this risk.
+
+ 
+
+ 
+
+High-level verdict
+
+HyveDynamics.com is technically credible and future-proof — but currently under-leverages your strongest GTM asset: economic and operational impact.
+
+Right now the site says:
+
+“This is extraordinary technology.”
+
+What it needs to also say is:
+
+“This is the missing measurement layer that aerospace has paid for not having — for decades.”

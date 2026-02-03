@@ -1,0 +1,203 @@
+Design Architecture: One Core Product, Three Deployment Modes
+
+The governing design principle (non-negotiable)
+
+One sensing platform. Multiple deployment states. Increasing operational permanence.
+
+Visually, the site should communicate:
+
+same skin
+same data logic
+different environments
+different time horizons
+Homepage master structure (this is the backbone)
+
+1. Hero: one product, many realities
+
+Design choice
+
+Single hero image with environmental transitions, not multiple heroes.
+Concept:
+
+Same surface section (wing / blade / panel)
+Background changes as you scroll or fade:
+Wind tunnel
+Track / flight / road
+Industrial field (mine, turbine, structure)
+ 
+
+ 
+
+ 
+
+4
+
+Design rules
+
+Product stays constant
+Context changes
+Data overlay stays consistent
+This visually solves:
+
+“Is this a research tool or an operational system?”
+Answer: Yes. By design.
+
+2. Deployment modes section (core design innovation)
+
+This is the most important structural change.
+
+Create a section called (placeholder):
+
+Deployment Modes
+
+Layout
+
+Three equal cards or columns — not vertical scrolling (this matters psychologically).
+
+Each card:
+
+Real photography background
+Identical UI/data overlay treatment
+Different permanence & use case cues
+Mode 1: Experimental Testing
+
+Visual cues
+
+Wind tunnel
+Test rig
+Temporary installation
+High-density instrumentation
+ 
+
+ 
+
+ 
+
+Design language:
+
+grids
+reference markers
+calibration cues
+Mode 2: Real-world Aero / Moto Testing
+
+Visual cues
+
+Race car / aircraft in motion
+On-track / on-wing installation
+Portable deployment kit aesthetic
+ 
+
+ 
+
+Design language:
+
+motion blur (subtle)
+telemetry feel
+ruggedised hardware cues
+Mode 3: Continuous Industrial Monitoring
+
+Visual cues
+
+Wind turbines
+Mining equipment
+Large industrial assets
+ 
+
+ 
+
+ 
+
+Design language:
+
+long timelines
+environmental exposure
+persistence & durability
+3. Visual “time axis” (this is how you avoid dilution)
+
+Immediately after deployment modes, introduce a horizontal timeline graphic:
+
+Hours / Days → Weeks → Years
+
+Mapped to:
+
+Testing
+Validation
+Monitoring
+Design effect:
+
+Reassures aerospace buyers
+Signals industrial scalability
+Frames monitoring as earned, not speculative
+4. Application sectors: secondary, not primary
+
+Critical design rule
+
+Do not lead with industries.
+Lead with deployment logic, then show industries underneath.
+
+Design approach:
+
+Small, elegant icon row under each mode:
+Aerospace
+Motorsport
+Wind
+Mining
+Infrastructure
+This prevents:
+
+“What are you actually selling?” confusion
+Investor “boil the ocean” anxiety
+5. Data consistency as visual glue
+
+Across all modes:
+
+Same color palette for data
+Same visual grammar
+Same measurement metaphors
+Only change:
+
+density
+update frequency
+permanence
+This quietly communicates:
+
+“Our platform scales without reinventing itself.”
+
+6. Navigation redesign (simple but powerful)
+
+Top-level nav should reflect how buyers think, not industries.
+
+Suggested structure
+
+Technology
+Deployment
+Data Platform
+Research Heritage
+Collaborate
+Avoid:
+
+“Solutions”
+“Markets”
+“Industries” at top level (can live one level down)
+7. Footer: institutional gravity
+
+Add:
+
+Research lineage (Cranfield)
+Government / defence / aerospace alignment
+Standards & compliance placeholders (even if coming)
+This supports:
+
+mining & industrial buyers
+long procurement cycles
+Big-picture design takeaway
+
+What you’re building visually is this belief:
+
+Hyve is how sensing moves from experiment → reality → infrastructure.
+
+If the site gets this right:
+
+Wind tunnels feel like the obvious starting point
+Aero/moto feels like the proof
+Industrial monitoring feels inevitable

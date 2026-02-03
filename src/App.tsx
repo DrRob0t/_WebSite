@@ -18,6 +18,7 @@ import { RoboticsPage } from '@/pages/industries/RoboticsPage'
 import { StructuralHealthPage } from '@/pages/industries/StructuralHealthPage'
 import { NotFound } from '@/pages/NotFound'
 import { NewsletterPage } from '@/pages/NewsletterPage'
+import { NewsPage } from '@/pages/NewsPage'
 import { AerodynamicInnovation2024 } from '@/pages/newsletters/AerodynamicInnovation2024'
 import { SensorTechnologyTrends } from '@/pages/newsletters/SensorTechnologyTrends'
 import { InvestorUpdateAugust2025 } from '@/pages/newsletters/InvestorUpdateAugust2025'
@@ -72,7 +73,8 @@ function App() {
             <Route path="/industries/structural-health" element={<StructuralHealthPage />} />
             <Route path="/industries/robotics" element={<RoboticsPage />} />
             
-            {/* Newsletter Routes */}
+            {/* Insights Routes */}
+            <Route path="/insights/news" element={<NewsPage />} />
             <Route path="/insights/newsletter" element={<NewsletterPage />} />
             <Route path="/insights/newsletter/aerodynamic-innovation-2024" element={<AerodynamicInnovation2024 />} />
             <Route path="/insights/newsletter/sensor-technology-trends" element={<SensorTechnologyTrends />} />

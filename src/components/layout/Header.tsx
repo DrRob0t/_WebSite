@@ -302,10 +302,10 @@ const industriesItems = [
 
 const insightsItems = [
   {
-    name: 'Blog',
-    href: '/insights/blog',
+    name: 'News & Blog',
+    href: '/insights/news',
     icon: Newspaper,
-    description: 'Latest news and technology updates',
+    description: 'Latest news, press releases, and technology updates',
   },
   {
     name: 'White Papers',
