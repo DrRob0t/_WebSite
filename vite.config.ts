@@ -76,7 +76,7 @@ export default defineConfig({
     host: isTunnelMode ? true : 'localhost',
     port: 5173,
     // Allow all hosts when tunneling (ngrok, localtunnel, etc.)
-    allowedHosts: isTunnelMode ? 'all' : undefined,
+    allowedHosts: isTunnelMode ? true : undefined,
     // Allow connections from tunnel services
     cors: isTunnelMode,
     // Relaxed headers for tunnel mode, strict for local dev
