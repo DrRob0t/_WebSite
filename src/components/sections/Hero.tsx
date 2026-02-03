@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, ChevronDown } from 'lucide-react'
+import { ArrowRight, ChevronDown, Clock, TrendingDown, Target } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
@@ -55,62 +55,110 @@ export const Hero = () => {
 
             <div className="relative z-10">
               {/* Subtle accent line */}
-              <motion.div variants={itemVariants} className="w-12 h-[2px] bg-hyve-accent mb-8" />
+              <motion.div variants={itemVariants} className="w-12 h-[2px] bg-hyve-accent mb-6" />
 
-              {/* Main Headline */}
+              {/* Problem Statement Badge */}
+              <motion.div variants={itemVariants} className="mb-4">
+                <span className="inline-block text-xs font-medium tracking-widest text-hyve-interactive uppercase bg-hyve-interactive/10 px-3 py-1.5 rounded-full">
+                  The Missing Measurement Layer
+                </span>
+              </motion.div>
+
+              {/* Main Headline - Outcome Focused */}
               <motion.h1
                 variants={itemVariants}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extralight leading-[1.1] mb-6"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-light leading-[1.15] mb-6"
               >
                 <span className="block text-hyve-text">
-                  Adaptation Through <span className="font-medium">Insight</span>.{' '}
+                  Test <span className="font-semibold">faster</span>.
                 </span>
                 <span className="block text-hyve-text mt-1">
-                  Evolution Through <span className="font-medium">Data</span>.
+                  Validate <span className="font-semibold">smarter</span>.
                 </span>
                 <span className="block mt-1">
-                  <span className="relative font-normal italic">
-                    {/* Main gradient text */}
-                    <span className="relative hyve-text-gradient">
-                      <br></br>
-                    </span>
-                  </span>
+                  <span className="font-semibold hyve-text-gradient">Ship with confidence.</span>
                 </span>
               </motion.h1>
 
-              {/* Refined Subheadline */}
+              {/* Value Proposition Subheadline */}
               <motion.p
                 variants={itemVariants}
-                className="text-base md:text-lg text-hyve-text/70 max-w-lg mb-10 font-light leading-relaxed"
+                className="text-base md:text-lg text-hyve-text/80 max-w-lg mb-6 font-light leading-relaxed"
               >
-                Hyve’s Haptic Matrix unlocks real-world, high-density data where it matters
-                most—fueling insight, driving innovation, and enabling intelligent evolution across
-                machines, vehicles, and structures.
+                Aerospace has paid for decades without real-time surface data. Our ultra-thin sensor
+                skin delivers the aerodynamic insight you've been missing—compressing test cycles and
+                bridging the gap from simulation to reality.
               </motion.p>
 
-              {/* Elegant CTA Group */}
+              {/* Economic Impact Stats */}
+              <motion.div variants={itemVariants} className="flex flex-wrap gap-4 mb-8">
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="p-1.5 rounded-md bg-emerald-500/10">
+                    <TrendingDown className="w-4 h-4 text-emerald-600" />
+                  </div>
+                  <span className="text-hyve-text/70">
+                    <span className="font-semibold text-hyve-header">40-60%</span> faster development
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="p-1.5 rounded-md bg-blue-500/10">
+                    <Clock className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <span className="text-hyve-text/70">
+                    <span className="font-semibold text-hyve-header">Real-time</span> data at Mach
+                    0.85
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="p-1.5 rounded-md bg-purple-500/10">
+                    <Target className="w-4 h-4 text-purple-600" />
+                  </div>
+                  <span className="text-hyve-text/70">
+                    <span className="font-semibold text-hyve-header">55%</span> cost reduction
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* Outcome-Driven CTA Group */}
               <motion.div
                 variants={itemVariants}
                 className="flex flex-col sm:flex-row gap-3 sm:gap-4 pointer-events-auto items-start"
               >
                 <Button
                   size="sm"
-                  className="group bg-transparent border border-hyve-text text-hyve-text hover:bg-hyve-text hover:text-white px-5 py-3 sm:px-7 sm:py-4 lg:px-8 lg:py-5 transition-all duration-300 self-start w-auto"
-                  onClick={() => navigate('/haptic-matrix')}
+                  className="group bg-hyve-text border border-hyve-text text-white hover:bg-hyve-text-dark px-5 py-3 sm:px-7 sm:py-4 lg:px-8 lg:py-5 transition-all duration-300 self-start w-auto"
+                  onClick={() => {
+                    // Scroll to deployment modes
+                    const deploymentSection = document.getElementById('deployment')
+                    if (deploymentSection) {
+                      deploymentSection.scrollIntoView({ behavior: 'smooth' })
+                    }
+                  }}
                 >
-                  <span className="flex items-center gap-2 text-xs sm:text-sm font-light tracking-wide">
-                    Explore Technology
+                  <span className="flex items-center gap-2 text-xs sm:text-sm font-medium tracking-wide">
+                    See How It Works
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </span>
                 </Button>
 
-                <button
-                  className="text-sm text-hyve-text/60 hover:text-hyve-accent transition-colors duration-300 text-left pointer-events-auto"
-                  onClick={() => window.open('mailto:info@hyvedynamics.com', '_blank')}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="group bg-transparent border border-hyve-content text-hyve-text hover:border-hyve-text px-5 py-3 sm:px-7 sm:py-4 lg:px-8 lg:py-5 transition-all duration-300 self-start w-auto"
+                  onClick={() => navigate('/haptic-matrix')}
                 >
-                  Get in Touch →
-                </button>
+                  <span className="flex items-center gap-2 text-xs sm:text-sm font-light tracking-wide">
+                    Technical Specs
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Button>
               </motion.div>
+
+              {/* Wind Tunnel Beachhead Signal */}
+              <motion.p variants={itemVariants} className="mt-6 text-xs text-hyve-text/50 italic">
+                Trusted for wind tunnel validation. Built for flight test. Ready for operational
+                monitoring.
+              </motion.p>
             </div>
           </motion.div>
 

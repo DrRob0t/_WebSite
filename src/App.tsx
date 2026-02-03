@@ -4,8 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { SEO } from '@/components/common/SEO'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { Layout } from '@/components/layout/Layout'
+import { DeploymentModes } from '@/components/sections/DeploymentModes'
 import { Hero } from '@/components/sections/Hero'
 import { Industries } from '@/components/sections/Industries'
+import { TimeAxis } from '@/components/sections/TimeAxis'
 import { Vision } from '@/components/sections/Vision'
 import { CustomMeshBackground } from '@/components/ui/CustomMeshBackground'
 import { ScrollToTop } from '@/components/ui/scroll-to-top'
@@ -38,8 +40,17 @@ const HomePage = () => {
           {/* Hero section with proper pointer-events handling */}
           <Hero />
 
-          {/* Spacing between Hero and Vision */}
-          <div className="h-36 md:h-28 lg:h-32" />
+          {/* Spacing between Hero and Deployment Modes */}
+          <div className="h-24 md:h-20 lg:h-24" />
+
+          {/* Deployment Modes section - Core value proposition */}
+          <DeploymentModes />
+
+          {/* Time Axis - Progression visual */}
+          <TimeAxis />
+
+          {/* Spacing between Time Axis and Vision */}
+          <div className="h-16 md:h-12 lg:h-16" />
 
           {/* Vision section */}
           <Vision />

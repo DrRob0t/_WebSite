@@ -1,56 +1,61 @@
 import { motion } from 'framer-motion'
-import { Plane, Car, Wind, Shield, Bot, ArrowRight } from 'lucide-react'
+import { Plane, Car, Wind, Shield, Bot, ArrowRight, Star } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 
-// Industry data
-const industries = [
-  {
-    id: 'aerospace',
-    title: 'Aerospace',
-    icon: Plane,
-    description: 'Aviation & space sensing',
-    href: '/industries/aerospace',
-    color: 'from-blue-500/20 to-cyan-500/20',
-    iconColor: 'text-blue-600',
-  },
+// Industry data - Aerospace as beachhead, others as secondary
+const beachheadIndustry = {
+  id: 'aerospace',
+  title: 'Aerospace & Wind Tunnels',
+  subtitle: 'Our Beachhead Market',
+  icon: Plane,
+  description:
+    'Where we prove our technology. Wind tunnel instrumentation is the foundation of our credibility—enabling faster test cycles, better model-to-flight correlation, and real-time aerodynamic insights at speeds up to Mach 0.85.',
+  href: '/industries/aerospace',
+  stats: [
+    { value: '40-60%', label: 'faster test cycles' },
+    { value: 'Mach 0.85', label: 'operating speed' },
+    { value: '100+', label: 'sensors per array' },
+  ],
+}
+
+const secondaryIndustries = [
   {
     id: 'automotive',
-    title: 'Automotive',
+    title: 'Motorsport & Automotive',
     icon: Car,
-    description: 'Real-time aerodynamics',
+    description: 'Track testing & aerodynamic validation',
     href: '/industries/automotive',
-    color: 'from-red-500/20 to-orange-500/20',
     iconColor: 'text-red-600',
+    bgColor: 'bg-red-500/10',
   },
   {
     id: 'energy',
-    title: 'Energy',
+    title: 'Wind Energy',
     icon: Wind,
-    description: 'Renewable optimization',
+    description: 'Turbine blade optimization',
     href: '/industries/energy',
-    color: 'from-green-500/20 to-emerald-500/20',
     iconColor: 'text-green-600',
+    bgColor: 'bg-green-500/10',
   },
   {
     id: 'structural-health',
-    title: 'Structural',
+    title: 'Infrastructure',
     icon: Shield,
-    description: 'Infrastructure monitoring',
+    description: 'Structural health monitoring',
     href: '/industries/structural-health',
-    color: 'from-purple-500/20 to-indigo-500/20',
     iconColor: 'text-purple-600',
+    bgColor: 'bg-purple-500/10',
   },
   {
     id: 'robotics',
     title: 'Robotics',
     icon: Bot,
-    description: 'Tactile intelligence',
+    description: 'Tactile sensing systems',
     href: '/industries/robotics',
-    color: 'from-pink-500/20 to-rose-500/20',
     iconColor: 'text-pink-600',
+    bgColor: 'bg-pink-500/10',
   },
 ]
 
@@ -82,13 +87,14 @@ const itemVariants = {
 }
 
 export const Industries = () => {
+  const BeachheadIcon = beachheadIndustry.icon
+
   return (
     <section
       className="relative py-12 lg:py-16 overflow-hidden pointer-events-none"
       id="industries"
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Container with background */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -99,73 +105,119 @@ export const Industries = () => {
           {/* Background container */}
           <div className="absolute inset-0 -m-8 bg-gradient-to-br from-white/90 to-hyve-content/30 backdrop-blur-md rounded-3xl shadow-xl" />
 
-          <div className="relative z-10 px-8 py-8 lg:px-12 lg:py-10">
+          <div className="relative z-10 px-8 py-10 lg:px-12 lg:py-12">
             {/* Section Header */}
-            <motion.div variants={itemVariants} className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-hyve-header mb-4 font-heading">
-                Industries We Transform
+            <motion.div variants={itemVariants} className="text-center mb-10">
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <div className="w-12 h-[2px] bg-hyve-accent" />
+                <span className="text-sm font-medium tracking-widest text-hyve-text/70 uppercase">
+                  Application Sectors
+                </span>
+                <div className="w-12 h-[2px] bg-hyve-accent" />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-hyve-header mb-3 font-heading">
+                Built for Aerospace. Ready for More.
               </h2>
-              <p className="text-base md:text-lg text-hyve-text/80 max-w-2xl mx-auto">
-                Real-time insights across diverse sectors with our cutting-edge sensor technology
+              <p className="text-base text-hyve-text/70 max-w-2xl mx-auto">
+                We start where credibility matters most—wind tunnels and experimental aerospace—then
+                expand to adjacent markets as we prove performance.
               </p>
             </motion.div>
 
-            {/* Industries Grid - More compact */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-              {industries.map((industry, index) => {
-                const Icon = industry.icon
-                return (
-                  <motion.div
-                    key={industry.id}
-                    variants={itemVariants}
-                    custom={index}
-                    className="pointer-events-auto"
-                  >
-                    <Link to={industry.href}>
-                      <Card className="h-full p-4 sm:p-5 lg:p-5 bg-white/90 backdrop-blur-sm border-hyve-content/50 hover:border-hyve-accent transition-all duration-300 hover:shadow-lg group cursor-pointer min-h-[120px]">
-                        <div className="flex flex-col items-center text-center h-full">
-                          {/* Icon */}
-                          <div
-                            className={`w-12 h-12 sm:w-14 sm:h-14 lg:w-14 lg:h-14 rounded-xl bg-gradient-to-br ${industry.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300`}
-                          >
-                            <Icon
-                              className={`h-6 w-6 sm:h-7 sm:w-7 lg:h-7 lg:w-7 ${industry.iconColor}`}
-                            />
-                          </div>
+            {/* Beachhead Market - Featured */}
+            <motion.div variants={itemVariants} className="mb-10 pointer-events-auto">
+              <Link to={beachheadIndustry.href}>
+                <div className="relative bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 lg:p-8 border-2 border-blue-200 hover:border-blue-400 transition-all hover:shadow-xl group cursor-pointer">
+                  {/* Beachhead Badge */}
+                  <div className="absolute top-4 right-4 flex items-center gap-1.5 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    <Star className="h-3 w-3" />
+                    Primary Focus
+                  </div>
 
-                          {/* Title */}
-                          <h3 className="text-base sm:text-lg lg:text-lg font-semibold text-hyve-header mb-2 font-heading">
-                            {industry.title}
-                          </h3>
-
-                          {/* Description - Show on larger screens */}
-                          <p className="hidden sm:block text-sm text-hyve-text/70 leading-relaxed mb-3 flex-grow">
-                            {industry.description}
-                          </p>
-
-                          {/* Learn More - Compact */}
-                          <div className="flex items-center text-hyve-interactive text-sm font-medium group-hover:text-hyve-interactive-dark transition-colors mt-auto">
-                            <span>Explore</span>
-                            <ArrowRight className="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" />
-                          </div>
+                  <div className="grid lg:grid-cols-2 gap-6 items-center">
+                    {/* Left: Content */}
+                    <div>
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-14 h-14 rounded-xl bg-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <BeachheadIcon className="h-7 w-7 text-white" />
                         </div>
-                      </Card>
+                        <div>
+                          <h3 className="text-xl lg:text-2xl font-bold text-hyve-header">
+                            {beachheadIndustry.title}
+                          </h3>
+                          <p className="text-sm text-blue-600 font-medium">
+                            {beachheadIndustry.subtitle}
+                          </p>
+                        </div>
+                      </div>
+
+                      <p className="text-sm lg:text-base text-hyve-text/80 leading-relaxed mb-4">
+                        {beachheadIndustry.description}
+                      </p>
+
+                      <div className="flex items-center text-blue-600 font-medium text-sm group-hover:gap-2 transition-all">
+                        Explore Aerospace Solutions
+                        <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+
+                    {/* Right: Stats */}
+                    <div className="grid grid-cols-3 gap-4">
+                      {beachheadIndustry.stats.map((stat, idx) => (
+                        <div key={idx} className="text-center">
+                          <div className="text-2xl lg:text-3xl font-bold text-hyve-header">
+                            {stat.value}
+                          </div>
+                          <div className="text-xs text-hyve-text/60">{stat.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+
+            {/* Secondary Industries - Compact Row */}
+            <motion.div variants={itemVariants}>
+              <p className="text-sm text-hyve-text/60 text-center mb-4 uppercase tracking-wider font-medium">
+                Expanding to Adjacent Markets
+              </p>
+
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 pointer-events-auto">
+                {secondaryIndustries.map(industry => {
+                  const Icon = industry.icon
+                  return (
+                    <Link key={industry.id} to={industry.href}>
+                      <div
+                        className={`p-4 rounded-xl ${industry.bgColor} border border-transparent hover:border-hyve-accent/50 transition-all hover:shadow-md group cursor-pointer`}
+                      >
+                        <div className="flex items-center gap-3 mb-2">
+                          <Icon className={`h-5 w-5 ${industry.iconColor}`} />
+                          <span className="font-semibold text-hyve-header text-sm">
+                            {industry.title}
+                          </span>
+                        </div>
+                        <p className="text-xs text-hyve-text/60">{industry.description}</p>
+                        <div className="flex items-center text-hyve-interactive text-xs font-medium mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          Learn more
+                          <ArrowRight className="h-3 w-3 ml-1" />
+                        </div>
+                      </div>
                     </Link>
-                  </motion.div>
-                )
-              })}
-            </div>
+                  )
+                })}
+              </div>
+            </motion.div>
 
             {/* CTA */}
-            <motion.div variants={itemVariants} className="text-center mt-8">
-              <p className="text-base text-hyve-text/80 mb-4">
-                Ready to revolutionize your industry?
+            <motion.div variants={itemVariants} className="text-center mt-10">
+              <p className="text-sm text-hyve-text/70 mb-4">
+                Working in one of these sectors? Let's discuss your measurement challenges.
               </p>
               <Button
                 size="default"
                 className="bg-hyve-text hover:bg-hyve-text-dark text-white pointer-events-auto"
                 onClick={() => {
-                  // Trigger the contact form in the header
                   const contactButton = document.querySelector(
                     '[data-contact-trigger]'
                   ) as HTMLButtonElement
@@ -174,7 +226,7 @@ export const Industries = () => {
                   }
                 }}
               >
-                Contact Our Experts
+                Start a Conversation
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </motion.div>
