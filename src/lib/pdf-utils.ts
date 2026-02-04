@@ -21,7 +21,7 @@ export async function generatePDF(options: GeneratePDFOptions): Promise<void> {
       import('jspdf')
     ])
     const html2canvas = html2canvasModule.default
-    const { jsPDF } = jsPDFModule
+    const jsPDF = jsPDFModule.default
 
     // Get the element to convert
     const element = document.getElementById(elementId)
