@@ -297,6 +297,7 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
   const rippleActiveRef = useRef(false)
 
   const [isLoaded, setIsLoaded] = useState(false)
+  const [hasInteracted, setHasInteracted] = useState(false)
 
   // Debug controls state - final tuned values
   const [camX, setCamX] = useState(0.40)
@@ -516,6 +517,9 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
         rippleTimeRef.current = 0
         rippleActiveRef.current = true
 
+        // Hide the touch hint after first interaction
+        setHasInteracted(true)
+
         sensorElementsRef.current.forEach(sensor => {
           sensor.element.classList.remove('active')
         })
@@ -708,6 +712,18 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
         </div>
       )}
 
+      {/* Touch/Click Hint */}
+      {isLoaded && !hasInteracted && (
+        <div className="touch-hint absolute bottom-[8%] left-1/2 -translate-x-1/2 pointer-events-none z-30">
+          <div className="flex items-center gap-2 text-slate-500 text-sm">
+            <svg className="w-5 h-5 touch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M12 18v-3m0-3V9m0 0V6a2 2 0 114 0v6m-4-3a2 2 0 10-4 0v4a6 6 0 0012 0v-4a2 2 0 10-4 0" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span className="font-medium tracking-wide">Tap to interact</span>
+          </div>
+        </div>
+      )}
+
       {/* Loading state */}
       {!isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center">
@@ -869,6 +885,38 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
           to { 
             opacity: 1; 
             transform: translateY(0); 
+          }
+        }
+        
+        /* Touch hint styles */
+        .touch-hint {
+          opacity: 0;
+          animation: hintFadeIn 0.5s ease-out 2.5s forwards;
+        }
+        
+        .touch-icon {
+          animation: hintPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes hintFadeIn {
+          from { 
+            opacity: 0;
+            transform: translateX(-50%) translateY(10px);
+          }
+          to { 
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+          }
+        }
+        
+        @keyframes hintPulse {
+          0%, 100% { 
+            opacity: 0.6;
+            transform: scale(1);
+          }
+          50% { 
+            opacity: 1;
+            transform: scale(1.1);
           }
         }
       `}</style>
