@@ -1,6 +1,23 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import * as THREE from 'three'
 
+// ============================================================
+// EASY COLOR CONFIGURATION - Just paste your HEX code here!
+// ============================================================
+const MESH_BASE_COLOR = '#81B7C2'
+// ============================================================
+
+// Helper function to convert HEX to normalized RGB (0-1 range)
+function hexToNormalizedRGB(hex: string): { r: number; g: number; b: number } {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+  if (!result) return { r: 0.5, g: 0.5, b: 0.5 }
+  return {
+    r: parseInt(result[1], 16) / 255,
+    g: parseInt(result[2], 16) / 255,
+    b: parseInt(result[3], 16) / 255,
+  }
+}
+
 // Vertex shader - handles mesh deformation with ripple and pressure
 const vertexShader = `
   uniform float uTime;
@@ -17,10 +34,10 @@ const vertexShader = `
     vUv = uv;
     vec3 pos = position;
     
-    // Ambient floating motion - gentle sine waves
-    float wave1 = sin(pos.x * 2.0 + uTime * 0.8) * 0.12;
-    float wave2 = sin(pos.y * 2.5 + uTime * 0.6) * 0.10;
-    float wave3 = cos(pos.x * 1.5 + pos.y * 1.5 + uTime * 0.5) * 0.06;
+    // Ambient floating motion - subtle waves for gentle 3D effect
+    float wave1 = sin(pos.x * 2.0 + uTime * 0.8) * 0.15;
+    float wave2 = sin(pos.y * 2.5 + uTime * 0.6) * 0.12;
+    float wave3 = cos(pos.x * 1.5 + pos.y * 1.5 + uTime * 0.5) * 0.08;
     
     float ambientWave = wave1 + wave2 + wave3;
     
@@ -63,6 +80,7 @@ const fragmentShader = `
   uniform vec2 uRippleCenter;
   uniform float uRippleTime;
   uniform float uRippleStrength;
+  uniform vec3 uBaseColor;
   
   varying vec2 vUv;
   varying float vElevation;
@@ -98,21 +116,24 @@ const fragmentShader = `
     float gridLine = smoothstep(0.02, 0.05, grid.x) * smoothstep(0.02, 0.05, grid.y);
     gridLine *= smoothstep(0.02, 0.05, 1.0 - grid.x) * smoothstep(0.02, 0.05, 1.0 - grid.y);
     
-    // Pressure for colormap
+    // Base color from uniform (set via MESH_BASE_COLOR constant at top of file)
+    vec3 baseColor = uBaseColor;
+    
+    // Only show jet colormap during active ripple interaction
+    // Use ripple strength to determine if we should show pressure colors
+    float rippleActivity = abs(vRipple) * 3.0 + uRippleStrength * (1.0 - smoothstep(0.0, 3.0, uRippleTime));
+    rippleActivity = clamp(rippleActivity, 0.0, 1.0);
+    
+    // Pressure for colormap (only during interaction)
     float pressureNorm = vPressure * 0.5 + 0.5;
     pressureNorm = clamp(pressureNorm, 0.0, 1.0);
-    
     vec3 pressureColor = jetColormap(pressureNorm);
-    // Base color: #3F485B (129, 183, 194) normalized
-    vec3 baseColor = vec3(0.506, 0.718, 0.761);
     
-    float activity = abs(vPressure) + abs(vRipple) * 2.0;
-    activity = clamp(activity, 0.0, 1.0);
-    
-    vec3 color = mix(baseColor, pressureColor, activity * 0.9 + 0.1);
+    // Mix: show base color when idle, jet colormap only during interaction
+    vec3 color = mix(baseColor, pressureColor, rippleActivity);
     
     // Grid lines slightly darker
-    color = mix(color * 0.7, color, gridLine);
+    color = mix(color * 0.75, color, gridLine);
     
     // Edge fade
     float edge = smoothstep(0.0, 0.08, vUv.x) * smoothstep(0.0, 0.08, vUv.y);
@@ -120,8 +141,6 @@ const fragmentShader = `
     
     float alpha = 0.9;
     alpha *= edge * 0.4 + 0.6;
-    
-    color += vec3(0.1, 0.05, 0.0) * max(0.0, vPressure) * 0.5;
     
     gl_FragColor = vec4(color, alpha);
   }
@@ -176,6 +195,9 @@ function getJetColor(t: number): string {
   return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`
 }
 
+// Set to true to show debug controls, false to hide them
+const SHOW_DEBUG_CONTROLS = false
+
 export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ className = '' }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const sensorContainerRef = useRef<HTMLDivElement>(null)
@@ -193,7 +215,32 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
 
   const [isLoaded, setIsLoaded] = useState(false)
 
+  // Debug controls state - final tuned values
+  const [camX, setCamX] = useState(0.40)
+  const [camY, setCamY] = useState(-1.10)
+  const [camZ, setCamZ] = useState(4.80)
+  const [rotX, setRotX] = useState(-0.49)
+  const [rotY, setRotY] = useState(-0.27)
+  const [fov, setFov] = useState(49)
+
   const GRID_SIZE = 10
+
+  // Update camera and mesh when debug controls change
+  useEffect(() => {
+    if (cameraRef.current) {
+      cameraRef.current.position.set(camX, camY, camZ)
+      cameraRef.current.fov = fov
+      cameraRef.current.updateProjectionMatrix()
+      cameraRef.current.lookAt(0, 0, 0)
+    }
+  }, [camX, camY, camZ, fov])
+
+  useEffect(() => {
+    if (meshRef.current) {
+      meshRef.current.rotation.x = rotX
+      meshRef.current.rotation.y = rotY
+    }
+  }, [rotX, rotY])
 
   // Calculate pressure value at a UV position
   const calculatePressure = useCallback((uvX: number, uvY: number, centerX: number, centerY: number, time: number) => {
@@ -223,9 +270,10 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
       const y = (sensor.uvY - 0.5) * 3.5
 
       const time = material.uniforms.uTime.value
-      const wave1 = Math.sin(x * 2.0 + time * 0.8) * 0.12
-      const wave2 = Math.sin(y * 2.5 + time * 0.6) * 0.1
-      const wave3 = Math.cos(x * 1.5 + y * 1.5 + time * 0.5) * 0.06
+      // Match the shader wave amplitudes for accurate sensor positioning
+      const wave1 = Math.sin(x * 2.0 + time * 0.8) * 0.15
+      const wave2 = Math.sin(y * 2.5 + time * 0.6) * 0.12
+      const wave3 = Math.cos(x * 1.5 + y * 1.5 + time * 0.5) * 0.08
       const z = wave1 + wave2 + wave3
 
       tempVec.set(x, y, z)
@@ -308,8 +356,10 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
     const scene = new THREE.Scene()
     sceneRef.current = scene
 
-    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100)
-    camera.position.set(0, 0, 6)
+    // Camera with tuned perspective settings
+    const camera = new THREE.PerspectiveCamera(49, container.clientWidth / container.clientHeight, 0.1, 100)
+    camera.position.set(0.40, -1.10, 4.80)
+    camera.lookAt(0, 0, 0)
     cameraRef.current = camera
 
     const renderer = new THREE.WebGLRenderer({
@@ -326,6 +376,9 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
     // Create haptic matrix mesh
     const geometry = new THREE.PlaneGeometry(3.5, 3.5, 64, 64)
 
+    // Convert HEX color to normalized RGB for shader
+    const baseColorRGB = hexToNormalizedRGB(MESH_BASE_COLOR)
+
     const material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
@@ -334,6 +387,7 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
         uRippleCenter: { value: new THREE.Vector2(0.5, 0.5) },
         uRippleTime: { value: 0 },
         uRippleStrength: { value: 0 },
+        uBaseColor: { value: new THREE.Vector3(baseColorRGB.r, baseColorRGB.g, baseColorRGB.b) },
       },
       transparent: true,
       side: THREE.DoubleSide,
@@ -341,8 +395,9 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
     materialRef.current = material
 
     const mesh = new THREE.Mesh(geometry, material)
-    mesh.rotation.x = -0.3
-    mesh.rotation.y = 0.2
+    // Tuned rotation for optimal 3D perspective
+    mesh.rotation.x = -0.49
+    mesh.rotation.y = -0.27
     scene.add(mesh)
     meshRef.current = mesh
 
@@ -407,9 +462,12 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
         }
       }
 
-      // Gentle rotation
-      mesh.rotation.y = 0.2 + Math.sin(elapsed * 0.3) * 0.1
-      mesh.rotation.x = -0.3 + Math.cos(elapsed * 0.25) * 0.05
+      // When debug controls are active, don't animate rotation (let sliders control it)
+      // When debug is off, add gentle oscillation around tuned base values
+      if (!SHOW_DEBUG_CONTROLS) {
+        mesh.rotation.y = -0.27 + Math.sin(elapsed * 0.3) * 0.08
+        mesh.rotation.x = -0.49 + Math.cos(elapsed * 0.25) * 0.05
+      }
 
       updateSensorPositions()
       updateSensorValues()
@@ -469,6 +527,65 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
       {!isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-8 h-8 border-2 border-hyve-accent border-t-transparent rounded-full animate-spin" />
+        </div>
+      )}
+
+      {/* Debug Controls - Remove when done tuning */}
+      {SHOW_DEBUG_CONTROLS && (
+        <div className="absolute top-2 right-2 bg-black/80 text-white p-3 rounded-lg text-xs font-mono z-50 pointer-events-auto max-h-[90%] overflow-y-auto">
+          <div className="font-bold mb-2 text-yellow-400">Debug Controls</div>
+          
+          <div className="mb-3">
+            <div className="text-gray-400 mb-1">Camera Position</div>
+            <label className="flex items-center gap-2 mb-1">
+              <span className="w-8">X:</span>
+              <input type="range" min="-5" max="5" step="0.1" value={camX} onChange={e => setCamX(parseFloat(e.target.value))} className="w-24" />
+              <span className="w-12 text-right text-cyan-400">{camX.toFixed(2)}</span>
+            </label>
+            <label className="flex items-center gap-2 mb-1">
+              <span className="w-8">Y:</span>
+              <input type="range" min="-5" max="5" step="0.1" value={camY} onChange={e => setCamY(parseFloat(e.target.value))} className="w-24" />
+              <span className="w-12 text-right text-cyan-400">{camY.toFixed(2)}</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <span className="w-8">Z:</span>
+              <input type="range" min="1" max="10" step="0.1" value={camZ} onChange={e => setCamZ(parseFloat(e.target.value))} className="w-24" />
+              <span className="w-12 text-right text-cyan-400">{camZ.toFixed(2)}</span>
+            </label>
+          </div>
+
+          <div className="mb-3">
+            <div className="text-gray-400 mb-1">Mesh Rotation</div>
+            <label className="flex items-center gap-2 mb-1">
+              <span className="w-8">X:</span>
+              <input type="range" min="-1.57" max="0" step="0.01" value={rotX} onChange={e => setRotX(parseFloat(e.target.value))} className="w-24" />
+              <span className="w-12 text-right text-green-400">{rotX.toFixed(2)}</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <span className="w-8">Y:</span>
+              <input type="range" min="-1.57" max="1.57" step="0.01" value={rotY} onChange={e => setRotY(parseFloat(e.target.value))} className="w-24" />
+              <span className="w-12 text-right text-green-400">{rotY.toFixed(2)}</span>
+            </label>
+          </div>
+
+          <div className="mb-3">
+            <div className="text-gray-400 mb-1">Camera FOV</div>
+            <label className="flex items-center gap-2">
+              <span className="w-8">°:</span>
+              <input type="range" min="20" max="100" step="1" value={fov} onChange={e => setFov(parseFloat(e.target.value))} className="w-24" />
+              <span className="w-12 text-right text-orange-400">{fov.toFixed(0)}</span>
+            </label>
+          </div>
+
+          <div className="border-t border-gray-600 pt-2 mt-2">
+            <div className="text-gray-400 mb-1">Copy these values:</div>
+            <div className="bg-gray-900 p-2 rounded text-[10px] select-all">
+              camera.position.set({camX.toFixed(2)}, {camY.toFixed(2)}, {camZ.toFixed(2)})<br/>
+              camera.fov = {fov}<br/>
+              mesh.rotation.x = {rotX.toFixed(2)}<br/>
+              mesh.rotation.y = {rotY.toFixed(2)}
+            </div>
+          </div>
         </div>
       )}
 
