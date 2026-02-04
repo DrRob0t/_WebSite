@@ -3,7 +3,7 @@ import { ArrowRight, ChevronDown } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
-import { HeroSwiper } from '@/components/ui/HeroSwiper'
+import { HapticMatrixAnimation } from '@/components/ui/HapticMatrixAnimation'
 
 // Animation variants
 const containerVariants = {
@@ -114,7 +114,7 @@ export const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Right Side - Swiper Container */}
+          {/* Right Side - Haptic Matrix Animation */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -124,8 +124,9 @@ export const Hero = () => {
             {/* Subtle background for visual consistency with left side */}
             <div className="absolute inset-0 -m-8 bg-gradient-to-br from-hyve-background/40 to-transparent backdrop-blur-sm rounded-2xl" />
 
+            {/* Haptic Matrix Interactive Animation */}
             <div className="relative z-10 w-full h-full">
-              <HeroSwiper className="pointer-events-auto" />
+              <HapticMatrixAnimation className="pointer-events-auto" />
             </div>
           </motion.div>
         </div>
