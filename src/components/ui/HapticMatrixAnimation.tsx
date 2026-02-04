@@ -43,8 +43,8 @@ const vertexShader = `
     
     // Ripple effect from click
     float dist = distance(uv, uRippleCenter);
-    float rippleRadius = uRippleTime * 0.45;
-    float rippleWidth = 0.15;
+    float rippleRadius = uRippleTime * 0.35;  // Slower expansion (was 0.45)
+    float rippleWidth = 0.12;  // Narrower ring (was 0.15)
     float ripple = 0.0;
     float pressure = 0.0;
     
@@ -52,16 +52,16 @@ const vertexShader = `
       // Outward propagating ring
       ripple = smoothstep(rippleRadius - rippleWidth, rippleRadius, dist) 
              - smoothstep(rippleRadius, rippleRadius + rippleWidth, dist);
-      ripple *= uRippleStrength * sin(dist * 20.0 - uRippleTime * 4.0) * 0.5;
-      ripple *= 1.0 - smoothstep(0.0, 3.5, uRippleTime);
+      ripple *= uRippleStrength * sin(dist * 12.0 - uRippleTime * 3.0) * 0.25;  // Reduced amplitude (was 0.5), less wavy (was 20.0, 4.0)
+      ripple *= 1.0 - smoothstep(0.0, 2.5, uRippleTime);  // Faster fade (was 3.5)
       
       // Pressure field - strongest at center, fading outward
-      pressure = 1.0 - smoothstep(0.0, rippleRadius + 0.25, dist);
-      pressure *= uRippleStrength;
-      pressure *= 1.0 - smoothstep(0.0, 4.0, uRippleTime);
+      pressure = 1.0 - smoothstep(0.0, rippleRadius + 0.2, dist);  // Tighter field (was 0.25)
+      pressure *= uRippleStrength * 0.7;  // Reduced intensity
+      pressure *= 1.0 - smoothstep(0.0, 3.0, uRippleTime);  // Faster fade (was 4.0)
       
       // Add some oscillation to pressure
-      pressure *= 0.6 + 0.4 * sin(uRippleTime * 1.5);
+      pressure *= 0.7 + 0.3 * sin(uRippleTime * 1.2);  // Subtler oscillation
     }
     
     pos.z += ambientWave + ripple;
@@ -121,8 +121,8 @@ const fragmentShader = `
     
     // Only show jet colormap during active ripple interaction
     // Use ripple strength to determine if we should show pressure colors
-    float rippleActivity = abs(vRipple) * 3.0 + uRippleStrength * (1.0 - smoothstep(0.0, 3.0, uRippleTime));
-    rippleActivity = clamp(rippleActivity, 0.0, 1.0);
+    float rippleActivity = abs(vRipple) * 2.0 + uRippleStrength * (1.0 - smoothstep(0.0, 2.5, uRippleTime));  // Reduced intensity (was 3.0, 3.0)
+    rippleActivity = clamp(rippleActivity, 0.0, 0.85);  // Cap max color blend (was 1.0)
     
     // Pressure for colormap (only during interaction)
     float pressureNorm = vPressure * 0.5 + 0.5;
@@ -242,14 +242,15 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
     }
   }, [rotX, rotY])
 
-  // Calculate pressure value at a UV position
+  // Calculate pressure value at a UV position (matches reduced shader values)
   const calculatePressure = useCallback((uvX: number, uvY: number, centerX: number, centerY: number, time: number) => {
     const dist = Math.sqrt((uvX - centerX) ** 2 + (uvY - centerY) ** 2)
-    const rippleRadius = time * 0.45
+    const rippleRadius = time * 0.35  // Match shader (was 0.45)
 
-    let pressure = 1.0 - smoothstep(0, rippleRadius + 0.25, dist)
-    pressure *= 1.0 - smoothstep(0, 4.0, time)
-    pressure *= 0.6 + 0.4 * Math.sin(time * 1.5)
+    let pressure = 1.0 - smoothstep(0, rippleRadius + 0.2, dist)  // Match shader (was 0.25)
+    pressure *= 0.7  // Reduced intensity
+    pressure *= 1.0 - smoothstep(0, 3.0, time)  // Match shader (was 4.0)
+    pressure *= 0.7 + 0.3 * Math.sin(time * 1.2)  // Match shader oscillation
 
     return pressure
   }, [])
@@ -293,38 +294,47 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
   const updateSensorValues = useCallback(() => {
     if (!rippleActiveRef.current) {
       sensorElementsRef.current.forEach(sensor => {
-        sensor.element.classList.remove('active')
+        sensor.element.style.opacity = '0'
+        sensor.element.style.transform = 'translate(-50%, -50%) scale(0.5)'
       })
       return
     }
 
-    const rippleRadius = rippleTimeRef.current * 0.45
+    const rippleRadius = rippleTimeRef.current * 0.35
 
     sensorElementsRef.current.forEach(sensor => {
       const dist = Math.sqrt(
         (sensor.uvX - rippleCenterRef.current.x) ** 2 + (sensor.uvY - rippleCenterRef.current.y) ** 2
       )
 
-      const shouldBeActive = dist < rippleRadius + 0.1 && rippleTimeRef.current < 4.5
+      // Calculate pressure for this sensor
+      const pressure = calculatePressure(
+        sensor.uvX,
+        sensor.uvY,
+        rippleCenterRef.current.x,
+        rippleCenterRef.current.y,
+        rippleTimeRef.current
+      )
 
-      if (shouldBeActive) {
-        const pressure = calculatePressure(
-          sensor.uvX,
-          sensor.uvY,
-          rippleCenterRef.current.x,
-          rippleCenterRef.current.y,
-          rippleTimeRef.current
-        )
+      const kPa = pressure * 5.0
+      const noise = (Math.random() - 0.5) * 0.2
+      const displayValue = Math.max(0, kPa + noise)
 
-        const kPa = pressure * 5.0
-        const noise = (Math.random() - 0.5) * 0.3
-        const displayValue = Math.max(0, kPa + noise)
-
+      // Only show sensors that are within the ripple radius and have meaningful pressure
+      const isInRange = dist < rippleRadius + 0.15
+      
+      if (isInRange && displayValue > 0.05) {
+        // Use the pressure value directly for opacity (0-1 range)
+        // Boost it slightly so it's visible, but let it fade naturally with the value
+        const opacity = Math.min(1, displayValue / 2.5)  // Full opacity at ~2.5 kPa, fades to 0 naturally
+        
         sensor.element.textContent = displayValue.toFixed(2)
-        sensor.element.classList.add('active')
+        sensor.element.style.opacity = opacity.toFixed(3)
+        sensor.element.style.transform = 'translate(-50%, -50%) scale(1)'
         sensor.element.style.color = getJetColor(displayValue / 5.0)
-      } else if (rippleTimeRef.current > 4.0) {
-        sensor.element.classList.remove('active')
+      } else {
+        sensor.element.style.opacity = '0'
+        sensor.element.style.transform = 'translate(-50%, -50%) scale(0.5)'
       }
     })
   }, [calculatePressure])
@@ -456,7 +466,7 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
         material.uniforms.uRippleTime.value += 0.016
         rippleTimeRef.current += 0.016
 
-        if (material.uniforms.uRippleTime.value > 5.0) {
+        if (material.uniforms.uRippleTime.value > 4.0) {  // Reduced duration (was 5.0)
           material.uniforms.uRippleStrength.value = 0
           rippleActiveRef.current = false
         }
@@ -600,14 +610,9 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
           text-shadow: 0 0 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.5);
           opacity: 0;
           transform: translate(-50%, -50%) scale(0.5);
-          transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+          transition: opacity 0.1s linear, transform 0.15s ease-out, color 0.1s linear;
           white-space: nowrap;
           pointer-events: none;
-        }
-        
-        .sensor-value.active {
-          opacity: 1;
-          transform: translate(-50%, -50%) scale(1);
         }
         
         @media (min-width: 768px) {
