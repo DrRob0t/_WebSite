@@ -616,6 +616,98 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
       {/* Sensor values overlay */}
       <div ref={sensorContainerRef} className="absolute inset-0 pointer-events-none" />
 
+      {/* Technical Callout Lines - Engineering documentation style */}
+      {isLoaded && (
+        <div className="absolute inset-0 pointer-events-none overflow-visible callouts-container hidden sm:block">
+          
+          {/* SVG Layer for connected lines - viewBox creates a 1000x1000 coordinate system */}
+          <svg 
+            className="absolute inset-0 w-full h-full" 
+            viewBox="0 0 1000 1000" 
+            preserveAspectRatio="none"
+            style={{ zIndex: 20 }}
+          >
+            {/* Top-right callout: Sensor Matrix */}
+            <g className="callout-svg callout-tr-svg">
+              <circle cx="620" cy="250" r="5" fill="#334155" className="callout-dot-svg" />
+              <polyline 
+                points="620,250 750,80 1000,80" 
+                stroke="#334155" 
+                strokeWidth="2" 
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="callout-path-svg"
+              />
+            </g>
+            
+            {/* Top-left callout: Flexible Substrate */}
+            <g className="callout-svg callout-tl-svg">
+              <circle cx="340" cy="340" r="5" fill="#334155" className="callout-dot-svg" />
+              <polyline 
+                points="340,340 250,220 0,220" 
+                stroke="#334155" 
+                strokeWidth="2" 
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="callout-path-svg"
+              />
+            </g>
+            
+            {/* Bottom-right callout: Strain Gauge Array */}
+            <g className="callout-svg callout-br-svg">
+              <circle cx="640" cy="800" r="5" fill="#334155" className="callout-dot-svg" />
+              <polyline 
+                points="640,800 800,950 1000,950" 
+                stroke="#334155" 
+                strokeWidth="2" 
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="callout-path-svg"
+              />
+            </g>
+            
+            {/* Bottom-left callout: Data Acquisition */}
+            <g className="callout-svg callout-bl-svg">
+              <circle cx="420" cy="800" r="5" fill="#334155" className="callout-dot-svg" />
+              <polyline 
+                points="420,800 250,980 0,980" 
+                stroke="#334155" 
+                strokeWidth="2" 
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="callout-path-svg"
+              />
+            </g>
+          </svg>
+          
+          {/* Labels positioned at line endpoints */}
+          <div className="callout-label callout-label-tr" style={{ position: 'absolute', top: '5%', right: '2%', textAlign: 'right' }}>
+            <span className="text-slate-700 font-semibold text-xs tracking-wide block">10×10 SENSOR MATRIX</span>
+            <span className="text-[10px] text-slate-400 font-normal italic">High-density tactile array</span>
+          </div>
+          
+          <div className="callout-label callout-label-tl" style={{ position: 'absolute', top: '19%', left: '2%', textAlign: 'left' }}>
+            <span className="text-slate-700 font-semibold text-xs tracking-wide block">FLEXIBLE SUBSTRATE</span>
+            <span className="text-[10px] text-slate-400 font-normal italic">Conformable sensing surface</span>
+          </div>
+          
+          <div className="callout-label callout-label-br" style={{ position: 'absolute', top: '92%', right: '2%', textAlign: 'right' }}>
+            <span className="text-slate-700 font-semibold text-xs tracking-wide block">MEMS ARRAY</span>
+            <span className="text-[10px] text-slate-400 font-normal italic">Custom sensing elements</span>
+          </div>
+          
+          <div className="callout-label callout-label-bl" style={{ position: 'absolute', top: '95%', left: '2%', textAlign: 'left' }}>
+            <span className="text-slate-700 font-semibold text-xs tracking-wide block">REAL-TIME ACQUISITION</span>
+            <span className="text-[10px] text-slate-400 font-normal italic">1kHz sampling rate</span>
+          </div>
+          
+        </div>
+      )}
+
       {/* Loading state */}
       {!isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center">
@@ -701,6 +793,82 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
         @media (min-width: 768px) {
           .sensor-value {
             font-size: 10px;
+          }
+        }
+        
+        /* Callout container */
+        .callouts-container {
+          z-index: 20;
+        }
+        
+        /* SVG Callout dots */
+        .callout-dot-svg {
+          opacity: 0;
+          animation: dotFadeIn 0.3s ease-out forwards;
+        }
+        
+        /* SVG Callout paths */
+        .callout-path-svg {
+          stroke-dasharray: 1000;
+          stroke-dashoffset: 1000;
+          animation: pathDraw 0.8s ease-out forwards;
+        }
+        
+        /* Labels */
+        .callout-label {
+          opacity: 0;
+          transform: translateY(5px);
+          animation: labelFadeIn 0.4s ease-out forwards;
+        }
+        
+        /* Staggered delays - Top Right */
+        .callout-tr-svg .callout-dot-svg { animation-delay: 0.5s; }
+        .callout-tr-svg .callout-path-svg { animation-delay: 0.6s; }
+        .callout-label-tr { animation-delay: 1.2s; }
+        
+        /* Staggered delays - Top Left */
+        .callout-tl-svg .callout-dot-svg { animation-delay: 0.7s; }
+        .callout-tl-svg .callout-path-svg { animation-delay: 0.8s; }
+        .callout-label-tl { animation-delay: 1.4s; }
+        
+        /* Staggered delays - Bottom Right */
+        .callout-br-svg .callout-dot-svg { animation-delay: 0.9s; }
+        .callout-br-svg .callout-path-svg { animation-delay: 1.0s; }
+        .callout-label-br { animation-delay: 1.6s; }
+        
+        /* Staggered delays - Bottom Left */
+        .callout-bl-svg .callout-dot-svg { animation-delay: 1.1s; }
+        .callout-bl-svg .callout-path-svg { animation-delay: 1.2s; }
+        .callout-label-bl { animation-delay: 1.8s; }
+        
+        @keyframes dotFadeIn {
+          from { 
+            opacity: 0; 
+            r: 0; 
+          }
+          to { 
+            opacity: 1; 
+            r: 5; 
+          }
+        }
+        
+        @keyframes pathDraw {
+          from { 
+            stroke-dashoffset: 1000; 
+          }
+          to { 
+            stroke-dashoffset: 0; 
+          }
+        }
+        
+        @keyframes labelFadeIn {
+          from { 
+            opacity: 0; 
+            transform: translateY(5px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: translateY(0); 
           }
         }
       `}</style>
