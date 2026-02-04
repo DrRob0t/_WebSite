@@ -35,8 +35,8 @@ const vertexShader = `
     vec3 pos = position;
     
     // Ambient floating motion - subtle waves for gentle 3D effect
-    float wave1 = sin(pos.x * 2.0 + uTime * 0.8) * 0.010;
-    float wave2 = sin(pos.y * 2.5 + uTime * 0.6) * 0.010;
+    float wave1 = sin(pos.x * 2.0 + uTime * 0.8) * 0.05;
+    float wave2 = sin(pos.y * 2.5 + uTime * 0.6) * 0.05;
     float wave3 = cos(pos.x * 1.5 + pos.y * 1.5 + uTime * 0.5) * 0.08;
     
     float ambientWave = wave1 + wave2 + wave3;
