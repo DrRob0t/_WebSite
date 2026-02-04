@@ -74,7 +74,7 @@ const vertexShader = `
   }
 `
 
-// Fragment shader with CFD/FEA jet colormap
+// Fragment shader with CFD/FEA jet colormap and circuit board aesthetic
 const fragmentShader = `
   uniform float uTime;
   uniform vec2 uRippleCenter;
@@ -110,37 +110,120 @@ const fragmentShader = `
     return color;
   }
   
+  // Draw a rectangle (returns 1.0 inside, 0.0 outside)
+  float rect(vec2 uv, vec2 center, vec2 size) {
+    vec2 d = abs(uv - center) - size * 0.5;
+    return 1.0 - smoothstep(0.0, 0.008, max(d.x, d.y));
+  }
+  
+  // Draw crosshair marker
+  float crosshair(vec2 uv, vec2 center, float size, float thickness) {
+    float h = smoothstep(thickness, 0.0, abs(uv.y - center.y)) * 
+              smoothstep(size, size * 0.3, abs(uv.x - center.x));
+    float v = smoothstep(thickness, 0.0, abs(uv.x - center.x)) * 
+              smoothstep(size, size * 0.3, abs(uv.y - center.y));
+    return max(h, v);
+  }
+  
   void main() {
-    // Grid pattern
-    vec2 grid = fract(vUv * 10.0);
-    float gridLine = smoothstep(0.02, 0.05, grid.x) * smoothstep(0.02, 0.05, grid.y);
-    gridLine *= smoothstep(0.02, 0.05, 1.0 - grid.x) * smoothstep(0.02, 0.05, 1.0 - grid.y);
+    // Grid configuration
+    float gridCount = 10.0;
+    vec2 gridUv = vUv * gridCount;
+    vec2 gridCell = fract(gridUv);
+    vec2 gridId = floor(gridUv);
     
-    // Base color from uniform (set via MESH_BASE_COLOR constant at top of file)
+    // === DARK BORDER/FRAME ===
+    float borderWidth = 0.06;
+    float borderInner = 0.055;
+    float inBorder = 1.0 - (
+      smoothstep(0.0, borderWidth, vUv.x) * 
+      smoothstep(0.0, borderWidth, vUv.y) * 
+      smoothstep(0.0, borderWidth, 1.0 - vUv.x) * 
+      smoothstep(0.0, borderWidth, 1.0 - vUv.y)
+    );
+    float innerEdge = (
+      smoothstep(borderInner - 0.01, borderInner, vUv.x) * 
+      smoothstep(borderInner - 0.01, borderInner, vUv.y) * 
+      smoothstep(borderInner - 0.01, borderInner, 1.0 - vUv.x) * 
+      smoothstep(borderInner - 0.01, borderInner, 1.0 - vUv.y)
+    );
+    vec3 borderColor = vec3(0.2, 0.25, 0.3);  // Dark gray-blue border
+    
+    // === CIRCUIT TRACE GRID ===
+    float traceThickness = 0.025;
+    float traceH = smoothstep(traceThickness, 0.0, abs(gridCell.y - 0.5));
+    float traceV = smoothstep(traceThickness, 0.0, abs(gridCell.x - 0.5));
+    float traces = max(traceH, traceV) * 0.6;
+    
+    // Thinner sub-traces
+    float subTraceH = smoothstep(0.012, 0.0, abs(gridCell.y - 0.25)) + 
+                      smoothstep(0.012, 0.0, abs(gridCell.y - 0.75));
+    float subTraceV = smoothstep(0.012, 0.0, abs(gridCell.x - 0.25)) + 
+                      smoothstep(0.012, 0.0, abs(gridCell.x - 0.75));
+    traces += (subTraceH + subTraceV) * 0.25;
+    
+    // === CROSSHAIR MARKERS at grid intersections ===
+    float crosshairs = 0.0;
+    for (float i = 0.0; i < 11.0; i++) {
+      for (float j = 0.0; j < 11.0; j++) {
+        vec2 crossPos = vec2(i, j) / gridCount;
+        crosshairs += crosshair(vUv, crossPos, 0.025, 0.003) * 0.5;
+      }
+    }
+    
+    // === CHIP/COMPONENT MARKERS at cell centers ===
+    float chips = 0.0;
+    vec2 cellCenter = vec2(0.5);
+    
+    // Main chip body (dark rectangle)
+    float chipBody = rect(gridCell, cellCenter, vec2(0.22, 0.16));
+    
+    // Chip pins (small rectangles on sides)
+    float pin1 = rect(gridCell, cellCenter + vec2(-0.14, 0.0), vec2(0.04, 0.08));
+    float pin2 = rect(gridCell, cellCenter + vec2(0.14, 0.0), vec2(0.04, 0.08));
+    float pin3 = rect(gridCell, cellCenter + vec2(0.0, -0.10), vec2(0.08, 0.03));
+    float pin4 = rect(gridCell, cellCenter + vec2(0.0, 0.10), vec2(0.08, 0.03));
+    
+    chips = chipBody + (pin1 + pin2 + pin3 + pin4) * 0.7;
+    
+    // === BASE COLOR with pressure response ===
     vec3 baseColor = uBaseColor;
     
-    // Only show jet colormap during active ripple interaction
-    // Use ripple strength to determine if we should show pressure colors
-    float rippleActivity = abs(vRipple) * 2.0 + uRippleStrength * (1.0 - smoothstep(0.0, 2.5, uRippleTime));  // Reduced intensity (was 3.0, 3.0)
-    rippleActivity = clamp(rippleActivity, 0.0, 0.85);  // Cap max color blend (was 1.0)
+    // Ripple activity for color blend
+    float rippleActivity = abs(vRipple) * 2.0 + uRippleStrength * (1.0 - smoothstep(0.0, 2.5, uRippleTime));
+    rippleActivity = clamp(rippleActivity, 0.0, 0.85);
     
-    // Pressure for colormap (only during interaction)
+    // Pressure colormap
     float pressureNorm = vPressure * 0.5 + 0.5;
     pressureNorm = clamp(pressureNorm, 0.0, 1.0);
     vec3 pressureColor = jetColormap(pressureNorm);
     
-    // Mix: show base color when idle, jet colormap only during interaction
-    vec3 color = mix(baseColor, pressureColor, rippleActivity);
+    // Mix base and pressure colors
+    vec3 surfaceColor = mix(baseColor, pressureColor, rippleActivity);
     
-    // Grid lines slightly darker
-    color = mix(color * 0.75, color, gridLine);
+    // === COMPOSE FINAL COLOR ===
+    vec3 color = surfaceColor;
     
-    // Edge fade
-    float edge = smoothstep(0.0, 0.08, vUv.x) * smoothstep(0.0, 0.08, vUv.y);
-    edge *= smoothstep(0.0, 0.08, 1.0 - vUv.x) * smoothstep(0.0, 0.08, 1.0 - vUv.y);
+    // Add circuit traces (white/light cyan)
+    vec3 traceColor = vec3(0.9, 0.95, 1.0);
+    color = mix(color, traceColor, traces * 0.4);
     
-    float alpha = 0.9;
-    alpha *= edge * 0.4 + 0.6;
+    // Add crosshairs (white)
+    color = mix(color, vec3(1.0), crosshairs * 0.6);
+    
+    // Add chip components (dark)
+    vec3 chipColor = vec3(0.15, 0.18, 0.22);
+    color = mix(color, chipColor, chips * 0.9);
+    
+    // Apply border
+    color = mix(color, borderColor, inBorder);
+    
+    // Inner edge highlight
+    float edgeHighlight = (1.0 - innerEdge) * innerEdge * 4.0;
+    color += vec3(0.3, 0.35, 0.4) * edgeHighlight * 0.3;
+    
+    // Alpha with slight transparency
+    float alpha = 0.95;
     
     gl_FragColor = vec4(color, alpha);
   }
