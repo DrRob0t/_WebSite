@@ -35,8 +35,8 @@ const vertexShader = `
     vec3 pos = position;
     
     // Ambient floating motion - subtle waves for gentle 3D effect
-    float wave1 = sin(pos.x * 2.0 + uTime * 0.8) * 0.15;
-    float wave2 = sin(pos.y * 2.5 + uTime * 0.6) * 0.12;
+    float wave1 = sin(pos.x * 2.0 + uTime * 0.8) * 0.010;
+    float wave2 = sin(pos.y * 2.5 + uTime * 0.6) * 0.010;
     float wave3 = cos(pos.x * 1.5 + pos.y * 1.5 + uTime * 0.5) * 0.08;
     
     float ambientWave = wave1 + wave2 + wave3;
@@ -52,8 +52,8 @@ const vertexShader = `
       // Outward propagating ring
       ripple = smoothstep(rippleRadius - rippleWidth, rippleRadius, dist) 
              - smoothstep(rippleRadius, rippleRadius + rippleWidth, dist);
-      ripple *= uRippleStrength * sin(dist * 12.0 - uRippleTime * 3.0) * 0.25;  // Reduced amplitude (was 0.5), less wavy (was 20.0, 4.0)
-      ripple *= 1.0 - smoothstep(0.0, 2.5, uRippleTime);  // Faster fade (was 3.5)
+      ripple *= uRippleStrength * sin(dist * 15.0 - uRippleTime * 4.0) * 0.25;  // Reduced amplitude (was 0.5), less wavy (was 20.0, 4.0)
+      ripple *= 1.0 - smoothstep(0.0, 3.5, uRippleTime);  // Faster fade (was 3.5)
       
       // Pressure field - strongest at center, fading outward
       pressure = 1.0 - smoothstep(0.0, rippleRadius + 0.2, dist);  // Tighter field (was 0.25)
