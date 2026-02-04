@@ -714,9 +714,9 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
 
       {/* Touch/Click Hint */}
       {isLoaded && !hasInteracted && (
-        <div className="touch-hint absolute bottom-[8%] left-1/2 -translate-x-1/2 pointer-events-none z-30">
-          <div className="flex items-center gap-2 text-slate-500 text-sm">
-            <svg className="w-5 h-5 touch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <div className="touch-hint absolute bottom-[1%] left-1/2 -translate-x-1/2 pointer-events-none z-30">
+          <div className="flex items-center gap-3 text-slate-500 text-base">
+            <svg className="w-7 h-7 touch-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M12 18v-3m0-3V9m0 0V6a2 2 0 114 0v6m-4-3a2 2 0 10-4 0v4a6 6 0 0012 0v-4a2 2 0 10-4 0" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             <span className="font-medium tracking-wide">Tap to interact</span>
