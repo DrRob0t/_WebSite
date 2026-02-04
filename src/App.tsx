@@ -1,4 +1,5 @@
 // src/App.tsx - Hyve Dynamics with Header and Navigation
+import { lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import { SEO } from '@/components/common/SEO'
@@ -9,19 +10,29 @@ import { Industries } from '@/components/sections/Industries'
 import { Vision } from '@/components/sections/Vision'
 import { CustomMeshBackground } from '@/components/ui/CustomMeshBackground'
 import { ScrollToTop } from '@/components/ui/scroll-to-top'
-import { AboutPage } from '@/pages/AboutPage'
-import { HapticMatrixPage } from '@/pages/HapticMatrixPage'
-import { AerospacePage } from '@/pages/industries/AerospacePage'
-import { AutomotivePage } from '@/pages/industries/AutomotivePage'
-import { EnergyPage } from '@/pages/industries/EnergyPage'
-import { RoboticsPage } from '@/pages/industries/RoboticsPage'
-import { StructuralHealthPage } from '@/pages/industries/StructuralHealthPage'
-import { NotFound } from '@/pages/NotFound'
-import { NewsletterPage } from '@/pages/NewsletterPage'
-import { NewsPage } from '@/pages/NewsPage'
-import { AerodynamicInnovation2024 } from '@/pages/newsletters/AerodynamicInnovation2024'
-import { SensorTechnologyTrends } from '@/pages/newsletters/SensorTechnologyTrends'
-import { InvestorUpdateAugust2025 } from '@/pages/newsletters/InvestorUpdateAugust2025'
+import { Spinner } from '@/components/ui/spinner'
+
+// Lazy-loaded pages for code splitting
+const AboutPage = lazy(() => import('@/pages/AboutPage').then(m => ({ default: m.AboutPage })))
+const HapticMatrixPage = lazy(() => import('@/pages/HapticMatrixPage').then(m => ({ default: m.HapticMatrixPage })))
+const AerospacePage = lazy(() => import('@/pages/industries/AerospacePage').then(m => ({ default: m.AerospacePage })))
+const AutomotivePage = lazy(() => import('@/pages/industries/AutomotivePage').then(m => ({ default: m.AutomotivePage })))
+const EnergyPage = lazy(() => import('@/pages/industries/EnergyPage').then(m => ({ default: m.EnergyPage })))
+const RoboticsPage = lazy(() => import('@/pages/industries/RoboticsPage').then(m => ({ default: m.RoboticsPage })))
+const StructuralHealthPage = lazy(() => import('@/pages/industries/StructuralHealthPage').then(m => ({ default: m.StructuralHealthPage })))
+const NotFound = lazy(() => import('@/pages/NotFound').then(m => ({ default: m.NotFound })))
+const NewsletterPage = lazy(() => import('@/pages/NewsletterPage').then(m => ({ default: m.NewsletterPage })))
+const NewsPage = lazy(() => import('@/pages/NewsPage').then(m => ({ default: m.NewsPage })))
+const AerodynamicInnovation2024 = lazy(() => import('@/pages/newsletters/AerodynamicInnovation2024').then(m => ({ default: m.AerodynamicInnovation2024 })))
+const SensorTechnologyTrends = lazy(() => import('@/pages/newsletters/SensorTechnologyTrends').then(m => ({ default: m.SensorTechnologyTrends })))
+const InvestorUpdateAugust2025 = lazy(() => import('@/pages/newsletters/InvestorUpdateAugust2025').then(m => ({ default: m.InvestorUpdateAugust2025 })))
+
+// Loading fallback component
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-hyve-bg">
+    <Spinner size="lg" className="text-hyve-accent" />
+  </div>
+)
 
 // Home page component
 const HomePage = () => {
@@ -63,28 +74,30 @@ function App() {
     <Router basename={import.meta.env.BASE_URL}>
       <Layout>
         <ErrorBoundary>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/haptic-matrix" element={<HapticMatrixPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/industries/aerospace" element={<AerospacePage />} />
-            <Route path="/industries/automotive" element={<AutomotivePage />} />
-            <Route path="/industries/energy" element={<EnergyPage />} />
-            <Route path="/industries/structural-health" element={<StructuralHealthPage />} />
-            <Route path="/industries/robotics" element={<RoboticsPage />} />
-            
-            {/* Insights Routes */}
-            <Route path="/insights/news" element={<NewsPage />} />
-            <Route path="/insights/newsletter" element={<NewsletterPage />} />
-            <Route path="/insights/newsletter/aerodynamic-innovation-2024" element={<AerodynamicInnovation2024 />} />
-            <Route path="/insights/newsletter/sensor-technology-trends" element={<SensorTechnologyTrends />} />
-            
-            {/* Secret Investor Newsletter - Not indexed */}
-            <Route path="/investor/updates/august-2025" element={<InvestorUpdateAugust2025 />} />
-            
-            {/* Catch-all route for 404 pages */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/haptic-matrix" element={<HapticMatrixPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/industries/aerospace" element={<AerospacePage />} />
+              <Route path="/industries/automotive" element={<AutomotivePage />} />
+              <Route path="/industries/energy" element={<EnergyPage />} />
+              <Route path="/industries/structural-health" element={<StructuralHealthPage />} />
+              <Route path="/industries/robotics" element={<RoboticsPage />} />
+              
+              {/* Insights Routes */}
+              <Route path="/insights/news" element={<NewsPage />} />
+              <Route path="/insights/newsletter" element={<NewsletterPage />} />
+              <Route path="/insights/newsletter/aerodynamic-innovation-2024" element={<AerodynamicInnovation2024 />} />
+              <Route path="/insights/newsletter/sensor-technology-trends" element={<SensorTechnologyTrends />} />
+              
+              {/* Secret Investor Newsletter - Not indexed */}
+              <Route path="/investor/updates/august-2025" element={<InvestorUpdateAugust2025 />} />
+              
+              {/* Catch-all route for 404 pages */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </ErrorBoundary>
         <ScrollToTop showAfter={400} />
       </Layout>

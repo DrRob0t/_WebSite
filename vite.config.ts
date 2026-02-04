@@ -78,14 +78,14 @@ export default defineConfig({
     // Optimize build
     rollupOptions: {
       output: {
-        manualChunks: {
+manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'ui-vendor': [
             'framer-motion',
             '@radix-ui/react-dialog',
             '@radix-ui/react-navigation-menu',
           ],
-          'three-vendor': ['three'],
+          'swiper-vendor': ['swiper'],
         },
       },
     },

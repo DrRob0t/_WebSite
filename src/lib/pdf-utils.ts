@@ -1,5 +1,4 @@
-import html2canvas from 'html2canvas'
-import jsPDF from 'jspdf'
+// Dynamic imports for code-splitting - these heavy libraries are only loaded when needed
 
 interface GeneratePDFOptions {
   elementId: string
@@ -16,6 +15,14 @@ export async function generatePDF(options: GeneratePDFOptions): Promise<void> {
   const { elementId, filename, title, excludeSelectors = [] } = options
 
   try {
+    // Dynamically import heavy libraries only when needed
+    const [html2canvasModule, jsPDFModule] = await Promise.all([
+      import('html2canvas'),
+      import('jspdf')
+    ])
+    const html2canvas = html2canvasModule.default
+    const { jsPDF } = jsPDFModule
+
     // Get the element to convert
     const element = document.getElementById(elementId)
     if (!element) {
