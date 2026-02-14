@@ -40,8 +40,7 @@ const footerSections = [
     links: [
       { name: 'Aerospace', href: '/industries/aerospace' },
       { name: 'Automotive', href: '/industries/automotive' },
-      { name: 'Energy', href: '/industries/energy' },
-      { name: 'Structural Health', href: '/industries/structural-health' },
+      { name: 'Digital Twinning & IHM', href: '/industries/digital-twinning-ihm' },
       { name: 'Robotics', href: '/industries/robotics' },
     ],
   },

@@ -2,6 +2,11 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, Download, ChevronRight } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Pagination, Autoplay } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+import 'swiper/css'
+import 'swiper/css/pagination'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -14,6 +19,7 @@ interface IndustryPageProps {
     tagline: string
     description: string
     videoPath: string
+    videoPaths?: string[]
     features: {
       title: string
       description: string
@@ -90,17 +96,52 @@ export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) =
                   {/* Video Animation */}
                   <motion.div variants={itemVariants} className="mb-16 lg:mb-20">
                     <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-hyve-accent/10 to-hyve-interactive/10 p-1">
-                      <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-auto rounded-xl"
-                        style={{ maxHeight: '280px', objectFit: 'cover' }}
-                      >
-                        <source src={industry.videoPath} type="video/webm" />
-                        Your browser does not support the video tag.
-                      </video>
+                      {industry.videoPaths && industry.videoPaths.length > 1 ? (
+                        <Swiper
+                          modules={[Pagination, Autoplay]}
+                          spaceBetween={0}
+                          slidesPerView={1}
+                          pagination={{
+                            clickable: true,
+                            bulletClass: 'swiper-pagination-bullet !bg-hyve-text/30 !w-2 !h-2 !mx-1',
+                            bulletActiveClass: 'swiper-pagination-bullet-active !bg-hyve-text !w-2 !h-2',
+                          }}
+                          autoplay={{
+                            delay: 8000,
+                            disableOnInteraction: false,
+                          }}
+                          loop={true}
+                          className="w-full rounded-xl"
+                        >
+                          {industry.videoPaths.map((path, idx) => (
+                            <SwiperSlide key={idx}>
+                              <video
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-auto rounded-xl"
+                                style={{ maxHeight: '280px', objectFit: 'cover' }}
+                              >
+                                <source src={path} type="video/webm" />
+                                Your browser does not support the video tag.
+                              </video>
+                            </SwiperSlide>
+                          ))}
+                        </Swiper>
+                      ) : (
+                        <video
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="w-full h-auto rounded-xl"
+                          style={{ maxHeight: '280px', objectFit: 'cover' }}
+                        >
+                          <source src={industry.videoPath} type="video/webm" />
+                          Your browser does not support the video tag.
+                        </video>
+                      )}
                     </div>
                   </motion.div>
 

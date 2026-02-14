@@ -60,8 +60,8 @@ export const NotFound = () => {
               <Link to="/industries/automotive" className="text-primary hover:underline">
                 Automotive
               </Link>
-              <Link to="/industries/energy" className="text-primary hover:underline">
-                Energy
+              <Link to="/industries/digital-twinning-ihm" className="text-primary hover:underline">
+                Digital Twinning & IHM
               </Link>
               <Link to="/about" className="text-primary hover:underline">
                 About Us

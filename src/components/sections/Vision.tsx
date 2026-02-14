@@ -111,12 +111,12 @@ export const Vision = () => {
                       <div className="text-xs text-hyve-text/70">IoT Sensors</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-hyve-header">€16.6B</div>
-                      <div className="text-xs text-hyve-text/70">Structural Health</div>
+                      <div className="text-2xl font-bold text-hyve-header">€36B</div>
+                      <div className="text-xs text-hyve-text/70">Digital Twinning & IHM</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-hyve-header">€19.4B</div>
-                      <div className="text-xs text-hyve-text/70">Wind Energy</div>
+                      <div className="text-2xl font-bold text-hyve-header">€100B+</div>
+                      <div className="text-xs text-hyve-text/70">Automotive</div>
                     </div>
                   </div>
 

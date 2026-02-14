@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Plane, Car, Wind, Shield, Bot, ArrowRight } from 'lucide-react'
+import { Plane, Car, Combine, Bot, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
@@ -26,22 +26,13 @@ const industries = [
     iconColor: 'text-red-600',
   },
   {
-    id: 'energy',
-    title: 'Energy',
-    icon: Wind,
-    description: 'Renewable optimization',
-    href: '/industries/energy',
-    color: 'from-green-500/20 to-emerald-500/20',
-    iconColor: 'text-green-600',
-  },
-  {
-    id: 'structural-health',
-    title: 'Structural',
-    icon: Shield,
-    description: 'Infrastructure monitoring',
-    href: '/industries/structural-health',
-    color: 'from-purple-500/20 to-indigo-500/20',
-    iconColor: 'text-purple-600',
+    id: 'digital-twinning-ihm',
+    title: 'Digital Twinning & IHM',
+    icon: Combine,
+    description: 'Digital twins & health monitoring',
+    href: '/industries/digital-twinning-ihm',
+    color: 'from-green-500/20 to-teal-500/20',
+    iconColor: 'text-teal-600',
   },
   {
     id: 'robotics',
@@ -111,7 +102,7 @@ export const Industries = () => {
             </motion.div>
 
             {/* Industries Grid - More compact */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               {industries.map((industry, index) => {
                 const Icon = industry.icon
                 return (

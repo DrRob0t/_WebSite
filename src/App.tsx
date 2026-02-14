@@ -17,9 +17,8 @@ const AboutPage = lazy(() => import('@/pages/AboutPage').then(m => ({ default: m
 const HapticMatrixPage = lazy(() => import('@/pages/HapticMatrixPage').then(m => ({ default: m.HapticMatrixPage })))
 const AerospacePage = lazy(() => import('@/pages/industries/AerospacePage').then(m => ({ default: m.AerospacePage })))
 const AutomotivePage = lazy(() => import('@/pages/industries/AutomotivePage').then(m => ({ default: m.AutomotivePage })))
-const EnergyPage = lazy(() => import('@/pages/industries/EnergyPage').then(m => ({ default: m.EnergyPage })))
+const DigitalTwinningIHMPage = lazy(() => import('@/pages/industries/DigitalTwinningIHMPage').then(m => ({ default: m.DigitalTwinningIHMPage })))
 const RoboticsPage = lazy(() => import('@/pages/industries/RoboticsPage').then(m => ({ default: m.RoboticsPage })))
-const StructuralHealthPage = lazy(() => import('@/pages/industries/StructuralHealthPage').then(m => ({ default: m.StructuralHealthPage })))
 const NotFound = lazy(() => import('@/pages/NotFound').then(m => ({ default: m.NotFound })))
 const NewsletterPage = lazy(() => import('@/pages/NewsletterPage').then(m => ({ default: m.NewsletterPage })))
 const NewsPage = lazy(() => import('@/pages/NewsPage').then(m => ({ default: m.NewsPage })))
@@ -81,8 +80,9 @@ function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/industries/aerospace" element={<AerospacePage />} />
               <Route path="/industries/automotive" element={<AutomotivePage />} />
-              <Route path="/industries/energy" element={<EnergyPage />} />
-              <Route path="/industries/structural-health" element={<StructuralHealthPage />} />
+              <Route path="/industries/digital-twinning-ihm" element={<DigitalTwinningIHMPage />} />
+              <Route path="/industries/energy" element={<DigitalTwinningIHMPage />} />
+              <Route path="/industries/structural-health" element={<DigitalTwinningIHMPage />} />
               <Route path="/industries/robotics" element={<RoboticsPage />} />
               
               {/* Insights Routes */}

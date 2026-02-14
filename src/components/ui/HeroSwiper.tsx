@@ -14,10 +14,9 @@ interface HeroSwiperProps {
 
 const slides = [
   { id: 1, name: 'Aerospace', video: getVideoPath('A320.webm') },
-  { id: 2, name: 'Health Monitoring', video: getVideoPath('Structural-Health.webm') },
+  { id: 2, name: 'Digital Twinning & IHM', video: getVideoPath('Structural-Health.webm') },
   { id: 3, name: 'Motorsport', video: getVideoPath('F1-Car.webm') },
-  { id: 4, name: 'Energy', video: getVideoPath('Wind-Turbine.webm') },
-  { id: 5, name: 'Robotics', video: getVideoPath('Robot.webm') },
+  { id: 4, name: 'Robotics', video: getVideoPath('Robot.webm') },
 ]
 
 export const HeroSwiper: React.FC<HeroSwiperProps> = ({ className = '' }) => {

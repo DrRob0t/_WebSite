@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft, Calendar, Clock, Share2, Download, Plane, Car, Wind } from 'lucide-react'
+import { ArrowLeft, Calendar, Clock, Share2, Download, Plane, Car, Combine } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -206,14 +206,14 @@ export const AerodynamicInnovation2024 = () => {
                     <Card className="bg-white/80 backdrop-blur-sm border border-hyve-content">
                       <CardHeader className="pb-4">
                         <div className="p-2 rounded-md bg-hyve-accent/20 w-fit">
-                          <Wind className="h-6 w-6 text-hyve-interactive" />
+                          <Combine className="h-6 w-6 text-hyve-interactive" />
                         </div>
-                        <CardTitle className="text-lg font-heading text-hyve-header">Energy</CardTitle>
+                        <CardTitle className="text-lg font-heading text-hyve-header">Digital Twinning & IHM</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <CardDescription className="text-hyve-text/80">
-                          Wind turbine optimization through blade surface monitoring enables 
-                          15-20% efficiency improvements in energy generation.
+                          Digital twins powered by real-time surface monitoring enable 15-20% 
+                          efficiency improvements and predictive health management across energy and infrastructure.
                         </CardDescription>
                       </CardContent>
                     </Card>

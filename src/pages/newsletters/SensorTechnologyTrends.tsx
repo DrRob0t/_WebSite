@@ -241,11 +241,13 @@ export const SensorTechnologyTrends = () => {
                       Transforming Industries
                     </h2>
                     
-                    <h3 className="text-xl font-semibold text-hyve-header mb-3">Structural Health Monitoring</h3>
+                    <h3 className="text-xl font-semibold text-hyve-header mb-3">Digital Twinning & Integrated Health Monitoring</h3>
                     <p className="mb-4">
-                      The €16.6 billion structural health monitoring market is being revolutionized by continuous, 
-                      real-time monitoring capabilities. Ultra-thin sensors embedded in bridges, buildings, and 
-                      aircraft structures provide early warning of fatigue, stress concentration, and potential failures.
+                      The €36 billion digital twinning and integrated health monitoring market is being revolutionized 
+                      by continuous, real-time sensing capabilities. Ultra-thin sensors embedded in wind turbines, 
+                      bridges, buildings, and critical infrastructure provide live digital twin correlation and 
+                      early warning of fatigue, stress concentration, and potential failures — while also enabling 
+                      15-20% efficiency improvements in energy generation through blade surface monitoring.
                     </p>
 
                     <h3 className="text-xl font-semibold text-hyve-header mb-3">Robotics and Automation</h3>
@@ -253,13 +255,6 @@ export const SensorTechnologyTrends = () => {
                       Advanced tactile sensing is enabling robots to interact safely and precisely with their 
                       environment. High-density sensor arrays provide the "sense of touch" necessary for 
                       delicate manipulation tasks and human-robot collaboration.
-                    </p>
-
-                    <h3 className="text-xl font-semibold text-hyve-header mb-3">Energy Systems</h3>
-                    <p className="mb-4">
-                      Wind turbine optimization through blade surface monitoring is achieving 15-20% efficiency 
-                      improvements. Real-time aerodynamic data enables dynamic blade control and predictive 
-                      maintenance scheduling.
                     </p>
                   </div>
 

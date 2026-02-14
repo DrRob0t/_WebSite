@@ -68,8 +68,7 @@ export const inquiryFormSchema = z.object({
   industryType: z.enum([
     'aerospace',
     'automotive',
-    'energy',
-    'structural-health',
+    'digital-twinning-ihm',
     'robotics',
     'other',
   ]),
