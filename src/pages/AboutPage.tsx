@@ -7,11 +7,11 @@ import {
   Users,
   Target,
   Lightbulb,
-  ChevronRight,
 } from 'lucide-react'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
+import { Vision } from '@/components/sections/Vision'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -475,14 +475,17 @@ export const AboutPage = () => {
                       }
                     }}
                   >
-                    Join Our Journey
-                    <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <Calendar className="mr-2 h-4 w-4" />
+                    Book Demo
                   </Button>
                 </div>
               </motion.div>
             </motion.div>
           </div>
         </section>
+
+        {/* Vision & Market Opportunity */}
+        <Vision />
 
         {/* Partnerships Section */}
         <section className="relative py-16 lg:py-20 pointer-events-auto">

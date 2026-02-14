@@ -328,8 +328,16 @@ export const SensorTechnologyTrends = () => {
                           Haptic Matrix Technology
                         </Button>
                       </Link>
-                      <Button className="bg-hyve-interactive hover:bg-hyve-interactive-dark text-white">
-                        Contact Our Team
+                      <Button
+                        className="bg-hyve-interactive hover:bg-hyve-interactive-dark text-white"
+                        onClick={() => {
+                          const contactButton = document.querySelector(
+                            '[data-contact-trigger]'
+                          ) as HTMLButtonElement
+                          if (contactButton) contactButton.click()
+                        }}
+                      >
+                        Book Demo
                       </Button>
                     </div>
                   </CardContent>

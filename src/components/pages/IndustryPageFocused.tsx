@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft, Download, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Download, Calendar } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Pagination, Autoplay } from 'swiper/modules'
@@ -195,8 +195,8 @@ export const IndustryPageFocused: React.FC<IndustryPageProps> = ({ industry }) =
                           }
                         }}
                       >
-                        Get Started
-                        <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        <Calendar className="mr-2 h-4 w-4" />
+                        Book Demo
                       </Button>
                       <Button
                         size="lg"

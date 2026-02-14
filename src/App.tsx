@@ -7,7 +7,6 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { Layout } from '@/components/layout/Layout'
 import { Hero } from '@/components/sections/Hero'
 import { Industries } from '@/components/sections/Industries'
-import { Vision } from '@/components/sections/Vision'
 import { CustomMeshBackground } from '@/components/ui/CustomMeshBackground'
 import { ScrollToTop } from '@/components/ui/scroll-to-top'
 import { Spinner } from '@/components/ui/spinner'
@@ -48,13 +47,7 @@ const HomePage = () => {
           {/* Hero section with proper pointer-events handling */}
           <Hero />
 
-          {/* Spacing between Hero and Vision */}
-          <div className="h-36 md:h-28 lg:h-32" />
-
-          {/* Vision section */}
-          <Vision />
-
-          {/* Spacing between Vision and Industries */}
+          {/* Spacing between Hero and Industries */}
           <div className="h-36 md:h-28 lg:h-32" />
 
           {/* Industries section */}

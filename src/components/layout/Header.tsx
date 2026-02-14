@@ -11,7 +11,6 @@ import {
   Calendar,
   Mail,
   Newspaper,
-  Send,
   AlertCircle,
 } from 'lucide-react'
 import React, { useState, useEffect } from 'react'
@@ -104,14 +103,14 @@ const ContactForm = () => {
       await new Promise(resolve => setTimeout(resolve, 1500))
 
       // For now, we'll also open the email client
-      const mailtoLink = `mailto:info@hyvedynamics.com?subject=Contact from ${data.name}&body=${encodeURIComponent(
-        `Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`
+      const mailtoLink = `mailto:info@hyvedynamics.com?subject=Demo Request from ${data.name}&body=${encodeURIComponent(
+        `Name: ${data.name}\nEmail: ${data.email}\n\nDemo Interest:\n${data.message}`
       )}`
       window.open(mailtoLink)
 
       // Show success toast
-      toast.success('Message sent successfully!', {
-        description: "We'll get back to you as soon as possible.",
+      toast.success('Demo request sent!', {
+        description: "We'll be in touch shortly to schedule your demo.",
         duration: 5000,
       })
 
@@ -122,8 +121,8 @@ const ContactForm = () => {
       // Contact form submission failed
 
       // Show error toast
-      toast.error('Failed to send message', {
-        description: 'Please try again or contact us directly at info@hyvedynamics.com',
+      toast.error('Failed to send request', {
+        description: 'Please try again or email us directly at info@hyvedynamics.com',
         duration: 5000,
       })
     }
@@ -145,8 +144,8 @@ const ContactForm = () => {
           className="bg-hyve-text hover:bg-hyve-text-dark text-white font-body flex items-center gap-2"
           data-contact-trigger
         >
-          <Send className="h-4 w-4" />
-          <span className="hidden sm:inline">Contact Us</span>
+          <Calendar className="h-4 w-4" />
+          <span className="hidden sm:inline">Book Demo</span>
         </Button>
       </DialogTrigger>
       <DialogContent
@@ -155,10 +154,12 @@ const ContactForm = () => {
       >
         <DialogHeader>
           <DialogTitle className="text-2xl font-body font-light text-hyve-header">
-            Get in Touch
+            Book a Demo
           </DialogTitle>
           <DialogDescription id="contact-form-description" className="text-hyve-text/70 font-body">
-            Send us a message and we&apos;ll get back to you as soon as possible.
+            <strong>See the Haptic Matrix in action.</strong> <br /> <br /> Whether you have a specific application in mind or are
+            simply exploring what&apos;s possible, we&apos;d love to show you what real-time,
+            high-density sensing can do for your industry.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
@@ -216,7 +217,7 @@ const ContactForm = () => {
             <Textarea
               id="message"
               {...register('message')}
-              placeholder="Tell us about your project or inquiry..."
+              placeholder="Tell us about your application or what you'd like to explore in the demo..."
               rows={4}
               className={cn(
                 'font-body border-hyve-content focus:border-hyve-accent resize-none',
@@ -249,12 +250,12 @@ const ContactForm = () => {
             >
               {isSubmitting ? (
                 <>
-                  <span className="animate-pulse">Sending...</span>
+                  <span className="animate-pulse">Requesting...</span>
                 </>
               ) : (
                 <>
-                  <Send className="h-4 w-4 mr-2" />
-                  Send Message
+                  <Calendar className="h-4 w-4 mr-2" />
+                  Request Demo
                 </>
               )}
             </Button>
@@ -578,7 +579,7 @@ const MobileNavigation = () => {
             <Button
               onClick={() => {
                 setIsOpen(false)
-                // Open contact form
+                // Open demo booking form
                 const contactButton = document.querySelector(
                   '[data-contact-trigger]'
                 ) as HTMLButtonElement
@@ -586,8 +587,8 @@ const MobileNavigation = () => {
               }}
               className="w-full bg-hyve-text hover:bg-hyve-text-dark text-white font-body flex items-center justify-center gap-2"
             >
-              <Send className="h-4 w-4" />
-              Contact Us
+              <Calendar className="h-4 w-4" />
+              Book Demo
             </Button>
           </div>
         </SheetContent>

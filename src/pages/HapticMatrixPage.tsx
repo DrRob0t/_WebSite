@@ -9,6 +9,7 @@ import {
   Zap,
   Target,
   Award,
+  Calendar,
 } from 'lucide-react'
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -965,8 +966,8 @@ export const HapticMatrixPage = () => {
                     }
                   }}
                 >
-                  Contact Our Team
-                  <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <Calendar className="mr-2 h-4 w-4" />
+                  Book Demo
                 </Button>
               </motion.div>
             </motion.div>

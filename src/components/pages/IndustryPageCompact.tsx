@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft, Download, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Download, Calendar } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -120,8 +120,8 @@ export const IndustryPageCompact: React.FC<IndustryPageProps> = ({ industry }) =
                     size="default"
                     className="bg-hyve-text hover:bg-hyve-text-dark text-white group"
                   >
-                    Get Started
-                    <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <Calendar className="mr-2 h-4 w-4" />
+                    Book Demo
                   </Button>
                   <Button
                     size="default"

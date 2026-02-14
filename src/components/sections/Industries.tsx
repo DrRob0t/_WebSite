@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Plane, Car, Combine, Bot, ArrowRight } from 'lucide-react'
+import { Plane, Car, Combine, Bot, ArrowRight, Calendar } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
@@ -165,8 +165,8 @@ export const Industries = () => {
                   }
                 }}
               >
-                Contact Our Experts
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <Calendar className="mr-2 h-4 w-4" />
+                Book Demo
               </Button>
             </motion.div>
           </div>
