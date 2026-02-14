@@ -347,7 +347,7 @@ const DesktopNavigation = () => (
         </NavigationMenuLink>
       </NavigationMenuItem>
 
-      {/* Haptic Matrix */}
+      {/* Technology */}
       <NavigationMenuItem>
         <NavigationMenuLink
           href="/haptic-matrix"
@@ -357,35 +357,7 @@ const DesktopNavigation = () => (
             'font-body text-hyve-text'
           )}
         >
-          Haptic Matrix
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-
-      {/* Vision */}
-      <NavigationMenuItem>
-        <NavigationMenuLink
-          href="#vision"
-          className={cn(
-            'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
-            'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
-            'font-body text-hyve-text'
-          )}
-        >
-          Vision
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-
-      {/* About */}
-      <NavigationMenuItem>
-        <NavigationMenuLink
-          href="/about"
-          className={cn(
-            'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
-            'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
-            'font-body text-hyve-text'
-          )}
-        >
-          About
+          Technology
         </NavigationMenuLink>
       </NavigationMenuItem>
 
@@ -418,6 +390,20 @@ const DesktopNavigation = () => (
             })}
           </ul>
         </NavigationMenuContent>
+      </NavigationMenuItem>
+
+      {/* About */}
+      <NavigationMenuItem>
+        <NavigationMenuLink
+          href="/about"
+          className={cn(
+            'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+            'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
+            'font-body text-hyve-text'
+          )}
+        >
+          About
+        </NavigationMenuLink>
       </NavigationMenuItem>
 
       {/* Insights Dropdown */}
@@ -489,7 +475,7 @@ const MobileNavigation = () => {
               Home
             </Link>
 
-            {/* Haptic Matrix */}
+            {/* Technology */}
             <Link
               to="/haptic-matrix"
               onClick={() => setIsOpen(false)}
@@ -499,33 +485,7 @@ const MobileNavigation = () => {
                 'font-body text-hyve-text'
               )}
             >
-              Haptic Matrix
-            </Link>
-
-            {/* Vision */}
-            <Link
-              to="/#vision"
-              onClick={() => setIsOpen(false)}
-              className={cn(
-                'text-lg font-medium py-2 px-4 rounded-md transition-colors',
-                'hover:bg-hyve-content hover:text-hyve-text-dark',
-                'font-body text-hyve-text'
-              )}
-            >
-              Vision
-            </Link>
-
-            {/* About */}
-            <Link
-              to="/about"
-              onClick={() => setIsOpen(false)}
-              className={cn(
-                'text-lg font-medium py-2 px-4 rounded-md transition-colors',
-                'hover:bg-hyve-content hover:text-hyve-text-dark',
-                'font-body text-hyve-text'
-              )}
-            >
-              About
+              Technology
             </Link>
 
             {/* Industries Dropdown */}
@@ -566,6 +526,19 @@ const MobileNavigation = () => {
                 </div>
               )}
             </div>
+
+            {/* About */}
+            <Link
+              to="/about"
+              onClick={() => setIsOpen(false)}
+              className={cn(
+                'text-lg font-medium py-2 px-4 rounded-md transition-colors',
+                'hover:bg-hyve-content hover:text-hyve-text-dark',
+                'font-body text-hyve-text'
+              )}
+            >
+              About
+            </Link>
 
             {/* Insights Dropdown */}
             <div>

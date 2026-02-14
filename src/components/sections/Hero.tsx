@@ -91,11 +91,11 @@ export const Hero = () => {
               {/* Elegant CTA Group */}
               <motion.div
                 variants={itemVariants}
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 pointer-events-auto items-start"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 pointer-events-auto items-center"
               >
                 <Button
                   size="sm"
-                  className="group bg-transparent border border-hyve-text text-hyve-text hover:bg-hyve-text hover:text-white px-5 py-3 sm:px-7 sm:py-4 lg:px-8 lg:py-5 transition-all duration-300 self-start w-auto"
+                  className="group bg-transparent border border-hyve-text text-hyve-text hover:bg-hyve-text hover:text-white px-5 py-3 sm:px-7 sm:py-4 lg:px-8 lg:py-5 transition-all duration-300 w-auto"
                   onClick={() => navigate('/haptic-matrix')}
                 >
                   <span className="flex items-center gap-2 text-xs sm:text-sm font-light tracking-wide">
@@ -108,7 +108,7 @@ export const Hero = () => {
                   className="text-sm text-hyve-text/60 hover:text-hyve-accent transition-colors duration-300 text-left pointer-events-auto"
                   onClick={() => window.open('mailto:info@hyvedynamics.com', '_blank')}
                 >
-                  Get in Touch →
+                  Book Demo →
                 </button>
               </motion.div>
             </div>
