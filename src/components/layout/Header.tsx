@@ -343,15 +343,17 @@ const DesktopNavigation = () => (
 
       {/* Technology */}
       <NavigationMenuItem>
-        <NavigationMenuLink
-          href="/haptic-matrix"
-          className={cn(
-            'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
-            'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
-            'font-body text-hyve-text'
-          )}
-        >
-          Technology
+        <NavigationMenuLink asChild>
+          <Link
+            to="/haptic-matrix"
+            className={cn(
+              'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
+              'font-body text-hyve-text'
+            )}
+          >
+            Technology
+          </Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
 
@@ -388,15 +390,17 @@ const DesktopNavigation = () => (
 
       {/* About */}
       <NavigationMenuItem>
-        <NavigationMenuLink
-          href="/about"
-          className={cn(
-            'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
-            'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
-            'font-body text-hyve-text'
-          )}
-        >
-          About
+        <NavigationMenuLink asChild>
+          <Link
+            to="/about"
+            className={cn(
+              'group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              'hover:bg-hyve-content hover:text-hyve-text-dark focus:bg-hyve-content focus:text-hyve-text-dark focus:outline-none',
+              'font-body text-hyve-text'
+            )}
+          >
+            About
+          </Link>
         </NavigationMenuLink>
       </NavigationMenuItem>
 
