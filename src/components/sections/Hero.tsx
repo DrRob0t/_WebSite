@@ -60,21 +60,13 @@ export const Hero = () => {
               {/* Main Headline */}
               <motion.h1
                 variants={itemVariants}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extralight leading-[1.1] mb-6"
+                className="flex flex-col gap-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extralight leading-[1.1] mb-6"
               >
-                <span className="block text-hyve-text">
-                  Adaptation Through <span className="font-medium">Insight</span>.{' '}
+                <span className="text-hyve-text">
+                  Adaptation Through <span className="font-medium">Insight</span>.
                 </span>
-                <span className="block text-hyve-text mt-1">
+                <span className="text-hyve-text">
                   Evolution Through <span className="font-medium">Data</span>.
-                </span>
-                <span className="block mt-1">
-                  <span className="relative font-normal italic">
-                    {/* Main gradient text */}
-                    <span className="relative hyve-text-gradient">
-                      <br></br>
-                    </span>
-                  </span>
                 </span>
               </motion.h1>
 
