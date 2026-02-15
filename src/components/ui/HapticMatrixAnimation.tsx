@@ -659,7 +659,7 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
               />
             </g>
             
-            {/* Bottom-right callout: Strain Gauge Array */}
+            {/* Bottom-right callout: MEMS Array */}
             <g className="callout-svg callout-br-svg">
               <circle cx="640" cy="800" r="5" fill="#334155" className="callout-dot-svg" />
               <polyline 

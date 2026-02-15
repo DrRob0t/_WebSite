@@ -43,7 +43,7 @@ const physicalSpecs = [
   },
   {
     label: 'Density',
-    value: '100 sensors',
+    value: '100+ sensors',
     detail: 'In 24cm × 24cm area',
   },
   {
