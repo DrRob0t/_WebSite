@@ -7,6 +7,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { Layout } from '@/components/layout/Layout'
 import { Hero } from '@/components/sections/Hero'
 import { Industries } from '@/components/sections/Industries'
+import { TechnicalCapabilities } from '@/components/sections/TechnicalCapabilities'
 import { CustomMeshBackground } from '@/components/ui/CustomMeshBackground'
 import { ScrollToTop } from '@/components/ui/scroll-to-top'
 import { Spinner } from '@/components/ui/spinner'
@@ -52,6 +53,12 @@ const HomePage = () => {
 
           {/* Industries section */}
           <Industries />
+
+          {/* Spacing between Industries and Technical Capabilities */}
+          <div className="h-16 md:h-20 lg:h-24" />
+
+          {/* Technical Capabilities section */}
+          <TechnicalCapabilities />
 
           {/* Footer spacing */}
           <div className="h-28 md:h-32" />

@@ -633,9 +633,9 @@ export const HapticMatrixAnimation: React.FC<HapticMatrixAnimationProps> = ({ cl
           >
             {/* Top-right callout: Sensor Matrix */}
             <g className="callout-svg callout-tr-svg">
-              <circle cx="620" cy="250" r="5" fill="#334155" className="callout-dot-svg" />
+              <circle cx="620" cy="270" r="5" fill="#334155" className="callout-dot-svg" />
               <polyline 
-                points="620,250 750,80 1000,80" 
+                points="620,270 750,80 1000,80" 
                 stroke="#334155" 
                 strokeWidth="2" 
                 fill="none"
