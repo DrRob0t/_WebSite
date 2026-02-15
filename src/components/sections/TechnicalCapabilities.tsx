@@ -191,7 +191,7 @@ export const TechnicalCapabilities = () => {
                         MEMS Array
                       </h4>
                       <p className="text-xs text-hyve-text/70 mt-1">
-                        Pressure orifices based on Euler-Bernoulli beam theory.
+                        High-precision electromechanical sensors.
                         Each 4mm node is a precision instrument.
                       </p>
                     </div>
