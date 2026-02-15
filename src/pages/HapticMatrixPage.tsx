@@ -304,7 +304,7 @@ export const HapticMatrixPage = () => {
                   </div>
                   <div className="text-center p-3 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-hyve-content/20">
                     <div className="text-xl font-bold text-hyve-header font-mono">
-                      100Hz
+                      1kHz
                     </div>
                     <div className="text-[10px] text-hyve-text/70">
                       Sampling
