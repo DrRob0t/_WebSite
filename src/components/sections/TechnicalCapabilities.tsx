@@ -220,7 +220,7 @@ export const TechnicalCapabilities = () => {
                 Multi-Parameter Sensing
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {measurements.map((item, index) => {
+                {measurements.map((item) => {
                   const Icon = item.icon
                   return (
                     <div
