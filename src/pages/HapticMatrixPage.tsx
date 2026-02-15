@@ -278,61 +278,44 @@ export const HapticMatrixPage = () => {
                 </motion.div>
               </div>
 
-              {/* Right Visual - Key Stats */}
+              {/* Right Visual - Product Image + Stats Column */}
               <motion.div
                 variants={itemVariants}
-                className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl border border-hyve-content/20 p-8 lg:p-10"
+                className="relative flex items-center justify-center gap-4"
               >
-                <h3 className="text-2xl font-bold text-hyve-header mb-6 font-heading">
-                  Key Performance Metrics
-                </h3>
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="text-center p-4 bg-hyve-content/10 rounded-xl">
-                    <div className="text-3xl font-bold text-hyve-header font-mono">
+                {/* Product Image - No background */}
+                <div className="relative max-w-[350px]">
+                  <img
+                    src="/MatrixMesh-r5.png"
+                    alt="Hyve Haptic Matrix - Flexible sensor array showing 10x10 grid configuration on Kapton substrate"
+                    className="w-full h-auto object-contain"
+                  />
+                </div>
+
+                {/* Key Stats - Right Column */}
+                <div className="flex flex-col gap-3">
+                  <div className="text-center p-3 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-hyve-content/20">
+                    <div className="text-xl font-bold text-hyve-header font-mono">
                       0.33mm
                     </div>
-                    <div className="text-xs text-hyve-text/70 mt-1">
-                      Sensor thickness
+                    <div className="text-[10px] text-hyve-text/70">
+                      Thickness
                     </div>
                   </div>
-                  <div className="text-center p-4 bg-hyve-content/10 rounded-xl">
-                    <div className="text-3xl font-bold text-hyve-header font-mono">
-                      ±1.5%
-                    </div>
-                    <div className="text-xs text-hyve-text/70 mt-1">
-                      Pressure accuracy
-                    </div>
-                  </div>
-                  <div className="text-center p-4 bg-hyve-content/10 rounded-xl">
-                    <div className="text-3xl font-bold text-hyve-header font-mono">
+                  <div className="text-center p-3 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-hyve-content/20">
+                    <div className="text-xl font-bold text-hyve-header font-mono">
                       100Hz
                     </div>
-                    <div className="text-xs text-hyve-text/70 mt-1">
-                      Per-sensor sampling
+                    <div className="text-[10px] text-hyve-text/70">
+                      Sampling
                     </div>
                   </div>
-                  <div className="text-center p-4 bg-hyve-content/10 rounded-xl">
-                    <div className="text-3xl font-bold text-hyve-header font-mono">
-                      1-10ms
+                  <div className="text-center p-3 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg border border-hyve-content/20">
+                    <div className="text-xl font-bold text-hyve-header font-mono">
+                      ±1.5%
                     </div>
-                    <div className="text-xs text-hyve-text/70 mt-1">
-                      System latency
-                    </div>
-                  </div>
-                  <div className="text-center p-4 bg-hyve-content/10 rounded-xl">
-                    <div className="text-3xl font-bold text-hyve-header font-mono">
-                      ±10kPa
-                    </div>
-                    <div className="text-xs text-hyve-text/70 mt-1">
-                      Pressure range
-                    </div>
-                  </div>
-                  <div className="text-center p-4 bg-hyve-content/10 rounded-xl">
-                    <div className="text-3xl font-bold text-hyve-header font-mono">
-                      100+
-                    </div>
-                    <div className="text-xs text-hyve-text/70 mt-1">
-                      Sensors per array
+                    <div className="text-[10px] text-hyve-text/70">
+                      Accuracy
                     </div>
                   </div>
                 </div>
