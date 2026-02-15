@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Gauge, Thermometer, Activity, ArrowRight } from 'lucide-react'
+import { Gauge, Thermometer, Activity, ArrowRight, Layers, Cpu, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 // Animation variants - matching site patterns
@@ -8,7 +8,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.12,
+      staggerChildren: 0.1,
       delayChildren: 0.2,
     },
   },
@@ -29,15 +29,39 @@ const itemVariants = {
   },
 }
 
+// Physical specifications of the sensor
+const physicalSpecs = [
+  {
+    label: 'Thickness',
+    value: '0.33mm',
+    detail: 'Thinner than a credit card',
+  },
+  {
+    label: 'Sensing Elements',
+    value: '2mm × 2mm',
+    detail: 'Individual sensor nodes',
+  },
+  {
+    label: 'Density',
+    value: '100 sensors',
+    detail: 'In 24cm × 24cm area',
+  },
+  {
+    label: 'Sampling',
+    value: '1kHz',
+    detail: '500+ data points/sec',
+  },
+]
+
 // What the sensor measures - core capabilities
 const measurements = [
   {
     id: 'pressure',
     icon: Gauge,
     title: 'Bidirectional Pressure',
-    spec: '±10kPa range',
+    spec: '±10kPa @ ±1.5%',
     description:
-      'Captures both pressure AND suction. Most sensors can only measure one direction. Hyve captures the complete aerodynamic picture.',
+      'Captures both pressure AND suction. Most sensors only measure one direction. Hyve captures the complete aerodynamic picture.',
     iconColor: 'text-blue-600',
     bgColor: 'from-blue-500/20 to-cyan-500/20',
   },
@@ -47,7 +71,7 @@ const measurements = [
     title: 'Temperature',
     spec: '-50°C to 150°C',
     description:
-      'Full operating range with software compensation. From cryogenic wind tunnels to engine bay thermal management.',
+      'Full operating range with software compensation. From cryogenic wind tunnels to brake duct thermal management.',
     iconColor: 'text-amber-600',
     bgColor: 'from-amber-500/20 to-orange-500/20',
   },
@@ -55,9 +79,9 @@ const measurements = [
     id: 'strain',
     icon: Activity,
     title: 'Strain',
-    spec: 'Surface deformation',
+    spec: 'Real-time loads',
     description:
-      'Captures structural loads in real-time. Transition seamlessly from aerodynamic testing to structural health monitoring.',
+      'Surface deformation and structural loads. Transition seamlessly from aerodynamic testing to structural health monitoring.',
     iconColor: 'text-emerald-600',
     bgColor: 'from-emerald-500/20 to-teal-500/20',
   },
@@ -65,7 +89,7 @@ const measurements = [
 
 // Before vs After comparison data
 const beforeHyve = [
-  '20 pressure taps',
+  '10-20 pressure taps',
   '2 days installation',
   'Drilled holes in composite structure',
   'Single-use deployment',
@@ -74,7 +98,7 @@ const beforeHyve = [
 
 const withHyve = [
   '100+ sensors in same area',
-  '1 hour deployment',
+  '< 1 hour deployment',
   'Non-invasive adhesive bond',
   'Infinite repositioning',
   'Real-time data streaming',
@@ -99,70 +123,154 @@ export const TechnicalCapabilities = () => {
 
           <div className="relative z-10 px-8 py-8 lg:px-12 lg:py-10">
             {/* Section Header */}
-            <motion.div variants={itemVariants} className="text-center mb-10">
+            <motion.div variants={itemVariants} className="text-center mb-8">
               <h2 className="text-3xl md:text-4xl font-bold text-hyve-header mb-4 font-heading">
                 The Technology Behind the Numbers
               </h2>
               <p className="text-base md:text-lg text-hyve-text/80 max-w-3xl mx-auto leading-relaxed">
-                Biomimicry meets aerospace engineering. The Hyve Haptic Matrix
-                replicates nature's sensory intelligence using flexible strain
-                gauge arrays that capture what traditional methods miss.
+                The Hyve Haptic Matrix is an ultra-thin, flexible electronic
+                sensor array that transforms any surface into an intelligent
+                sensing system.{' '}
+                <span className="font-medium text-hyve-header">
+                  Peel. Stick. Switch on.
+                </span>{' '}
+                Get real-time pressure, temperature, and strain data in under
+                an hour—no drilling, no structural damage, no compromise.
               </p>
             </motion.div>
 
-            {/* What It Measures - Three Capabilities */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-              {measurements.map((item, index) => {
-                const Icon = item.icon
-                return (
-                  <motion.div
-                    key={item.id}
-                    variants={itemVariants}
-                    custom={index}
-                    className="pointer-events-auto"
+            {/* Physical Specs Row */}
+            <motion.div variants={itemVariants} className="mb-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {physicalSpecs.map((spec, index) => (
+                  <div
+                    key={index}
+                    className="text-center p-4 bg-white/60 rounded-xl border border-hyve-content/30"
                   >
-                    <div className="h-full p-5 bg-white/70 backdrop-blur-sm border border-hyve-content/50 rounded-2xl hover:border-hyve-accent/50 transition-all duration-300 hover:shadow-md">
+                    <div className="text-xl md:text-2xl font-bold text-hyve-header font-mono">
+                      {spec.value}
+                    </div>
+                    <div className="text-xs text-hyve-text/60 uppercase tracking-wide mt-1">
+                      {spec.label}
+                    </div>
+                    <div className="text-xs text-hyve-text/50 mt-0.5">
+                      {spec.detail}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* What It Is - Physical Description */}
+            <motion.div
+              variants={itemVariants}
+              className="mb-8 pointer-events-auto"
+            >
+              <div className="bg-white/70 border border-hyve-content/40 rounded-2xl p-5 md:p-6">
+                <div className="grid md:grid-cols-3 gap-4 md:gap-6">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-hyve-interactive/10 flex items-center justify-center flex-shrink-0">
+                      <Layers className="h-4 w-4 text-hyve-interactive" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold text-hyve-header">
+                        Flexible Kapton Substrate
+                      </h4>
+                      <p className="text-xs text-hyve-text/70 mt-1">
+                        Conforms to complex aerodynamic surfaces—wing leading
+                        edges, control surfaces, fuselage contours
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-hyve-interactive/10 flex items-center justify-center flex-shrink-0">
+                      <Cpu className="h-4 w-4 text-hyve-interactive" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold text-hyve-header">
+                        MEMS Array
+                      </h4>
+                      <p className="text-xs text-hyve-text/70 mt-1">
+                        Pressure orifices based on Euler-Bernoulli beam theory.
+                        Each 4mm node is a precision instrument.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-hyve-interactive/10 flex items-center justify-center flex-shrink-0">
+                      <Zap className="h-4 w-4 text-hyve-interactive" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold text-hyve-header">
+                        Integrated Electronics
+                      </h4>
+                      <p className="text-xs text-hyve-text/70 mt-1">
+                        On-board signal conditioning and wireless/wired
+                        transmission. No external amplifiers required.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* What It Measures - Three Capabilities */}
+            <motion.div variants={itemVariants} className="mb-8">
+              <h3 className="text-lg font-semibold text-hyve-header mb-4 font-heading">
+                Multi-Parameter Sensing
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {measurements.map((item, index) => {
+                  const Icon = item.icon
+                  return (
+                    <div
+                      key={item.id}
+                      className="p-4 bg-white/70 backdrop-blur-sm border border-hyve-content/50 rounded-xl hover:border-hyve-accent/50 transition-all duration-300 pointer-events-auto"
+                    >
                       {/* Icon and Title Row */}
-                      <div className="flex items-center gap-3 mb-3">
+                      <div className="flex items-center gap-3 mb-2">
                         <div
-                          className={`flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br ${item.bgColor} flex items-center justify-center`}
+                          className={`flex-shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br ${item.bgColor} flex items-center justify-center`}
                         >
-                          <Icon className={`h-5 w-5 ${item.iconColor}`} />
+                          <Icon className={`h-4 w-4 ${item.iconColor}`} />
                         </div>
                         <div>
-                          <h3 className="text-base font-semibold text-hyve-header font-heading leading-tight">
+                          <h4 className="text-sm font-semibold text-hyve-header font-heading leading-tight">
                             {item.title}
-                          </h3>
-                          <span className="text-sm font-medium text-hyve-interactive font-mono">
+                          </h4>
+                          <span className="text-xs font-medium text-hyve-interactive font-mono">
                             {item.spec}
                           </span>
                         </div>
                       </div>
                       {/* Description */}
-                      <p className="text-sm text-hyve-text/70 leading-relaxed">
+                      <p className="text-xs text-hyve-text/70 leading-relaxed">
                         {item.description}
                       </p>
                     </div>
-                  </motion.div>
-                )
-              })}
-            </div>
+                  )
+                })}
+              </div>
+            </motion.div>
 
             {/* Before vs After Comparison */}
-            <motion.div variants={itemVariants} className="mb-10">
+            <motion.div variants={itemVariants} className="mb-8">
+              <h3 className="text-lg font-semibold text-hyve-header mb-4 font-heading">
+                Versus Traditional Instrumentation
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Before Hyve */}
-                <div className="p-5 bg-hyve-text/5 border border-hyve-text/10 rounded-2xl">
-                  <h4 className="text-sm font-semibold text-hyve-text/60 uppercase tracking-wide mb-4">
-                    Before Hyve
+                <div className="p-5 bg-hyve-text/5 border border-hyve-text/10 rounded-xl">
+                  <h4 className="text-xs font-semibold text-hyve-text/50 uppercase tracking-wide mb-3">
+                    Pressure Taps / Traditional
                   </h4>
                   <ul className="space-y-2">
                     {beforeHyve.map((item, index) => (
                       <li
                         key={index}
-                        className="flex items-center text-sm text-hyve-text/70"
+                        className="flex items-center text-sm text-hyve-text/60"
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-hyve-text/40 mr-3 flex-shrink-0" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-hyve-text/30 mr-3 flex-shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -170,9 +278,9 @@ export const TechnicalCapabilities = () => {
                 </div>
 
                 {/* With Hyve */}
-                <div className="p-5 bg-gradient-to-br from-hyve-interactive/10 to-hyve-accent/10 border border-hyve-accent/30 rounded-2xl">
-                  <h4 className="text-sm font-semibold text-hyve-interactive uppercase tracking-wide mb-4">
-                    With Hyve
+                <div className="p-5 bg-gradient-to-br from-hyve-interactive/10 to-hyve-accent/10 border border-hyve-accent/30 rounded-xl">
+                  <h4 className="text-xs font-semibold text-hyve-interactive uppercase tracking-wide mb-3">
+                    Hyve Haptic Matrix
                   </h4>
                   <ul className="space-y-2">
                     {withHyve.map((item, index) => (
@@ -189,22 +297,22 @@ export const TechnicalCapabilities = () => {
               </div>
             </motion.div>
 
-            {/* Key Statement */}
+            {/* Key Statement + CTA */}
             <motion.div variants={itemVariants} className="pointer-events-auto">
-              <div className="bg-gradient-to-r from-hyve-header/5 to-hyve-accent/10 border border-hyve-accent/30 rounded-2xl p-6 md:p-8">
+              <div className="bg-gradient-to-r from-hyve-header/5 to-hyve-accent/10 border border-hyve-accent/30 rounded-2xl p-5 md:p-6">
                 <div className="max-w-4xl mx-auto">
-                  <p className="text-base md:text-lg text-hyve-header font-medium leading-relaxed text-center mb-4">
-                    Hyve is the only technology that combines full-surface
-                    coverage, real-time feedback, non-invasive deployment, and
-                    multi-parameter sensing in both controlled and real-world
-                    environments.
+                  <p className="text-sm md:text-base text-hyve-header font-medium leading-relaxed text-center mb-4">
+                    The only technology that combines full-surface coverage,
+                    real-time feedback, non-invasive deployment, and
+                    multi-parameter sensing—in both wind tunnel and real-world
+                    flight conditions.
                   </p>
                   <div className="flex justify-center">
                     <Link
                       to="/haptic-matrix"
                       className="inline-flex items-center text-sm font-medium text-hyve-interactive hover:text-hyve-interactive-dark transition-colors group"
                     >
-                      Explore Full Technical Specifications
+                      Full Technical Specifications
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Link>
                   </div>
