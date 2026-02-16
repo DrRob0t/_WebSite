@@ -350,7 +350,7 @@ export const HapticMatrixPage = () => {
                 The Hyve Haptic Matrix is an ultra-thin (0.33mm), flexible
                 sensor array that transforms surfaces into intelligent sensing
                 systems. Based on biomimetic principles—replicating how living
-                organisms sense their environment—our technology delivers
+                organisms sense their environment, our technology delivers
                 real-time pressure, temperature, and strain measurements without
                 structural modification or invasive installation.
               </motion.p>
@@ -363,8 +363,8 @@ export const HapticMatrixPage = () => {
                 <p className="text-sm text-hyve-text/70 mb-4">
                   Unlike traditional instrumentation that requires drilling into
                   composites or complex camera systems, the Hyve Haptic Matrix
-                  uses a peel-and-stick deployment model with flexible strain
-                  gauge arrays. This enables:
+                  uses a peel-and-stick deployment model with flexible Micro-Electro-Mechanical 
+                  Systems (MEMS) arrays. This enables:
                 </p>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {[
@@ -498,7 +498,7 @@ export const HapticMatrixPage = () => {
                         },
                         {
                           label: 'Sensing elements',
-                          value: 'Strain gauge matrix in 10×10 configuration',
+                          value: 'Micro-Electro-Mechanical Systems (MEMS) matrix in 10×10 configuration',
                         },
                         {
                           label: 'Spatial resolution',
@@ -678,7 +678,7 @@ export const HapticMatrixPage = () => {
                     <ul className="space-y-2 text-xs text-hyve-text/70">
                       <li>
                         <strong className="text-hyve-header">Measurement:</strong>{' '}
-                        Direct strain gauge output
+                        Direct Micro-Electro-Mechanical Systems (MEMS) output
                       </li>
                       <li>
                         <strong className="text-hyve-header">Use cases:</strong>{' '}
@@ -909,7 +909,7 @@ export const HapticMatrixPage = () => {
                     },
                     {
                       label: 'Sensing Element',
-                      value: 'Strain gauges in matrix',
+                      value: 'Micro-Electro-Mechanical Systems (MEMS) in matrix',
                     },
                     { label: 'PCB Dimensions', value: '10cm × 10cm × 5mm' },
                     { label: 'Connection', value: 'USB serial or WiFi' },
