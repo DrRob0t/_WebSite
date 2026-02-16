@@ -47,3 +47,6 @@ service-account.json
 
 # Security audit reports
 security-audit-report.json
+
+# Documentation (internal use only)
+docs/

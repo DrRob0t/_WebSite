@@ -302,22 +302,16 @@ const insightsItems = [
     description: 'Latest news, press releases, and technology updates',
   },
   {
-    name: 'White Papers',
-    href: '/insights/white-papers',
-    icon: FileText,
-    description: 'Technical deep dives and research',
-  },
-  {
-    name: 'Events',
-    href: '/insights/events',
-    icon: Calendar,
-    description: 'Conferences, webinars, and demos',
-  },
-  {
     name: 'Newsletter',
     href: '/insights/newsletter',
     icon: Mail,
     description: 'Monthly updates and industry insights',
+  },
+  {
+    name: 'White Papers',
+    href: '/insights/white-papers',
+    icon: FileText,
+    description: 'Technical deep dives and research',
   },
 ]
 
