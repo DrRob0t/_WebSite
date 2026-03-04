@@ -34,7 +34,7 @@ const physicalSpecs = [
   {
     label: 'Thickness',
     value: '0.33mm',
-    detail: 'Thinner than a credit card',
+    detail: 'Ultra-thin conformable profile',
   },
   {
     label: 'Sensing Elements',
@@ -89,19 +89,19 @@ const measurements = [
 
 // Before vs After comparison data
 const beforeHyve = [
-  '10-20 pressure taps',
-  '2 days installation',
-  'Drilled holes in composite structure',
-  'Single-use deployment',
-  'Post-processing delays',
+  'Limited discrete measurement points',
+  'Multi-day installation and preparation',
+  'Structural penetration required',
+  'Fixed deployment geometry',
+  'Post-processing before analysis',
 ]
 
 const withHyve = [
-  '100+ sensors in same area',
-  '< 1 hour deployment',
-  'Non-invasive adhesive bond',
-  'Infinite repositioning',
-  'Real-time data streaming',
+  '100+ sensing nodes within the same area',
+  'Rapid deployment (<1 hour in testing environments)',
+  'Non-invasive adhesive integration',
+  'Repositionable architecture',
+  'Continuous real-time data streaming',
 ]
 
 export const TechnicalCapabilities = () => {
@@ -125,17 +125,10 @@ export const TechnicalCapabilities = () => {
             {/* Section Header */}
             <motion.div variants={itemVariants} className="text-center mb-8">
               <h2 className="text-3xl md:text-4xl font-bold text-hyve-header mb-4 font-heading">
-                The Technology Behind the Numbers
+                Surface Monitoring Architecture
               </h2>
               <p className="text-base md:text-lg text-hyve-text/80 max-w-3xl mx-auto leading-relaxed">
-                The Hyve Haptic Matrix is an ultra-thin, flexible electronic
-                sensor array that transforms any surface into an intelligent
-                sensing system.{' '}
-                <span className="font-medium text-hyve-header">
-                  Peel. Stick. Switch on.
-                </span>{' '}
-                Get real-time pressure, temperature, and strain data in under
-                an hour—no drilling, no structural damage, no compromise.
+                Hyve’s conformable surface array integrates directly onto aerodynamic and structural surfaces, enabling rapid, non-invasive deployment in testing environments while delivering real-time pressure, temperature, and strain data into a structured data platform.
               </p>
             </motion.div>
 
@@ -256,8 +249,11 @@ export const TechnicalCapabilities = () => {
             {/* Before vs After Comparison */}
             <motion.div variants={itemVariants} className="mb-8">
               <h3 className="text-lg font-semibold text-hyve-header mb-4 font-heading">
-                Versus Traditional Instrumentation
+                From Discrete Instrumentation to Continuous Surface Monitoring
               </h3>
+              <p className="text-sm text-hyve-text/70 mb-4">
+                Traditional instrumentation samples points. Continuous surface monitoring captures behaviour.
+              </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Before Hyve */}
                 <div className="p-5 bg-hyve-text/5 border border-hyve-text/10 rounded-xl">
@@ -280,7 +276,7 @@ export const TechnicalCapabilities = () => {
                 {/* With Hyve */}
                 <div className="p-5 bg-gradient-to-br from-hyve-interactive/10 to-hyve-accent/10 border border-hyve-accent/30 rounded-xl">
                   <h4 className="text-xs font-semibold text-hyve-interactive uppercase tracking-wide mb-3">
-                    Hyve Haptic Matrix
+                    Hyve Surface Monitoring Platform
                   </h4>
                   <ul className="space-y-2">
                     {withHyve.map((item, index) => (
@@ -302,10 +298,7 @@ export const TechnicalCapabilities = () => {
               <div className="bg-gradient-to-r from-hyve-header/5 to-hyve-accent/10 border border-hyve-accent/30 rounded-2xl p-5 md:p-6">
                 <div className="max-w-4xl mx-auto">
                   <p className="text-sm md:text-base text-hyve-header font-medium leading-relaxed text-center mb-4">
-                    The only technology that combines full-surface coverage,
-                    real-time feedback, non-invasive deployment, and
-                    multi-parameter sensing—in both wind tunnel and real-world
-                    flight conditions.
+                    The first platform designed to combine full-surface coverage, real-time feedback, non-invasive deployment, and multi-parameter sensing — across both controlled testing and operational environments.
                   </p>
                   <div className="flex justify-center">
                     <Link

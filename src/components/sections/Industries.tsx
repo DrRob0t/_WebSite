@@ -11,34 +11,34 @@ const industries = [
     id: 'aerospace',
     title: 'Aerospace',
     icon: Plane,
-    description: 'Aviation & space sensing',
+    description: 'Wind tunnel testing and flight validation.',
     href: '/industries/aerospace',
     color: 'from-blue-500/20 to-cyan-500/20',
     iconColor: 'text-blue-600',
   },
   {
     id: 'automotive',
-    title: 'Automotive',
+    title: 'Automotive & High-Performance Systems',
     icon: Car,
-    description: 'Real-time aerodynamics',
+    description: 'Real-time aerodynamic performance and validation.',
     href: '/industries/automotive',
     color: 'from-red-500/20 to-orange-500/20',
     iconColor: 'text-red-600',
   },
   {
     id: 'digital-twinning-ihm',
-    title: 'Digital Twinning & IHM',
+    title: 'Infrastructure & IVHM',
     icon: Combine,
-    description: 'Digital twins & health monitoring',
+    description: 'Continuous structural and surface health monitoring.',
     href: '/industries/digital-twinning-ihm',
     color: 'from-green-500/20 to-teal-500/20',
     iconColor: 'text-teal-600',
   },
   {
     id: 'robotics',
-    title: 'Robotics',
+    title: 'Robotics & Adaptive Systems',
     icon: Bot,
-    description: 'Tactile intelligence',
+    description: 'Distributed conformable sensing for tactile and surface intelligence.',
     href: '/industries/robotics',
     color: 'from-pink-500/20 to-rose-500/20',
     iconColor: 'text-pink-600',
@@ -94,10 +94,10 @@ export const Industries = () => {
             {/* Section Header */}
             <motion.div variants={itemVariants} className="text-center mb-8">
               <h2 className="text-3xl md:text-4xl font-bold text-hyve-header mb-4 font-heading">
-                Industries We Transform
+                Surface Intelligence Across Critical Systems
               </h2>
               <p className="text-base md:text-lg text-hyve-text/80 max-w-2xl mx-auto">
-                Real-time insights across diverse sectors with our cutting-edge sensor technology
+                Hyve enables continuous surface monitoring from aerospace testing environments to operational infrastructure and emerging robotic systems.
               </p>
             </motion.div>
 

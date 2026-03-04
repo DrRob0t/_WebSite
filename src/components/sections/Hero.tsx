@@ -63,10 +63,10 @@ export const Hero = () => {
                 className="flex flex-col gap-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extralight leading-[1.1] mb-6"
               >
                 <span className="text-hyve-text">
-                  Adaptation Through <span className="font-medium">Insight</span>.
+                  Surface Monitoring Platform for <span className="font-medium">Real-Time</span>.
                 </span>
                 <span className="text-hyve-text">
-                  Evolution Through <span className="font-medium">Data</span>.
+                  Aerodynamic and <span className="font-medium">Infrastructure Data</span>.
                 </span>
               </motion.h1>
 
@@ -75,9 +75,8 @@ export const Hero = () => {
                 variants={itemVariants}
                 className="text-base md:text-lg text-hyve-text/70 max-w-lg mb-10 font-light leading-relaxed"
               >
-                Hyve’s Haptic Matrix unlocks real-world, high-density data where it matters
-                most—fueling insight, driving innovation, and enabling intelligent evolution across
-                machines, vehicles, and structures.
+                Hyve deploys conformable sensing arrays to capture continuous pressure, strain, and
+                temperature data — delivered through a structured subscription service.
               </motion.p>
 
               {/* Elegant CTA Group */}
