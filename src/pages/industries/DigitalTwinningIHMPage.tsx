@@ -1,5 +1,3 @@
-import { Shield } from 'lucide-react'
-
 import { Badge } from '@/components/ui/badge'
 import { IndustryPageFocused } from '@/components/pages/IndustryPageFocused'
 import { getVideoPath } from '@/lib/assets'
