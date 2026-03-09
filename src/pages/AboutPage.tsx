@@ -172,7 +172,8 @@ export const AboutPage = () => {
               viewport={{ once: true }}
               className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl border border-hyve-content/20 p-8 lg:p-12"
             >
-              <div className="grid lg:grid-cols-2 gap-12">
+              {/* Top row: Mission + Research Foundations side by side */}
+              <div className="grid lg:grid-cols-2 gap-12 mb-8">
                 {/* Mission */}
                 <motion.div variants={itemVariants}>
                   <h2 className="text-3xl font-bold text-hyve-header mb-6 font-heading">
@@ -199,45 +200,47 @@ export const AboutPage = () => {
                   <h2 className="text-3xl font-bold text-hyve-header mb-6 font-heading">
                     Research Foundations
                   </h2>
-                  <p className="text-base text-hyve-text/80 leading-relaxed mb-6">
+                  <p className="text-base text-hyve-text/80 leading-relaxed">
                     Hyve Dynamics originates from doctoral and postdoctoral research conducted at
                     Cranfield University, focused on high-density sensing and aerodynamic measurement.
                     The technology was developed to address a long-standing challenge in engineering:
                     complex physical behaviour occurs across entire surfaces, yet most measurement
                     systems capture only isolated data points.
                   </p>
-                  <div className="space-y-4">
-                    <div className="bg-gradient-to-br from-hyve-content/30 to-hyve-accent/10 rounded-2xl p-6">
-                      <h3 className="text-xl font-semibold text-hyve-header mb-3">
-                        Academic Foundation
-                      </h3>
-                      <p className="text-sm text-hyve-text/80">
-                        6 years of doctoral and postdoctoral research at Cranfield University focused
-                        on advanced sensing architectures for aerodynamic measurement and structural
-                        monitoring.
-                      </p>
-                    </div>
-                    <div className="bg-gradient-to-br from-hyve-content/30 to-hyve-accent/10 rounded-2xl p-6">
-                      <h3 className="text-xl font-semibold text-hyve-header mb-3">
-                        Intellectual Property
-                      </h3>
-                      <p className="text-sm text-hyve-text/80">
-                        Patent applications covering flexible sensing arrays, high-density measurement
-                        architectures, and real-time surface data acquisition.
-                      </p>
-                    </div>
-                    <div className="bg-gradient-to-br from-hyve-content/30 to-hyve-accent/10 rounded-2xl p-6">
-                      <h3 className="text-xl font-semibold text-hyve-header mb-3">
-                        Engineering Development
-                      </h3>
-                      <p className="text-sm text-hyve-text/80">
-                        Laboratory and wind tunnel testing programmes validating sensing performance,
-                        durability, and integration across aerodynamic surfaces.
-                      </p>
-                    </div>
-                  </div>
                 </motion.div>
               </div>
+
+              {/* Bottom row: Three cards spanning full width */}
+              <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-gradient-to-br from-hyve-content/30 to-hyve-accent/10 rounded-2xl p-5">
+                  <h3 className="text-base font-semibold text-hyve-header mb-2">
+                    Academic Foundation
+                  </h3>
+                  <p className="text-xs text-hyve-text/80">
+                    6 years of doctoral and postdoctoral research at Cranfield University focused
+                    on advanced sensing architectures for aerodynamic measurement and structural
+                    monitoring.
+                  </p>
+                </div>
+                <div className="bg-gradient-to-br from-hyve-content/30 to-hyve-accent/10 rounded-2xl p-5">
+                  <h3 className="text-base font-semibold text-hyve-header mb-2">
+                    Intellectual Property
+                  </h3>
+                  <p className="text-xs text-hyve-text/80">
+                    Patent applications covering flexible sensing arrays, high-density measurement
+                    architectures, and real-time surface data acquisition.
+                  </p>
+                </div>
+                <div className="bg-gradient-to-br from-hyve-content/30 to-hyve-accent/10 rounded-2xl p-5">
+                  <h3 className="text-base font-semibold text-hyve-header mb-2">
+                    Engineering Development
+                  </h3>
+                  <p className="text-xs text-hyve-text/80">
+                    Laboratory and wind tunnel testing programmes validating sensing performance,
+                    durability, and integration across aerodynamic surfaces.
+                  </p>
+                </div>
+              </motion.div>
             </motion.div>
           </div>
         </section>
@@ -259,7 +262,19 @@ export const AboutPage = () => {
               </motion.h2>
 
               <div className="relative">
-                <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-hyve-content/20 transform -translate-x-1/2 hidden lg:block"></div>
+                {/* Animated gradient timeline line */}
+                <div className="absolute left-1/2 top-0 bottom-0 w-[2px] transform -translate-x-1/2 hidden lg:block overflow-hidden origin-top">
+                  <motion.div
+                    className="w-full h-full"
+                    style={{
+                      background: 'linear-gradient(180deg, transparent 0%, #65a3b2 15%, #7FB3BE 50%, #65a3b2 85%, transparent 100%)',
+                    }}
+                    initial={{ opacity: 0, scaleY: 0 }}
+                    whileInView={{ opacity: 1, scaleY: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.2, ease: 'easeOut' }}
+                  />
+                </div>
 
                 {timelineData.map((item, index) => (
                   <motion.div
@@ -284,7 +299,21 @@ export const AboutPage = () => {
                       </Card>
                     </div>
 
-                    <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-hyve-interactive rounded-full border-4 border-white shadow-lg hidden lg:block"></div>
+                    {/* Animated node on timeline */}
+                    <div className="absolute left-1/2 transform -translate-x-1/2 hidden lg:flex items-center justify-center">
+                      <motion.div
+                        className="absolute w-8 h-8 rounded-full bg-hyve-interactive/20"
+                        animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0.1, 0.4] }}
+                        transition={{ duration: 2.5, repeat: Infinity, delay: index * 0.4 }}
+                      />
+                      <motion.div
+                        className="w-4 h-4 rounded-full bg-gradient-to-br from-hyve-interactive to-hyve-accent border-[3px] border-white shadow-lg shadow-hyve-interactive/30"
+                        initial={{ scale: 0 }}
+                        whileInView={{ scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4, delay: 0.3 + index * 0.2, type: 'spring' }}
+                      />
+                    </div>
                   </motion.div>
                 ))}
               </div>
